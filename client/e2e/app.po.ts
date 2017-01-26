@@ -1,6 +1,6 @@
 import { browser, element, by } from 'protractor';
 
-export class NewyocPage {
+export class YocClientPage {
   navigateTo() {
     return browser.get('/');
   }

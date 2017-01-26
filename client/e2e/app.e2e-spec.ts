@@ -1,10 +1,10 @@
-import { NewyocPage } from './app.po';
+import { YocClientPage } from './app.po';
 
-describe('newyoc App', function() {
-  let page: NewyocPage;
+describe('yoc-client App', function() {
+  let page: YocClientPage;
 
   beforeEach(() => {
-    page = new NewyocPage();
+    page = new YocClientPage();
   });
 
   it('should display message saying app works', () => {
