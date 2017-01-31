@@ -1,0 +1,15 @@
+<div class='container'>
+  <a class='brand' href='/'>
+    <img class='logo' src='/assets/images/yoc.png'/>
+  </a>
+  <a class='brand' href='/'>
+    <div class='title'>Ye Olde Chums</div>
+  </a>
+  <a md-button *ngFor='let route of routes' [routerLink]='route.path'>
+    <md-icon>{{ route.icon }}</md-icon>&nbsp;{{ route.name }}
+  </a>
+  <span class='flex-filler'></span>
+  <a md-button *ngFor='let route of afterRoutes' [routerLink]='route.path'>
+    <md-icon>{{ route.icon }}</md-icon>&nbsp;{{ route.name }}
+  </a>
+</div>

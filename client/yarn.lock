@@ -84,6 +84,10 @@
   version "2.5.38"
   resolved "https://registry.yarnpkg.com/@types/jasmine/-/jasmine-2.5.38.tgz#a4379124c4921d4e21de54ec74669c9e9b356717"
 
+"@types/jwplayer":
+  version "6.0.0"
+  resolved "https://registry.yarnpkg.com/@types/jwplayer/-/jwplayer-6.0.0.tgz#c89edf9a9e7a103da15b2515c4dfb36be7388f44"
+
 "@types/node@^6.0.42", "@types/node@^6.0.46":
   version "6.0.62"
   resolved "https://registry.yarnpkg.com/@types/node/-/node-6.0.62.tgz#85222c077b54f25b57417bb708b9f877bda37f89"
