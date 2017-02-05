@@ -24,7 +24,9 @@ import { AppContent } from './components/content.component';
     MaterialModule.forRoot(),
     AppRoutingModule,
   ],
-  providers: [],
+  providers: [
+    { provide: 'Window', useValue: window },
+  ],
   bootstrap: [ AppComponent ]
 })
 export class AppModule { }

@@ -1,0 +1,15 @@
+<md-card>
+    <md-card-content>
+        <!--<input id='file' type='file' (change)='processFile($event.target.files[0])' />-->
+        <!--<label md-raised-button for='file'>Upload File</label>-->
+        <button md-raised-button style='width: 100%'>
+            <span *ngIf='!fileParsed'>Select Save File</span>
+            <span *ngIf='fileParsed'>{{ player.name }} - {{ player.farmName }} Farm</span>
+            <input class='file-upload-button' type='file' (change)='processFile($event.target.files[0])' />
+        </button>
+        <div class='canvas-wrapper' [hidden]='!fileParsed'>
+            <canvas #baseCanvas></canvas>
+            <canvas #overlayCanvas></canvas>
+        </div>
+    </md-card-content>
+</md-card>

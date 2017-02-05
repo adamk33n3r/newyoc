@@ -1,11 +1,20 @@
 .stream
+  display: flex
   padding: 15px
 
-  .player, .chat
-    float: left
-
   .player
-    width: 66%
+    flex: auto
+    margin-right: 15px
 
   .chat
-    width: 33%
+    flex: 0 0 400px
+
+    textarea
+      height: 50px
+      resize: none
+
+    .message
+      color: rgba(0, 0, 0, .87)
+
+      &:nth-child(even)
+        background-color: rgba(0, 0, 0, .10)

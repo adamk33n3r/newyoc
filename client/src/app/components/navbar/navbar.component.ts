@@ -24,6 +24,11 @@ export class AppNavbar {
       path: '/stream',
       icon: 'ondemand_video',
     },
+    {
+      name: 'Stardew',
+      path: '/stardew',
+      icon: 'nature',
+    },
   ];
   private afterRoutes: INavRoute[] = [
     {

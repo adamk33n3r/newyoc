@@ -3,6 +3,22 @@
     <jwplayer [settings]='settings'></jwplayer>
   </div>
   <div class='chat'>
-    CHAT
+    <md-input-container class='w100p'>
+      <textarea md-input
+        placeholder='Send a message'
+        [(ngModel)]='text'
+        (keypress)='sendChat($event)'
+      ></textarea>
+    </md-input-container>
+    <md-list dense>
+      <div class='message' *ngFor='let message of messages'>
+        <md-list-item>
+          <small>{{ message.timestamp }}</small>
+          <span>{{ message.user }}:&nbsp;</span>
+          <span>{{ message.text }}</span>
+        </md-list-item>
+        <md-divider></md-divider>
+      </div>
+    </md-list>
   </div>
 </div>
