@@ -1,7 +1,8 @@
 import { Vector2 } from '../vector2';
 
 type MousePosFn = (mousePos: Vector2) => void;
-type Color = string | CanvasGradient | CanvasPattern;
+export type Color = string | CanvasGradient | CanvasPattern;
+
 export class CanvasRenderer {
     public get Width() {
         return this.canvas.width;

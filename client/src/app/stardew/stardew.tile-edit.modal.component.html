@@ -1,0 +1,31 @@
+<h1 md-dialog-title>Tile Edit</h1>
+<md-dialog-content>
+    <md-list>
+        <md-list-item *ngFor='let prop of tileInfo'>
+            <md-input-container *ngIf='prop.value | typeof: "number"'>
+                <input mdInput type='number' step='1' [placeholder]='prop.key | titleize' [(ngModel)]='prop.value' />
+            </md-input-container>
+            <md-input-container *ngIf='prop.value | typeof: "string"'>
+                <input mdInput type='text' [placeholder]='prop.key | titleize' [(ngModel)]='prop.value' />
+            </md-input-container>
+            <md-slide-toggle *ngIf='prop.value | typeof: "boolean"'
+                color='primary'
+                [(ngModel)]='prop.value'
+            >
+                {{ prop.key | titleize }}
+            </md-slide-toggle>
+            <div *ngIf='isVector(prop)'>
+                <div>{{ prop.key | titleize }}</div>
+                <md-input-container>
+                    <input mdInput type='number' step='1' placeholder='X' [(ngModel)]='prop.value.x' />
+                </md-input-container>
+                <md-input-container>
+                    <input mdInput type='number' step='1' placeholder='Y' [(ngModel)]='prop.value.y' />
+                </md-input-container>
+            </div>
+        </md-list-item>
+    </md-list>
+</md-dialog-content>
+<md-dialog-actions>
+    <button md-raised-button (click)='close()'>Save</button>
+</md-dialog-actions>

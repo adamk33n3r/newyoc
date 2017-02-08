@@ -12,21 +12,23 @@ import { AppNavbar } from './components/navbar/navbar.component';
 import { AppContent } from './components/content.component';
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    AppNavbar,
-    AppContent,
-  ],
-  imports: [
-    BrowserModule,
-    FormsModule,
-    HttpModule,
-    MaterialModule.forRoot(),
-    AppRoutingModule,
-  ],
-  providers: [
-    { provide: 'Window', useValue: window },
-  ],
-  bootstrap: [ AppComponent ]
+    declarations: [
+        AppComponent,
+        AppNavbar,
+        AppContent,
+    ],
+    entryComponents: [
+    ],
+    imports: [
+        BrowserModule,
+        FormsModule,
+        HttpModule,
+        MaterialModule,
+        AppRoutingModule,
+    ],
+    providers: [
+        { provide: 'Window', useValue: window },
+    ],
+    bootstrap: [AppComponent],
 })
 export class AppModule { }

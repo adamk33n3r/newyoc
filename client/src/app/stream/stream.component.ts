@@ -94,7 +94,7 @@ export class StreamComponent implements OnInit {
    * If the tab is hidden
    */
   private isTabbedAway(): boolean {
-    return this.window.document[this.hiddenAttr];
+    return (<any> this.window.document)[this.hiddenAttr];
   }
 
   private updateTitle() {

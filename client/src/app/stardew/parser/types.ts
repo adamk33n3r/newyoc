@@ -26,11 +26,22 @@ export interface IFarm {
 }
 
 export interface ITile {
+    [prop: string]: any;
     location: Vector2;
 }
 
 export interface IObject extends ITile {
     name: string;
+    type: string;
+    canBeSetDown: boolean;
+    canBeGrabbed: boolean;
+    questItem: boolean;
+    price: number;
+    stack: number;
+    quality: number;
+    health: number;
+    maxHealth: number;
+    node: Node;
 }
 
 export interface ITerrainFeature extends ITile {

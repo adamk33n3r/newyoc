@@ -75,12 +75,22 @@ export class SVSaveParser extends XMLParser {
         const objects: IObject[] = new Array(SVSaveParser.mapWidth * SVSaveParser.mapHeight).fill(null);
         for (const item of objectItems) {
             const obj = this.getNode('./value/Object', item);
-            const object = {
+            const object: IObject = {
                 location: new Vector2(
                     this.getNumber('./tileLocation/X', obj),
                     this.getNumber('./tileLocation/Y', obj),
                 ),
-                name: this.getText('./Name', obj),
+                name: this.getText('./name', obj),
+                type: this.getText('./type', obj),
+                canBeSetDown: this.getBoolean('./canBeSetDown', obj),
+                canBeGrabbed: this.getBoolean('./canBeGrabbed', obj),
+                questItem: this.getBoolean('./questItem', obj),
+                price: this.getNumber('./price', obj),
+                stack: this.getNumber('./stack', obj),
+                quality: this.getNumber('./quality', obj),
+                health: this.getNumber('./health', obj),
+                maxHealth: this.getNumber('./maxHealth', obj),
+                node: obj,
             };
             objects[(object.location.y - 1) * SVSaveParser.mapWidth + object.location.x] = object;
         }
@@ -98,6 +108,10 @@ export class SVSaveParser extends XMLParser {
                     this.getNumber('./key/Vector2/Y', item),
                 ),
                 type: this.getAttribute('type', terrainFeature),
+                treeType: this.getNumber('./treeType', terrainFeature),
+                fruitsOnTree: this.getNumber('./fruitsOnTree', terrainFeature),
+                growthStage: this.getNumber('./growthStage', terrainFeature),
+                node: terrainFeature,
             };
             features[(feature.location.y - 1) * SVSaveParser.mapWidth + feature.location.x] = feature;
         }

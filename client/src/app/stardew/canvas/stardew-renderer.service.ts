@@ -5,14 +5,25 @@ import {
 import { Vector2 } from '../vector2';
 import { ArrayUtils } from '../utils';
 
-import { CanvasRenderer } from './canvas-renderer.service';
+import { CanvasRenderer, Color } from './canvas-renderer.service';
 import { SVSaveParser } from '../parser/SVSaveParser.service';
+
+export interface IColorMap {
+    [name: string]: Color;
+}
 
 export class StardewRenderer extends CanvasRenderer {
     private overlayRenderer: CanvasRenderer;
 
-    constructor(canvas: HTMLCanvasElement, overlay: HTMLCanvasElement, private farm: IFarm) {
+    constructor(
+        canvas: HTMLCanvasElement,
+        overlay: HTMLCanvasElement,
+        private farm: IFarm,
+        private colorMap: IColorMap,
+        onClick: (tile: ITile) => void,
+    ) {
         super(canvas, SVSaveParser.MapWidth, SVSaveParser.MapHeight, 10);
+        console.log(Vector2, new Vector2(1, 2));
 
         // Draw dirt
         this.drawRect(0, 0, this.Width, this.Height, 'burlywood');
@@ -26,9 +37,10 @@ export class StardewRenderer extends CanvasRenderer {
         });
         this.overlayRenderer.onMouseClick((mousePos) => {
             console.log(`clicked at ${mousePos}`);
-            const object = this.getTileAt(mousePos);
-            console.log("clicked on object", object);
+            const tile = this.getTileAt(mousePos);
+            console.log("clicked on tile", tile);
             this.overlayRenderer.drawPixel(mousePos, 1, 'blue');
+            onClick(tile);
         });
     }
 
@@ -37,30 +49,15 @@ export class StardewRenderer extends CanvasRenderer {
             if (feature === null) {
                 continue;
             }
-            let color: string;
-            switch (feature.type) {
-                case 'Grass':
-                    color = 'green';
-                    break;
-                case 'Tree':
-                    color = 'darkgreen';
-                    break;
-                case 'FruitTree':
-                    color = 'pink';
-                    break;
-                case 'Flooring':
-                    color = 'grey';
-                    break;
-                default:
-                    color = 'black';
-            }
+            const color = this.colorMap[feature.type] || 'deeppink';
             this.drawPixel(feature.location, 1, color);
         }
         for (const object of this.farm.objects) {
             if (object === null) {
                 continue;
             }
-            this.drawPixel(new Vector2(object.location.x + .25, object.location.y + .25), .5, 'yellow');
+            const color = this.colorMap[object.name] || 'yellow';
+            this.drawPixel(new Vector2(object.location.x + .25, object.location.y + .25), .5, color);
         }
     }
 

@@ -25,6 +25,11 @@ export class XMLParser {
         return this.evaluate(xPath, base, XPathResult.NUMBER_TYPE).numberValue;
     }
 
+    public getBoolean(xPath: string, base?: Node): boolean {
+        xPath += '[text() = "true"]';
+        return this.evaluate(xPath, base, XPathResult.BOOLEAN_TYPE).booleanValue;
+    }
+
     public getAttribute(attribute: string, node: Node) {
         return node.attributes.getNamedItem(attribute).value;
     }
