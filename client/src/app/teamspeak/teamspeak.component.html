@@ -1,13 +1,22 @@
+<md-card>
+    <md-card-title>
+        TeamSpeak
+        <span class='flex-filler'></span>
+        <button md-raised-button color='accent' (click)='refresh()'>
+            Refresh <md-icon>refresh</md-icon>
+        </button>
+    </md-card-title>
+</md-card>
 <md-card *ngFor='let channel of channels'>
   <md-card-title>
-    <span>{{ channel.name }}</span>
+    <span>{{ channel.channel_name }}</span>
     <span></span>
-    <a md-raised-button [href]='getURI(channel.cid)'>Connect</a>
+    <a md-raised-button color='accent' [href]='getURI(channel.cid)'>Connect</a>
   </md-card-title>
   <md-card-content>
     <md-list>
       <md-list-item *ngFor='let client of channel.clients'>
-        <md-icon md-list-avatar [color]='client.status === "online" ? "primary" : "warn"'>person</md-icon>
+        <md-icon md-list-avatar [color]='client.away ? "warn" : "primary"'>person</md-icon>
         <h4 md-line>{{ client.name }}</h4>
         <p md-line>{{ client.nickname }}&nbsp;</p>
       </md-list-item>

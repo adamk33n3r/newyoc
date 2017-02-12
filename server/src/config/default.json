@@ -1,0 +1,6 @@
+{
+    "teamspeak": {
+        "url": "localhost",
+        "username": "serveradmin"
+    }
+}
