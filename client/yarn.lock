@@ -45,7 +45,7 @@
 
 "@angular/material@https://github.com/angular/material2-builds.git":
   version "2.0.0-beta.1"
-  resolved "https://github.com/angular/material2-builds.git#b248eb0a359908972c24333e6d565c4fec1c9e0f"
+  resolved "https://github.com/angular/material2-builds.git#f21a693e5408d442180632ccfdbb0eecb9381eea"
 
 "@angular/platform-browser-dynamic@^2.3.1":
   version "2.4.5"
@@ -77,6 +77,16 @@
     loader-utils "^0.2.16"
     magic-string "^0.16.0"
     source-map "^0.5.6"
+
+"@types/auth0@^2.3.33":
+  version "2.3.33"
+  resolved "https://registry.yarnpkg.com/@types/auth0/-/auth0-2.3.33.tgz#94c93f8467066f03c094f78169745a441da0f0b9"
+  dependencies:
+    "@types/bluebird" "*"
+
+"@types/bluebird@*":
+  version "3.0.37"
+  resolved "https://registry.yarnpkg.com/@types/bluebird/-/bluebird-3.0.37.tgz#2e76b394aa9bea40d04241a31c0887a260283388"
 
 "@types/jasmine@2.5.38", "@types/jasmine@^2.5.36":
   version "2.5.38"

@@ -23,7 +23,6 @@ export class TeamSpeakComponent implements OnInit {
         .subscribe((response) => {
             const data = response.json().data;
             this.channels = this.buildData([], data.channels, data.online);
-            console.log(this.channels);
         });
     }
 
@@ -36,6 +35,7 @@ export class TeamSpeakComponent implements OnInit {
     }
 
     private buildData(users: any[], channels: any[], online: any[]) {
+        // TODO: use channel.pid to parent channels
         const rebuiltClients = online.map((client) => {
             return {
                 name: client.client_nickname,
@@ -45,7 +45,6 @@ export class TeamSpeakComponent implements OnInit {
             };
         });
         this.sortClients(rebuiltClients);
-        console.log(rebuiltClients);
         // Attach to channels
         for (const channel of channels) {
             channel.clients = [];
@@ -60,7 +59,6 @@ export class TeamSpeakComponent implements OnInit {
                         break;
                     }
                 }
-                console.log(client);
                 channel.clients.push(client);
             }
         }

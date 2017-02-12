@@ -8,21 +8,21 @@
     </md-card-title>
 </md-card>
 <md-card *ngFor='let channel of channels'>
-  <md-card-title>
-    <span>{{ channel.channel_name }}</span>
-    <span></span>
-    <a md-raised-button color='accent' [href]='getURI(channel.cid)'>Connect</a>
-  </md-card-title>
-  <md-card-content>
-    <md-list>
-      <md-list-item *ngFor='let client of channel.clients'>
-        <md-icon md-list-avatar [color]='client.away ? "warn" : "primary"'>person</md-icon>
-        <h4 md-line>{{ client.name }}</h4>
-        <p md-line>{{ client.nickname }}&nbsp;</p>
-      </md-list-item>
-      <md-list-item *ngIf='channel.clients.length === 0'>
-        No clients connected
-      </md-list-item>
-    </md-list>
-  </md-card-content>
+    <md-card-title>
+        <span>{{ channel.channel_name }}</span>
+        <span></span>
+        <a md-raised-button color='accent' [href]='getURI(channel.cid)'>Connect</a>
+    </md-card-title>
+    <md-card-content>
+        <md-list>
+            <md-list-item *ngFor='let client of channel.clients'>
+                <md-icon md-list-avatar [color]='client.away ? "warn" : "primary"'>person</md-icon>
+                <h4 md-line>{{ client.name }}</h4>
+                <p md-line>{{ client.nickname }}&nbsp;</p>
+            </md-list-item>
+            <md-list-item *ngIf='channel.clients.length === 0'>
+                No clients connected
+            </md-list-item>
+        </md-list>
+    </md-card-content>
 </md-card>

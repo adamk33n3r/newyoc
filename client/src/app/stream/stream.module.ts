@@ -22,6 +22,6 @@ import { StreamComponent } from './stream.component';
   ],
   providers: [
     { provide: WindowProvider, useValue: window },
-  ]
+  ],
 })
 export class StreamModule { }

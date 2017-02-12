@@ -8,13 +8,13 @@ import { MaterialModule } from '@angular/material';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { AppNavbar } from './components/navbar/navbar.component';
+import { AppNavbarComponent } from './components/navbar/navbar.component';
 import { AppContent } from './components/content.component';
 
 @NgModule({
     declarations: [
         AppComponent,
-        AppNavbar,
+        AppNavbarComponent,
         AppContent,
     ],
     entryComponents: [

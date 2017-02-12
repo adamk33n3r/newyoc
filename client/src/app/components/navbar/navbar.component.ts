@@ -12,7 +12,7 @@ interface INavRoute {
   styleUrls: [ './navbar.component.sass' ],
   encapsulation: ViewEncapsulation.None,
 })
-export class AppNavbar {
+export class AppNavbarComponent {
   private routes: INavRoute[] = [
     {
       name: 'TeamSpeak',

@@ -1,0 +1,5 @@
+#!/usr/bin/fish
+
+while inotifywait -e close_write package.json
+  yarn --pure-lockfile
+end
