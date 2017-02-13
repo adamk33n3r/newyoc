@@ -2,10 +2,16 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { MaterialModule } from '@angular/material';
 
+import { MainComponent } from './components/main/main.component';
+
 const routes: Routes = [
   {
     path: '',
     children: [
+      {
+        path: '',
+        component: MainComponent,
+      },
       {
         path: 'teamspeak',
         loadChildren: './teamspeak/teamspeak.module#TeamSpeakModule'

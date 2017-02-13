@@ -66,4 +66,4 @@ function onListening() {
         : 'port ' + addr.port;
     logger_1.default('Listening on ' + bind);
 }
-//# sourceMappingURL=/home/adam/projects/newyoc/server/index.js.map
+//# sourceMappingURL=C:/cygwin/home/Adam/projects/newyoc/server/index.js.map

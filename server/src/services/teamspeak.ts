@@ -33,7 +33,7 @@ export class TeamSpeak {
             .then(this.stripQueryClients);
     }
 
-    public getOnlineClients(): ReturnPromise {
+    public getOnlineClients(): Promise<any[]> {
         return this.client.send('clientlist', {}, ['away'])
             .then(this.handleResponse)
             .then(this.stripQueryClients);

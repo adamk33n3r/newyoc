@@ -12,4 +12,9 @@
   <a md-button *ngFor='let route of afterRoutes' [routerLink]='route.path'>
     <md-icon>{{ route.icon }}</md-icon>&nbsp;{{ route.name }}
   </a>
+  <button md-button (click)='auth.login()' *ngIf='!auth.isAuthenticated()'>Login</button>
+  <div *ngIf='auth.isAuthenticated()'>
+    <small>{{ auth.getUserInfo()?.name }}</small>
+    <button md-button (click)='auth.logout()'>Logout</button>
+  </div>
 </div>

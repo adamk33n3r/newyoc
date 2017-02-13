@@ -20,4 +20,4 @@ AppRouter = __decorate([
 ], AppRouter);
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.default = new AppRouter();
-//# sourceMappingURL=/home/adam/projects/newyoc/server/src/api/router.js.map
+//# sourceMappingURL=C:/cygwin/home/Adam/projects/newyoc/server/src/api/router.js.map

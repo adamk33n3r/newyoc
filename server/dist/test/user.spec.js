@@ -57,4 +57,4 @@ UserTest = UserTest_1 = __decorate([
     __metadata("design:paramtypes", [])
 ], UserTest);
 var UserTest_1;
-//# sourceMappingURL=/home/adam/projects/newyoc/server/test/user.spec.js.map
+//# sourceMappingURL=C:/cygwin/home/Adam/projects/newyoc/server/test/user.spec.js.map

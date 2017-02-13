@@ -10,8 +10,6 @@ const mongoose = require("mongoose");
 require("reflect-metadata");
 // routes
 const router_1 = require("./api/router");
-// schemas
-const user_1 = require("./schemas/user"); // import userSchema
 /**
  * The server.
  *
@@ -58,9 +56,9 @@ class Server {
         // Use native promises
         mongoose.Promise = Promise;
         // Connect to mongoose
-        const connection = mongoose.createConnection(Server.MONGODB_CONNECTION);
+        // const connection: mongoose.Connection = mongoose.createConnection(Server.MONGODB_CONNECTION);
         // Create models
-        this.model.user = connection.model('User', user_1.userSchema);
+        // this.model.user = connection.model<IUserModel>('User', userSchema);
         // Catch 404 and forward to error handler
         this.app.use((err, req, res, next) => {
             err.status = 404;
@@ -82,6 +80,6 @@ class Server {
         this.app.use(path, router);
     }
 }
-Server.MONGODB_CONNECTION = 'mongodb://localhost:27272/yoc-dev';
+Server.MONGODB_CONNECTION = 'mongodb://eon.adam-keenan.net:27272/newyoc';
 exports.Server = Server;
-//# sourceMappingURL=/home/adam/projects/newyoc/server/src/server.js.map
+//# sourceMappingURL=C:/cygwin/home/Adam/projects/newyoc/server/src/server.js.map

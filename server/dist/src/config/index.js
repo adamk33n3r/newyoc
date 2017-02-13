@@ -3,4 +3,4 @@
 const config = require('configamajig')('./src/config');
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.default = config;
-//# sourceMappingURL=/home/adam/projects/newyoc/server/src/config/index.js.map
+//# sourceMappingURL=C:/cygwin/home/Adam/projects/newyoc/server/src/config/index.js.map

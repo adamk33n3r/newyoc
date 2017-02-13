@@ -12,4 +12,4 @@ exports.userSchema.pre('save', (next) => {
     }
     next();
 });
-//# sourceMappingURL=/home/adam/projects/newyoc/server/src/schemas/user.js.map
+//# sourceMappingURL=C:/cygwin/home/Adam/projects/newyoc/server/src/schemas/user.js.map

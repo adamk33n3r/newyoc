@@ -21,4 +21,4 @@ ServicesRouter = __decorate([
 ], ServicesRouter);
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.default = new ServicesRouter();
-//# sourceMappingURL=/home/adam/projects/newyoc/server/src/api/services/index.js.map
+//# sourceMappingURL=C:/cygwin/home/Adam/projects/newyoc/server/src/api/services/index.js.map

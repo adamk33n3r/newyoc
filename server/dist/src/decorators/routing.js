@@ -8,6 +8,15 @@ function debug(...args) {
     }
     console.log.apply(console, args);
 }
+function camelToKebab(name) {
+    return name
+        .replace(/^([A-Z])/, (matches) => {
+        return matches[0].toLowerCase();
+    })
+        .replace(/([a-z])([A-Z])/g, (matches) => {
+        return matches[0] + '-' + matches[1].toLowerCase();
+    });
+}
 function Router(info) {
     return (target) => {
         Reflect.defineMetadata('$router.path', info.path, target.prototype);
@@ -40,7 +49,7 @@ function Router(info) {
                 expressRouter.use(path, childRouter);
             }
         }
-        debug(expressRouter.stack);
+        // debug(expressRouter.stack);
         Reflect.defineMetadata('$router.router', expressRouter, target.prototype);
     };
 }
@@ -61,7 +70,7 @@ function Route(method, path) {
             Reflect.defineMetadata('$router.routes', [], target);
         }
         const routes = Reflect.getMetadata('$router.routes', target);
-        path = path || `/${propertyKey}`;
+        path = path || `/${camelToKebab(propertyKey)}`;
         routes.push({ method, path, propertyKey });
         Reflect.defineMetadata('$router.routes', routes, target);
     };
@@ -70,4 +79,4 @@ exports.Route = Route;
 exports.GET = Route.bind(null, 'get');
 exports.POST = Route.bind(null, 'post');
 exports.PUT = Route.bind(null, 'put');
-//# sourceMappingURL=/home/adam/projects/newyoc/server/src/decorators/routing.js.map
+//# sourceMappingURL=C:/cygwin/home/Adam/projects/newyoc/server/src/decorators/routing.js.map

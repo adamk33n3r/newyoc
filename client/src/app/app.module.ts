@@ -8,16 +8,19 @@ import { MaterialModule } from '@angular/material';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { MainComponent } from './components/main/main.component';
 import { AppNavbarComponent } from './components/navbar/navbar.component';
 import { AppContent } from './components/content.component';
+
+import { Auth } from './services/auth.service';
+import { AuthHttp } from 'angular2-jwt';
 
 @NgModule({
     declarations: [
         AppComponent,
         AppNavbarComponent,
         AppContent,
-    ],
-    entryComponents: [
+        MainComponent,
     ],
     imports: [
         BrowserModule,
@@ -28,7 +31,9 @@ import { AppContent } from './components/content.component';
     ],
     providers: [
         { provide: 'Window', useValue: window },
+        AuthHttp,
+        Auth,
     ],
     bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}

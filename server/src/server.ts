@@ -27,7 +27,7 @@ import { userSchema } from './schemas/user'; // import userSchema
  * @class Server
  */
 export class Server {
-    private static MONGODB_CONNECTION = 'mongodb://localhost:27272/yoc-dev';
+    private static MONGODB_CONNECTION = 'mongodb://eon.adam-keenan.net:27272/newyoc';
 
     public app: express.Application;
 
@@ -84,10 +84,10 @@ export class Server {
         (<any> mongoose).Promise = Promise;
 
         // Connect to mongoose
-        const connection: mongoose.Connection = mongoose.createConnection(Server.MONGODB_CONNECTION);
+        // const connection: mongoose.Connection = mongoose.createConnection(Server.MONGODB_CONNECTION);
 
         // Create models
-        this.model.user = connection.model<IUserModel>('User', userSchema);
+        // this.model.user = connection.model<IUserModel>('User', userSchema);
 
         // Catch 404 and forward to error handler
         this.app.use((err: any, req: express.Request, res: express.Response, next: express.NextFunction) => {

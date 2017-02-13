@@ -9,6 +9,18 @@ function debug(...args: any[]) {
     console.log.apply(console, args);
 }
 
+function camelToKebab(name: string) {
+    return name
+    // Lowercase first character
+    .replace(/^([A-Z])/, (matches) => {
+        return matches[0].toLowerCase();
+    })
+    // Turn rest into kebab
+    .replace(/([a-z])([A-Z])/g, (matches) => {
+        return matches[0] + '-' + matches[1].toLowerCase()
+    });
+}
+
 interface RouterDecorator {
     path: string;
     controllers?: any[];
@@ -48,7 +60,7 @@ export function Router(info: RouterDecorator) {
                 expressRouter.use(path, childRouter);
             }
         }
-        debug(expressRouter.stack);
+        // debug(expressRouter.stack);
         Reflect.defineMetadata('$router.router', expressRouter, target.prototype);
     };
 }
@@ -79,7 +91,7 @@ export function Route(method: string, path?: string): RouteFactory {
             Reflect.defineMetadata('$router.routes', [], target);
         }
         const routes: RouteInfo[] = Reflect.getMetadata('$router.routes', target);
-        path = path || `/${propertyKey}`;
+        path = path || `/${camelToKebab(propertyKey)}`;
         routes.push({ method, path , propertyKey });
         Reflect.defineMetadata('$router.routes', routes, target);
     };

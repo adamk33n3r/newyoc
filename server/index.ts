@@ -6,7 +6,6 @@ require('app-module-path').addPath(__dirname);
 
 // module dependencies
 import * as http from 'http';
-import * as Debug from 'debug';
 import { Server } from './src/server';
 
 import debug from './src/logger';

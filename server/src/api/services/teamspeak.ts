@@ -6,8 +6,6 @@ import config from 'src/config';
 
 @Controller('/teamspeak')
 class TeamSpeakController {
-    private teamspeak: TeamSpeak;
-
     @GET('/')
     public index(req: Request, res: Response) {
         const ts = this.initTeamSpeak(res);

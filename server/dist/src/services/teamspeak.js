@@ -48,4 +48,4 @@ class TeamSpeak {
     }
 }
 exports.TeamSpeak = TeamSpeak;
-//# sourceMappingURL=/home/adam/projects/newyoc/server/src/services/teamspeak.js.map
+//# sourceMappingURL=C:/cygwin/home/Adam/projects/newyoc/server/src/services/teamspeak.js.map

@@ -1,0 +1,19 @@
+#!/bin/bash
+
+DEBUG=server ./node_modules/.bin/nodemon dist/index.js &
+tsc -w &
+
+cleanup () {
+    for pid in $(ps -W | grep node.exe | awk -e '/^[[:space:]]+[[:digit:]+]/{print $4}'); do
+        echo 'killing '$pid
+        /bin/kill -f $pid
+    done
+    exit
+}
+trap cleanup EXIT 
+
+while :
+do
+    sleep 10 &
+    wait $!
+done

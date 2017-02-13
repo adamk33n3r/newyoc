@@ -1,2 +1,2 @@
 "use strict";
-//# sourceMappingURL=/home/adam/projects/newyoc/server/src/interfaces/user.js.map
+//# sourceMappingURL=C:/cygwin/home/Adam/projects/newyoc/server/src/interfaces/user.js.map
