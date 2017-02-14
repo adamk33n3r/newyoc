@@ -1,6 +1,6 @@
 #!/bin/bash
 
-DEBUG=server ./node_modules/.bin/nodemon dist/index.js &
+DEBUG=server ./node_modules/.bin/nodemon dist/server/index.js &
 tsc -w &
 
 cleanup () {

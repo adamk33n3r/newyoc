@@ -6,15 +6,20 @@ require('app-module-path').addPath(__dirname);
 
 // module dependencies
 import * as http from 'http';
+import * as socketio from 'socket.io';
+
 import { Server } from './src/server';
 
 import debug from './src/logger';
 
 // create http server
 const httpPort = normalizePort(process.env.PORT || 3000);
-const app = new Server().app;
+const server = new Server();
+const app = server.app;
 app.set('port', httpPort);
 const httpServer = http.createServer(app);
+const io = socketio(httpServer);
+server.config(io);
 
 // listen on provided ports
 httpServer.listen(httpPort);

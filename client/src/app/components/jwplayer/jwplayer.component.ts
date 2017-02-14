@@ -9,6 +9,8 @@ import {
     ElementRef,
 } from '@angular/core';
 
+import { PlaylistItem } from './jwplayer.types';
+
 @Component({
     selector: 'jwplayer',
     template: `
@@ -20,7 +22,10 @@ export class JWPlayerComponent implements AfterViewInit, OnDestroy {
     private settings: any;
 
     @Output()
-    private playlistItem = new EventEmitter();
+    private ready = new EventEmitter();
+
+    @Output()
+    private playlistItem = new EventEmitter<PlaylistItem>();
 
     @Output()
     private error = new EventEmitter();
@@ -29,13 +34,19 @@ export class JWPlayerComponent implements AfterViewInit, OnDestroy {
     private playerRef: ElementRef;
 
     private player: JWPlayer;
+    public get Player(): JWPlayer {
+        return this.player;
+    }
 
     constructor(private elementRef: ElementRef) {}
 
     public ngAfterViewInit() {
         this.player = jwplayer(this.playerRef.nativeElement).setup(this.settings);
-        this.player.onPlaylistItem(() => {
-            this.playlistItem.emit();
+        this.player.onReady(() => {
+            this.ready.emit();
+        });
+        this.player.onPlaylistItem((thing) => {
+            this.playlistItem.emit(thing);
         });
         this.player.onError((e: Error) => {
             this.error.emit(e);

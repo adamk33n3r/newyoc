@@ -5,6 +5,7 @@ import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 import { MaterialModule } from '@angular/material';
+import { AuthHttp } from 'angular2-jwt';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -13,7 +14,7 @@ import { AppNavbarComponent } from './components/navbar/navbar.component';
 import { AppContent } from './components/content.component';
 
 import { Auth } from './services/auth.service';
-import { AuthHttp } from 'angular2-jwt';
+import { Socket } from './services/socket.service';
 
 @NgModule({
     declarations: [
@@ -33,6 +34,7 @@ import { AuthHttp } from 'angular2-jwt';
         { provide: 'Window', useValue: window },
         AuthHttp,
         Auth,
+        Socket,
     ],
     bootstrap: [AppComponent],
 })

@@ -8,18 +8,20 @@ import * as methodOverride from 'method-override';
 import * as mongoose from 'mongoose';
 import 'reflect-metadata';
 
+import { Socket } from './services/socket';
+
 // routes
 import AppRouter from './api/router';
 
 // interfaces
-import { IUser } from './interfaces/user'; // import IUser
+// import { IUser } from './interfaces/user'; // import IUser
 
 // models
-import { IModel } from './models/model'; // import IModel
-import { IUserModel } from './models/user'; // import IUserModel
+// import { IModel } from './models/model'; // import IModel
+// import { IUserModel } from './models/user'; // import IUserModel
 
 // schemas
-import { userSchema } from './schemas/user'; // import userSchema
+// import { userSchema } from './schemas/user'; // import userSchema
 
 /**
  * The server.
@@ -31,7 +33,7 @@ export class Server {
 
     public app: express.Application;
 
-    private model: IModel; // an instance of IModel
+    // private model: IModel; // an instance of IModel
 
     /**
      * Constructor.
@@ -41,16 +43,10 @@ export class Server {
      */
     constructor() {
         // instance defaults
-        this.model = Object(); // initialize this to an empty object
+        // this.model = Object(); // initialize this to an empty object
 
         // create expressjs application
         this.app = express();
-
-        // configure application
-        this.config();
-
-        // add routes
-        this.routes();
     }
 
     /**
@@ -59,7 +55,9 @@ export class Server {
      * @class Server
      * @method config
      */
-    public config() {
+    public config(socket: SocketIO.Server) {
+        new Socket(socket);
+
         // Add static paths
         this.app.use(express.static(path.join(__dirname, 'public')));
 
@@ -97,6 +95,8 @@ export class Server {
 
         // Error handling
         this.app.use(errorHandler());
+
+        this.routes();
     }
 
     /**

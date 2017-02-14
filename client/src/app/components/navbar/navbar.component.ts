@@ -39,7 +39,6 @@ export class AppNavbarComponent {
             icon: 'settings',
         },
     ];
-    constructor(public auth: Auth) {
-        console.log(auth);
-    }
+
+    constructor(public auth: Auth) {}
 }
