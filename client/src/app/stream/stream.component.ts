@@ -45,7 +45,7 @@ export class StreamComponent implements OnInit {
     private title = this.window.document.title;
 
     constructor(
-        @Inject(WindowProvider)
+        @Inject(Window)
         private window: Window,
         private socket: Socket,
         private auth: Auth,
