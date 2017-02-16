@@ -21,7 +21,7 @@ import { StreamComponent } from './stream.component';
     JWPlayerComponent,
   ],
   providers: [
-    { provide: WindowProvider, useValue: window },
+    { provide: Window, useValue: window },
   ],
 })
 export class StreamModule { }
