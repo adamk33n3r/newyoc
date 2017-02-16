@@ -108,8 +108,13 @@ export class Server {
      */
     private routes() {
         const router: express.Router = Reflect.getMetadata('$router.router', AppRouter);
-        const path: string = Reflect.getMetadata('$router.path', AppRouter);
-        this.app.use(path, router);
+        const routePath: string = Reflect.getMetadata('$router.path', AppRouter);
+        this.app.use(routePath, router);
+        const pathToClient = path.join(__dirname, '../../../../client/dist');
+        this.app.use(express.static(pathToClient));
+        this.app.get('*', (req, res) => {
+            res.sendFile(path.join(pathToClient, 'index.html'));
+        });
     }
 
 }

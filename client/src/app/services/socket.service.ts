@@ -3,6 +3,8 @@ import * as socketio from 'socket.io-client';
 
 import { Chat, Stream } from 'src/../../../shared/constants/sockets';
 
+import { environment } from 'src/environments/environment';
+
 // interface SocketMessage {
 //     event: string;
 //     data: any;
@@ -26,7 +28,7 @@ export class Socket {
     private socket: SocketIOClient.Socket;
 
     constructor() {
-        this.socket = socketio('localhost:3000');
+        this.socket = socketio(environment.socketURI);
     }
 
     // Chat signatures
