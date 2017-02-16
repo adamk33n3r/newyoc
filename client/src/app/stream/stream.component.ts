@@ -7,7 +7,7 @@ import { Auth } from '../services/auth.service';
 
 import jwplayerSettings from './jwplayer.settings';
 
-import { Chat, Stream } from 'src/../../../shared/constants/sockets';
+import { Chat, Stream } from '../../../../shared/constants/sockets';
 import { PlaylistItem } from '../components/jwplayer/jwplayer.types';
 
 

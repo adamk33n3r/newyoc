@@ -1,9 +1,9 @@
 import { Injectable, EventEmitter } from '@angular/core';
 import * as socketio from 'socket.io-client';
 
-import { Chat, Stream } from 'src/../../../shared/constants/sockets';
+import { Chat, Stream } from '../../../../shared/constants/sockets';
 
-import { environment } from 'src/environments/environment';
+import { environment } from '../../environments/environment';
 
 // interface SocketMessage {
 //     event: string;
