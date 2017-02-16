@@ -5,16 +5,20 @@
   <a class='brand' routerLink='/'>
     <div class='title'>Ye Olde Chums</div>
   </a>
-  <a md-button *ngFor='let route of routes' [routerLink]='route.path'>
-    <md-icon>{{ route.icon }}</md-icon>&nbsp;{{ route.name }}
-  </a>
+  <div *ngFor='let route of routes'>
+    <a *ngIf='!route.auth || auth.isAuthenticated()' md-button [routerLink]='route.path'>
+        <md-icon>{{ route.icon }}</md-icon>&nbsp;{{ route.name }}
+    </a>
+  </div>
   <span class='flex-filler'></span>
-  <a md-button *ngFor='let route of afterRoutes' [routerLink]='route.path'>
-    <md-icon>{{ route.icon }}</md-icon>&nbsp;{{ route.name }}
-  </a>
+  <div *ngFor='let route of afterRoutes'>
+    <a *ngIf='!route.auth || auth.isAuthenticated()' md-button [routerLink]='route.path'>
+        <md-icon>{{ route.icon }}</md-icon>&nbsp;{{ route.name }}
+    </a>
+  </div>
   <button md-button (click)='auth.login()' *ngIf='!auth.isAuthenticated()'>Login</button>
   <div *ngIf='auth.isAuthenticated()'>
-    <small>{{ auth.getUserInfo()?.name }}</small>
+    <small>{{ auth.user?.name }}</small>
     <button md-button (click)='auth.logout()'>Logout</button>
   </div>
 </div>

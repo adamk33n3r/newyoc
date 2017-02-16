@@ -6,6 +6,7 @@ interface INavRoute {
     name: string;
     path: string;
     icon: string;
+    auth?: boolean;
 }
 
 @Component({
@@ -37,6 +38,7 @@ export class AppNavbarComponent {
             name: 'Settings',
             path: '/settings',
             icon: 'settings',
+            auth: true,
         },
     ];
 

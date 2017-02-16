@@ -1,26 +1,26 @@
 export default {
     playlist: [
         {
-        image: '/assets/images/yoc.png',
-        title: 'TEST',
-        description: 'Nothing to see here',
-        file: 'rtmp://eon.adam-keenan.net/live/test',
+            image: '/assets/images/yoc.png',
+            title: 'Default',
+            description: 'Stream stuff, mane',
+            file: 'rtmp://eon.adam-keenan.net/live/default',
         },
         {
-        title: 'Default',
-        description: 'Stream stuff, mane',
-        file: 'rtmp://eon.adam-keenan.net/live/default',
+            title: 'TEST',
+            description: 'Nothing to see here',
+            file: 'rtmp://eon.adam-keenan.net/live/test',
         },
         {
-        title: 'Movienight',
-        description: 'We watch movies together',
-        file: 'rtmp://eon.adam-keenan.net/live/movienight',
+            title: 'Movienight',
+            description: 'We watch movies together',
+            file: 'rtmp://eon.adam-keenan.net/live/movienight',
         },
         {
-        title: 'Mike',
-        description: 'Mike plays gams',
-        file: 'rtmp://eon.adam-keenan.net/live/mike',
-        }
+            title: 'Mike',
+            description: 'Mike plays gams',
+            file: 'rtmp://eon.adam-keenan.net/live/mike',
+        },
     ],
     width: '100%',
     aspectratio: '16:9',
@@ -33,5 +33,5 @@ export default {
     logo: {
         file: '/assets/images/yoc-100px-50a.png',
         hide: true,
-    }
-}
+    },
+};

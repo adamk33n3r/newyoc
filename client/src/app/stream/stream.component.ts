@@ -3,6 +3,7 @@ import { Component, OnInit, Inject, ViewChild } from '@angular/core';
 import { WindowProvider } from '../window.provider';
 
 import { Socket, ChatMessage } from '../services/socket.service';
+import { Auth } from '../services/auth.service';
 
 import jwplayerSettings from './jwplayer.settings';
 
@@ -37,19 +38,28 @@ export class StreamComponent implements OnInit {
     private unreadMessages = 0;
     private currentPlaylist: string;
     private settings = jwplayerSettings;
+    private user: string;
 
     private hiddenAttr: string;
     private visChangeEvent: string;
     private title = this.window.document.title;
 
-    constructor(@Inject(WindowProvider) private window: Window, private socket: Socket) {}
+    constructor(
+        @Inject(WindowProvider)
+        private window: Window,
+        private socket: Socket,
+        private auth: Auth,
+    ) {}
 
     public ngOnInit() {
+        this.setupUser(this.auth.user);
+        this.auth.userInfo.subscribe((user) => {
+            this.setupUser(user);
+        });
     }
 
     public onPlayerReady() {
         this.socket.on(Stream.ViewerCount, (count) => {
-            // console.log('ViewerCount', count);
             this.viewerCount = count;
         });
         this.socket.on(Chat.Connect, (user) => {
@@ -137,7 +147,6 @@ export class StreamComponent implements OnInit {
                 this.updateTitle();
             }
         });
-        this.socket.emit(Chat.Connect, 'adam');
     }
 
     public onPlaylistItem(event: PlaylistItem) {
@@ -147,8 +156,11 @@ export class StreamComponent implements OnInit {
         }
         const now = Date.now();
         const withinPastDay = this.messages.filter((message) => {
-            return (now - message.timestamp) < (24 * 60 * 60 * 1000);
+            const dayInMilliseconds = (24 * 60 * 60 * 1000);
+            const diff = now - message.timestamp;
+            return diff < dayInMilliseconds;
         });
+        this.messages = withinPastDay;
     }
 
     private sendChat($event: KeyboardEvent) {
@@ -156,7 +168,7 @@ export class StreamComponent implements OnInit {
             return;
         }
         this.socket.emit('chat:message', {
-            user: 'Adam',
+            user: this.user,
             text: this.text,
             playlist: this.currentPlaylist,
             timestamp: Date.now(),
@@ -186,6 +198,20 @@ export class StreamComponent implements OnInit {
         const messages = this.messages;
         messages.unshift(message);
         this.messages = messages;
+    }
+
+    private generateGuestName() {
+        const guestNumber = Math.floor(Math.random() * 10000);
+        this.user = `Guest#${guestNumber}`;
+    }
+
+    private setupUser(user: { name: string }) {
+        if (user) {
+            this.user = user.name;
+            this.socket.emit(Chat.Connect, this.user);
+        } else {
+            this.generateGuestName();
+        }
     }
 
     /*
