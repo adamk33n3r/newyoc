@@ -18,7 +18,7 @@
   </div>
   <button md-button (click)='auth.login()' *ngIf='!auth.isAuthenticated()'>Login</button>
   <div *ngIf='auth.isAuthenticated()'>
-    <small>{{ auth.user?.name }}</small>
+    <small>{{ getName() }}</small>
     <button md-button (click)='auth.logout()'>Logout</button>
   </div>
 </div>

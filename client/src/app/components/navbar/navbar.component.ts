@@ -43,4 +43,8 @@ export class AppNavbarComponent {
     ];
 
     constructor(public auth: Auth) {}
+
+    public getName() {
+        return this.auth.user_metadata.name || this.auth.user.nickname;
+    }
 }
