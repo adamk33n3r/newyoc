@@ -12,11 +12,20 @@ md-card
   margin: 20px 0
 
 .container
-  width: 1000px
   margin: 0 auto
+  padding: 0 15px
 
-.uncontain
-  margin: 0 calc(-50vw + 500px)
+@media(min-width: 768px)
+  .container
+    width: 750px
+
+@media(min-width: 992px)
+  .container
+    width: 970px
+
+@media(min-width: 1200px)
+  .container
+    width: 1170px
 
 a
   color: inherit

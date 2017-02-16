@@ -3,7 +3,7 @@
     <img class='logo' src='/assets/images/yoc.png'/>
   </a>
   <a class='brand' routerLink='/'>
-    <div class='title'>Ye Olde Chums</div>
+    <div class='title'>YOC</div>
   </a>
   <div *ngFor='let route of routes'>
     <a *ngIf='!route.auth || auth.isAuthenticated()' md-button [routerLink]='route.path'>

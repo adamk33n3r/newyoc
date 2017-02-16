@@ -1,8 +1,11 @@
-<div class='container'>
-    <span class='title'>Ye Olde Chums</span>
-    <img class='main-logo' src='/assets/images/yoc-transparent.png' />
+<div class='wrapper'>
+    <md-card class='intro'>
+        <img class='main-logo' src='/assets/images/yoc-transparent.png' />
+        <span class='title'>Ye Olde Chums</span>
+        <span>The coolest group o' guys you can find!</span>
+    </md-card>
     <h2>Join Slack!</h2>
-    <md-input-container style='width: 500px'>
+    <md-input-container class='slack-invite'>
         <input mdInput placeholder='Email' type='text' [(ngModel)]='email'/>
         <button md-button color='primary' md-suffix (click)='sendInvite(email); email = ""'>Send Invite</button>
     </md-input-container>
