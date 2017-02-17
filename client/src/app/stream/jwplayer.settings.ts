@@ -26,7 +26,7 @@ export default {
     aspectratio: '16:9',
     hlshtml: true,
     primary: 'html5',
-    autostart: window.location.hostname === 'yoc.adam-keenan.com',
+    autostart: window.location.hostname === 'yoc.adam-keenan.com' || true,
     skin: {
         name: 'glow',
     },
