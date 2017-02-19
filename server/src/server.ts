@@ -59,7 +59,7 @@ export class Server {
         new Socket(socket);
 
         // Add static paths
-        this.app.use(express.static(path.join(__dirname, 'public')));
+        this.app.use(express.static('./src/public'));
 
         // Mount logger
         this.app.use(logger('dev'));

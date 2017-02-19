@@ -1,0 +1,33 @@
+<html>
+<head>
+    <script src='assets/jwplayer/jwplayer.js'></script>
+    <script>
+        jwplayer.key = "5YkESdD6u5l8luORkA5ZUOdzUGDlzokaiidsaw==";
+    </script>
+</head>
+<body style='margin: 0';>
+    <div id='player'></div>
+    <script>
+        var player = jwplayer('player');
+        player.setup({
+            title:'Default',
+            file:'rtmp://eon.adam-keenan.net/live/default',
+            width: '100%',
+            aspectratio: '16:9',
+            autostart: false
+        });
+        var self = window.parent.document.getElementById(window.name);
+        function resize() {
+            var playerEle = document.getElementById('player');
+            self.width = self.parentElement.clientWidth;
+            self.height = playerEle.scrollHeight;
+        }
+        player.on('ready', function() {
+            resize();
+        });
+        window.parent.addEventListener('resize', function() {
+            resize();
+        });
+    </script>
+</body>
+</html>

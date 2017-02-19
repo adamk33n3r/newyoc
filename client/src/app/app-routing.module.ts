@@ -14,22 +14,22 @@ const routes: Routes = [
       },
       {
         path: 'teamspeak',
-        loadChildren: './teamspeak/teamspeak.module#TeamSpeakModule'
+        loadChildren: './teamspeak/teamspeak.module#TeamSpeakModule',
       },
       {
         path: 'stream',
-        loadChildren: './stream/stream.module#StreamModule'
+        loadChildren: './stream/stream.module#StreamModule',
       },
       {
         path: 'settings',
-        loadChildren: './settings/settings.module#SettingsModule'
+        loadChildren: './settings/settings.module#SettingsModule',
       },
       {
         path: 'stardew',
-        loadChildren: './stardew/stardew.module#StardewModule'
+        loadChildren: './stardew/stardew.module#StardewModule',
       },
-    ]
-  }
+    ],
+  },
 ];
 
 @NgModule({
@@ -38,6 +38,6 @@ const routes: Routes = [
     MaterialModule,
   ],
   exports: [ RouterModule ],
-  providers: []
+  providers: [],
 })
 export class AppRoutingModule { }

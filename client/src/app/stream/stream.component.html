@@ -1,6 +1,8 @@
 <div class='stream'>
     <div class='player'>
-        <jwplayer [settings]='settings' (ready)='onPlayerReady()' (playlistItem)='onPlaylistItem($event)'></jwplayer>
+        <!--<jwplayer [settings]='settings' (ready)='onPlayerReady()' (playlistItem)='onPlaylistItem($event)'></jwplayer>-->
+        <iframe #iframe id='player-iframe' name='player-iframe' src='/stream.html'></iframe>
+        <div id='playerdiv'></div>
         <div class='status'>
             <md-icon>person</md-icon>
             <span>{{ viewerCount }}</span>

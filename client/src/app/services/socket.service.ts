@@ -28,7 +28,11 @@ export class Socket {
     private socket: SocketIOClient.Socket;
 
     constructor() {
+        console.log(environment.socketURI);
         this.socket = socketio(environment.socketURI);
+        this.socket.on('chat:message', () => {
+            console.log('MESSAGES');
+        });
     }
 
     // Chat signatures

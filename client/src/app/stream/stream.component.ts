@@ -1,4 +1,4 @@
-import { Component, OnInit, Inject, ViewChild } from '@angular/core';
+import { Component, OnInit, Inject, ViewChild, ElementRef } from '@angular/core';
 
 import { WindowProvider } from '../window.provider';
 
@@ -44,6 +44,9 @@ export class StreamComponent implements OnInit {
     private visChangeEvent: string;
     private title = this.window.document.title;
 
+    @ViewChild('iframe')
+    private iframe: ElementRef;
+
     constructor(
         @Inject(Window)
         private window: Window,
@@ -56,13 +59,16 @@ export class StreamComponent implements OnInit {
         this.auth.userInfo.subscribe((user) => {
             this.setupUser(user);
         });
+        this.resizeIFrame();
     }
 
     public onPlayerReady() {
+        console.log('onPlayerReady');
         this.socket.on(Stream.ViewerCount, (count) => {
             this.viewerCount = count;
         });
         this.socket.on(Chat.Connect, (user) => {
+            console.log('chat connect', user);
             this.addMessage({
                 user: 'YOC',
                 text: `${user} connected!`,
@@ -78,7 +84,9 @@ export class StreamComponent implements OnInit {
                 timestamp: Date.now(),
             });
         });
+        console.log(Chat.Message);
         this.socket.on(Chat.Message, (message) => {
+            console.log('chat message', message);
             if (message.playlist !== this.currentPlaylist) {
                 return;
             }
@@ -163,7 +171,7 @@ export class StreamComponent implements OnInit {
         this.messages = withinPastDay;
     }
 
-    private sendChat($event: KeyboardEvent) {
+    public sendChat($event: KeyboardEvent) {
         if ($event.keyCode !== 13 || this.text === '') {
             return;
         }
@@ -214,50 +222,9 @@ export class StreamComponent implements OnInit {
         }
     }
 
-    /*
-      $scope.$storage = $localStorage.$default
-        playlist: {}
-
-      # Setup guest name
-      guestNumber = Math.floor(Math.random() * 10000)
-      user = 'Guest#' + guestNumber
-
-      # Switch to other chat channel when switching playlist
-      $scope.$on 'playlist', (e, playlistName) ->
-        $scope.$apply () ->
-          currentPlaylist = playlistName
-          unless $scope.$storage[currentPlaylist]?
-            $scope.$storage[currentPlaylist] = []
-
-          # Get rid of messages that are over a day old
-          now = Date.now()
-          $scope.$storage[currentPlaylist] = $scope.$storage[currentPlaylist].filter (message) ->
-            return (now - message.timestamp) < (24 * 60 * 60 * 1000)
-
-
-      $scope.socket.on 'chat:connect', (user) ->
-        console.log user, 'connected'
-        $scope.getMessages().unshift
-          user: 'YOC'
-          text: "#{user} connected"
-          timestamp: Date.now()
-
-      $scope.socket.on 'chat:disconnect', (user) ->
-        console.log user, 'disconnected'
-        if user?
-          $scope.getMessages().unshift
-            user: 'YOC'
-            text: "#{user} disconnected"
-            timestamp: Date.now()
-
-      unregister = $scope.$watch 'user', =>
-        console.log 'user updated'
-        if $scope.user?
-          user = $scope.user?.name
-          $scope.socket.emit 'chat:connect', user
-          unregister()
-
-      $scope.getMessages = () ->
-        return $scope.$storage[currentPlaylist]
-     */
+    private resizeIFrame() {
+        const iframe = this.iframe.nativeElement as HTMLIFrameElement;
+        iframe.width = `${iframe.contentDocument.body.scrollWidth}px`;
+        iframe.height = `${iframe.contentDocument.body.scrollHeight}px`;
+    }
 }
