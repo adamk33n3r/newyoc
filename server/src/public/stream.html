@@ -10,16 +10,38 @@
     <script>
         var player = jwplayer('player');
         player.setup({
-            playlist: [{
-                title:'Default',
-                file:'rtmp://eon.adam-keenan.net/live/default',
-            }, {
-                title:'Mike',
-                file:'rtmp://eon.adam-keenan.net/live/mike',
-            }],
+            playlist: [
+                {
+                    title:'Default',
+                    file:'rtmp://eon.adam-keenan.net/live/default',
+                },
+                {
+                    title:'Mike',
+                    file:'rtmp://eon.adam-keenan.net/live/mike',
+                },
+                {
+                    title: 'Movienight',
+                    description: 'We watch movies together',
+                    file: 'rtmp://eon.adam-keenan.net/live/movienight',
+                },
+                {
+                    title: 'Mike',
+                    description: 'Mike plays gams',
+                    file: 'rtmp://eon.adam-keenan.net/live/mike',
+                },
+            ],
             width: '100%',
             aspectratio: '16:9',
-            autostart: false
+            hlshtml: true,
+            primary: 'html5',
+            autostart: false,
+            skin: {
+                name: 'glow',
+            },
+            logo: {
+                file: '/assets/images/yoc-100px-50a.png',
+                hide: true,
+            },
         });
         var self = window.parent.document.getElementById(window.name);
         function resize() {
