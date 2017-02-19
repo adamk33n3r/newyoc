@@ -59,14 +59,42 @@ export class StreamComponent implements OnInit {
         this.auth.userInfo.subscribe((user) => {
             this.setupUser(user);
         });
-        this.resizeIFrame();
+        this.socket.on(Stream.ViewerCount, (count) => {
+            this.viewerCount = count;
+        });
+
+        // Ask for notification permissions
+        if (Notification.permission !== 'denied' || Notification.permission !== 'granted') {
+            Notification.requestPermission();
+        }
+
+        // Figure out which variable and event to use
+        // for knowing if the user is tabbed in or not
+        if (this.window.document.hidden !== undefined) {
+            this.hiddenAttr = 'hidden';
+            this.visChangeEvent = 'visibilitychange';
+        } else if ((<any>this.window.document).msHidden !== undefined) {
+            this.hiddenAttr = 'msHidden';
+            this.visChangeEvent = 'msvisibilitychange';
+        } else if ((<any>this.window.document).webkitHidden !== undefined) {
+            this.hiddenAttr = 'webkitHidden';
+            this.visChangeEvent = 'webkitvisibilitychange';
+        }
+
+        // Clear unread messages and remove from title if tab is switched to
+        this.window.document.addEventListener(this.visChangeEvent, () => {
+            if (!this.isTabbedAway()) {
+                this.unreadMessages = 0;
+                this.window.clearInterval(this.intervalID);
+                this.intervalID = 0;
+                this.updateTitle();
+            }
+        });
+        this.onPlayerReady();
     }
 
     public onPlayerReady() {
         console.log('onPlayerReady');
-        this.socket.on(Stream.ViewerCount, (count) => {
-            this.viewerCount = count;
-        });
         this.socket.on(Chat.Connect, (user) => {
             console.log('chat connect', user);
             this.addMessage({
@@ -125,34 +153,6 @@ export class StreamComponent implements OnInit {
                     this.window.focus();
                 };
                 this.window.setTimeout(notification.close.bind(notification), 3000);
-            }
-        });
-
-        // Ask for notification permissions
-        if (Notification.permission !== 'denied' || Notification.permission !== 'granted') {
-            Notification.requestPermission();
-        }
-
-        // Figure out which variable and event to use
-        // for knowing if the user is tabbed in or not
-        if (this.window.document.hidden !== undefined) {
-            this.hiddenAttr = 'hidden';
-            this.visChangeEvent = 'visibilitychange';
-        } else if ((<any>this.window.document).msHidden !== undefined) {
-            this.hiddenAttr = 'msHidden';
-            this.visChangeEvent = 'msvisibilitychange';
-        } else if ((<any>this.window.document).webkitHidden !== undefined) {
-            this.hiddenAttr = 'webkitHidden';
-            this.visChangeEvent = 'webkitvisibilitychange';
-        }
-
-        // Clear unread messages and remove from title if tab is switched to
-        this.window.document.addEventListener(this.visChangeEvent, () => {
-            if (!this.isTabbedAway()) {
-                this.unreadMessages = 0;
-                this.window.clearInterval(this.intervalID);
-                this.intervalID = 0;
-                this.updateTitle();
             }
         });
     }
@@ -220,11 +220,5 @@ export class StreamComponent implements OnInit {
         } else {
             this.generateGuestName();
         }
-    }
-
-    private resizeIFrame() {
-        const iframe = this.iframe.nativeElement as HTMLIFrameElement;
-        iframe.width = `${iframe.contentDocument.body.scrollWidth}px`;
-        iframe.height = `${iframe.contentDocument.body.scrollHeight}px`;
     }
 }
