@@ -10,8 +10,13 @@
     <script>
         var player = jwplayer('player');
         player.setup({
-            title:'Default',
-            file:'rtmp://eon.adam-keenan.net/live/default',
+            playlist: [{
+                title:'Default',
+                file:'rtmp://eon.adam-keenan.net/live/default',
+            }, {
+                title:'Mike',
+                file:'rtmp://eon.adam-keenan.net/live/mike',
+            }],
             width: '100%',
             aspectratio: '16:9',
             autostart: false
