@@ -2,7 +2,6 @@ import {
     Component,
     ViewChild,
     AfterViewInit,
-    OnDestroy,
     Input,
     Output,
     EventEmitter,
@@ -27,7 +26,7 @@ import { PlaylistItem } from './jwplayer.types';
         }
     `],
 })
-export class JWPlayerComponent implements AfterViewInit, OnDestroy {
+export class JWPlayerComponent implements AfterViewInit {
     @Input()
     private settings: any;
 
@@ -118,9 +117,5 @@ export class JWPlayerComponent implements AfterViewInit, OnDestroy {
             // Set style of body
             subDoc.body.style.cssText = 'margin: 0; overflow: hidden;';
         };
-    }
-
-    public ngOnDestroy() {
-        this.player.remove();
     }
 }
