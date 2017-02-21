@@ -19,9 +19,9 @@ declare var Notification: any;
     styleUrls: ['./stream.component.sass'],
 })
 export class StreamComponent implements OnInit {
-    // TODO: move to chat component
     public viewerCount = 0;
     public text: string;
+    public currentPlaylist: string;
 
     // TODO: make a localstorage service (or look for one online?)
     public get messages(): ChatMessage[] {
@@ -36,7 +36,6 @@ export class StreamComponent implements OnInit {
 
     private intervalID = 0;
     private unreadMessages = 0;
-    private currentPlaylist: string;
     private settings = jwplayerSettings;
     private user: string;
 
@@ -55,9 +54,10 @@ export class StreamComponent implements OnInit {
     ) {}
 
     public ngOnInit() {
-        this.setupUser(this.auth.user);
+        this.filterOutOldMessages();
+        this.setupUser();
         this.auth.userInfo.subscribe((user) => {
-            this.setupUser(user);
+            this.setupUser();
         });
         this.socket.on(Stream.ViewerCount, (count) => {
             this.viewerCount = count;
@@ -90,7 +90,6 @@ export class StreamComponent implements OnInit {
                 this.updateTitle();
             }
         });
-        this.onPlayerReady();
     }
 
     public onPlayerReady() {
@@ -161,14 +160,9 @@ export class StreamComponent implements OnInit {
         this.currentPlaylist = event.item.title;
         if (!this.messages) {
             this.messages = [];
+        } else {
+            this.filterOutOldMessages();
         }
-        const now = Date.now();
-        const withinPastDay = this.messages.filter((message) => {
-            const dayInMilliseconds = (24 * 60 * 60 * 1000);
-            const diff = now - message.timestamp;
-            return diff < dayInMilliseconds;
-        });
-        this.messages = withinPastDay;
     }
 
     public sendChat($event: KeyboardEvent) {
@@ -213,12 +207,22 @@ export class StreamComponent implements OnInit {
         this.user = `Guest#${guestNumber}`;
     }
 
-    private setupUser(user: { name: string }) {
-        if (user) {
-            this.user = user.name;
+    private setupUser() {
+        if (this.auth.isAuthenticated()) {
+            this.user = this.auth.name;
             this.socket.emit(Chat.Connect, this.user);
         } else {
             this.generateGuestName();
         }
+    }
+
+    private filterOutOldMessages() {
+        const now = Date.now();
+        const withinPastDay = this.messages.filter((message) => {
+            const dayInMilliseconds = (24 * 60 * 60 * 1000);
+            const diff = now - message.timestamp;
+            return diff < dayInMilliseconds;
+        });
+        this.messages = withinPastDay;
     }
 }

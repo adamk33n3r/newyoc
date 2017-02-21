@@ -1,8 +1,6 @@
 <div class='stream'>
     <div class='player'>
-        <!--<jwplayer [settings]='settings' (ready)='onPlayerReady()' (playlistItem)='onPlaylistItem($event)'></jwplayer>-->
-        <iframe #iframe id='player-iframe' name='player-iframe' src='/stream.html' allowfullscreen="allowfullscreen"></iframe>
-        <div id='playerdiv'></div>
+        <jwplayer [settings]='settings' (ready)='onPlayerReady()' (playlistItem)='onPlaylistItem($event)'></jwplayer>
         <div class='status'>
             <md-icon>person</md-icon>
             <span>{{ viewerCount }}</span>
@@ -10,7 +8,12 @@
     </div>
     <div class='chat'>
         <md-input-container class='w100p'>
-            <textarea mdInput placeholder='Send a message' [(ngModel)]='text' (keypress)='sendChat($event)'></textarea>
+            <textarea mdInput
+                placeholder='Send a message'
+                [(ngModel)]='text'
+                (keypress)='sendChat($event)'
+                [disabled]='!currentPlaylist'
+            ></textarea>
         </md-input-container>
         <md-list dense>
             <div class='message' *ngFor='let message of messages'>

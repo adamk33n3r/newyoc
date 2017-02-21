@@ -25,7 +25,7 @@ export default {
     width: '100%',
     aspectratio: '16:9',
     hlshtml: true,
-    primary: 'html5',
+    primary: 'flash',
     autostart: window.location.hostname === 'yoc.adam-keenan.com' && false,
     skin: {
         name: 'glow',

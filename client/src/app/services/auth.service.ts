@@ -23,6 +23,9 @@ export class Auth {
     public readonly authorized = new EventEmitter<any>();
     public readonly userInfo = new EventEmitter<{ name: string }>();
     public get user() { return this.profile; }
+    public get name() {
+        return this.user ? (this.user.user_metadata.name || this.user.nickname) : '';
+    }
 
     private lock = new Auth0Lock(
         'KrdM9NH9w7S47zY0Fxygg5h8ij1JzeK7',
@@ -58,6 +61,9 @@ export class Auth {
     private accessToken: string;
 
     constructor(private http: Http, private router: Router) {
+        if (!this.isAuthenticated()) {
+            localStorage.removeItem('profile');
+        }
         this.profile = this.getUserInfo();
         if (this.profile) {
             this.userInfo.emit(this.profile);
