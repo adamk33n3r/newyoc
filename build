@@ -10,6 +10,7 @@ build_server() {
   pushd server
   tsc
   popd
+  restart yoc
 }
 
 build_client
