@@ -1,5 +1,6 @@
 import teamspeak from './teamspeak';
 import slack from './slack';
+import stream from './stream';
 
 import { Router } from 'src/decorators/routing';
 
@@ -8,6 +9,7 @@ import { Router } from 'src/decorators/routing';
     controllers: [
         teamspeak,
         slack,
+        stream,
     ],
 })
 class ServicesRouter {}

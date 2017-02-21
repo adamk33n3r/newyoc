@@ -1,4 +1,4 @@
-import { Request, Response, Router } from 'express';
+import { Request, Response } from 'express';
 
 import { Controller, GET, POST } from 'src/decorators/routing';
 import { CheckToken, Required } from 'src/decorators/util';
@@ -46,8 +46,7 @@ class SlackController {
             text: req.body.text || 'No text provided',
         })
         .then((response) => {
-            const body = JSON.parse(response.body);
-            if (body.ok) {
+            if (response.body === 'ok') {
                 res.json({ success: true, body: response.body });
             } else {
                 console.error(response);

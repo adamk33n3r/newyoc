@@ -1,4 +1,4 @@
-import { Request, Response, Router } from 'express';
+import { Request, Response } from 'express';
 
 import { Controller, GET, POST } from 'src/decorators/routing';
 import { TeamSpeak } from 'src/services/teamspeak';
