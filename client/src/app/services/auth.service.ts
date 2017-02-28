@@ -44,12 +44,20 @@ export class Auth {
             },
             additionalSignUpFields: [
                 {
+                    name: 'First Name',
+                    placeholder: 'John',
+                },
+                {
+                    name: 'Last Name',
+                    placeholder: 'Smith',
+                },
+                {
                     name: 'birthday',
-                    placeholder: 'Enter your birthday: 12/31/1999',
+                    placeholder: 'Enter your birthday: 12/31',
                     validator: (birthday) => {
                         return {
-                            valid: !!birthday.match(/\d{1,2}\/\d{1,2}\/\d{4}/),
-                            hint: 'Format is dd/mm/yyyy',
+                            valid: !!birthday.match(/\d{1,2}\/\d{1,2}/),
+                            hint: 'Format is dd/mm',
                         };
                     },
                 },
