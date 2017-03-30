@@ -9,6 +9,7 @@ import * as mongoose from 'mongoose';
 import 'reflect-metadata';
 
 import { Socket } from './services/socket';
+import { Jobs } from './jobs';
 
 // routes
 import AppRouter from './api/router';
@@ -97,6 +98,9 @@ export class Server {
         this.app.use(errorHandler());
 
         this.routes();
+
+        // Jobs
+        Jobs.init();
     }
 
     /**
