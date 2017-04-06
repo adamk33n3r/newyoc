@@ -5,7 +5,7 @@ const ManagementClient = require('auth0').ManagementClient;
 
 export = function(scheduler: any) {
     const slack = new Slack();
-    scheduler.scheduleJob('0 0 13 * * *', () => {
+    scheduler.scheduleJob('0 0 9 * * *', () => {
         console.log('birthday job running...');
         request.post({
             url: 'https://adamk33n3r.auth0.com/oauth/token',
