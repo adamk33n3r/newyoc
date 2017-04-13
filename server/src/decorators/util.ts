@@ -10,7 +10,7 @@ export function CheckToken(token: string) {
         // Must not bind this
         // tslint:disable-next-line
         descriptor.value = function (req: Request, res: Response) {
-            if (req.body.token !== token) {
+            if (req.headers['token'] !== token && req.body.token !== token) {
                 res.status(404).send();
             } else {
                 origFn.call(this, req, res);
