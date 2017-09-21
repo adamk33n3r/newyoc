@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Http } from '@angular/http';
+import { HttpClient } from '@angular/common/http';
 import { DomSanitizer } from '@angular/platform-browser';
 
 @Component({
@@ -11,7 +11,7 @@ export class TeamSpeakComponent implements OnInit {
     public channels: any[] = [];
     private URI = 'ts3server://ts.adam-keenan.com';
 
-    constructor(private sanitizer: DomSanitizer, private http: Http) {
+    constructor(private sanitizer: DomSanitizer, private http: HttpClient) {
         this.refresh();
     }
 
@@ -20,8 +20,8 @@ export class TeamSpeakComponent implements OnInit {
 
     public refresh() {
         this.http.get('/api/services/teamspeak')
-        .subscribe((response) => {
-            const data = response.json().data;
+        .subscribe((response: any) => {
+            const data = response.data;
             this.channels = this.buildData([], data.channels, data.online);
         });
     }

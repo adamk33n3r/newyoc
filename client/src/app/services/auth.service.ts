@@ -1,5 +1,6 @@
 import { Injectable, EventEmitter } from '@angular/core';
-import { Http, Headers } from '@angular/http';
+import { HttpClient } from '@angular/common/http';
+import { Headers } from '@angular/http';
 import { Router } from '@angular/router';
 
 import { tokenNotExpired } from 'angular2-jwt';
@@ -44,11 +45,11 @@ export class Auth {
             },
             additionalSignUpFields: [
                 {
-                    name: 'First Name',
+                    name: 'first_name',
                     placeholder: 'John',
                 },
                 {
-                    name: 'Last Name',
+                    name: 'last_name',
                     placeholder: 'Smith',
                 },
                 {
@@ -68,7 +69,7 @@ export class Auth {
     private profile: any;
     private accessToken: string;
 
-    constructor(private http: Http, private router: Router) {
+    constructor(private http: HttpClient, private router: Router) {
         if (!this.isAuthenticated()) {
             localStorage.removeItem('profile');
         }

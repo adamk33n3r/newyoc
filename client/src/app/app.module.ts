@@ -3,8 +3,9 @@ import 'hammerjs';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { HttpModule } from '@angular/http';
-import { MaterialModule } from '@angular/material';
+import { HttpClientModule } from '@angular/common/http';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { MdIconModule, MdButtonModule, MdInputModule, MdCardModule } from '@angular/material';
 import { AuthHttp } from 'angular2-jwt';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -25,9 +26,13 @@ import { Socket } from './services/socket.service';
     ],
     imports: [
         BrowserModule,
+        BrowserAnimationsModule,
         FormsModule,
-        HttpModule,
-        MaterialModule,
+        HttpClientModule,
+        MdIconModule,
+        MdButtonModule,
+        MdInputModule,
+        MdCardModule,
         AppRoutingModule,
     ],
     providers: [

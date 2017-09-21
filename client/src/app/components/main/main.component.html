@@ -5,10 +5,10 @@
         <span>The coolest group o' guys you can find!</span>
     </md-card>
     <h2>Join Slack!</h2>
-    <md-input-container class='slack-invite'>
+    <md-form-field class='slack-invite'>
         <input mdInput placeholder='Email' type='text' [(ngModel)]='email'/>
-        <button md-button color='primary' md-suffix (click)='sendInvite(email); email = ""'>Send Invite</button>
-    </md-input-container>
+        <button mdSuffix md-button color='primary' (click)='sendInvite(email); email = ""'>Send Invite</button>
+    </md-form-field>
     <p>Hey! Do you want to be <strong>cool</strong>?</p>
     <p>Here are pictures that you can use to brandish your affiliation on all of the online communities.</p>
     <div class='images'>

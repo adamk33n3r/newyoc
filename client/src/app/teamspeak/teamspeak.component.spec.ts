@@ -3,21 +3,21 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { DebugElement } from '@angular/core';
 
-import { TeamspeakComponent } from './teamspeak.component';
+import { TeamSpeakComponent } from './teamspeak.component';
 
-describe('TeamspeakComponent', () => {
-  let component: TeamspeakComponent;
-  let fixture: ComponentFixture<TeamspeakComponent>;
+describe('TeamSpeakComponent', () => {
+  let component: TeamSpeakComponent;
+  let fixture: ComponentFixture<TeamSpeakComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ TeamspeakComponent ]
+      declarations: [ TeamSpeakComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(TeamspeakComponent);
+    fixture = TestBed.createComponent(TeamSpeakComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

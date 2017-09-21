@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { Http } from '@angular/http';
+import { HttpClient } from '@angular/common/http';
 import { MdSnackBar } from '@angular/material';
 
 @Component({
@@ -22,16 +22,15 @@ export class MainComponent {
         },
     ];
 
-    constructor(private http: Http, private snack: MdSnackBar) {}
+    constructor(private http: HttpClient, private snack: MdSnackBar) {}
 
     public sendInvite(email: string) {
         if (!email) {
             return;
         }
         this.http.post('/api/services/slack/send-invite', { email })
-        .subscribe((response) => {
-            const json = response.json();
-            if (json.success) {
+        .subscribe((response: any) => {
+            if (response.success) {
                 this.snack.open(`Invite sent to ${email}!`, 'Dismiss', {
                     duration: 5000,
                 });
