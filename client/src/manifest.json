@@ -1,5 +1,6 @@
 {
  "name": "Ye Olde Chums",
+ "short_name": "YOC",
  "display": "standalone",
  "start_url": "/",
  "background_color": "#8bc34a",
