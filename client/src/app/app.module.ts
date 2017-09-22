@@ -3,8 +3,18 @@ import 'hammerjs';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { HttpModule } from '@angular/http';
-import { MaterialModule } from '@angular/material';
+import { HttpClientModule } from '@angular/common/http';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import {
+    MdIconModule,
+    MdButtonModule,
+    MdInputModule,
+    MdCardModule,
+    MdGridListModule,
+    MdListModule,
+    MdExpansionModule,
+    MdProgressSpinnerModule,
+} from '@angular/material';
 import { AuthHttp } from 'angular2-jwt';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -12,6 +22,7 @@ import { AppComponent } from './app.component';
 import { MainComponent } from './components/main/main.component';
 import { AppNavbarComponent } from './components/navbar/navbar.component';
 import { AppContent } from './components/content.component';
+import { MinerComponent } from './components/miner/miner.component';
 
 import { Auth } from './services/auth.service';
 import { Socket } from './services/socket.service';
@@ -22,12 +33,21 @@ import { Socket } from './services/socket.service';
         AppNavbarComponent,
         AppContent,
         MainComponent,
+        MinerComponent,
     ],
     imports: [
         BrowserModule,
+        BrowserAnimationsModule,
         FormsModule,
-        HttpModule,
-        MaterialModule,
+        HttpClientModule,
+        MdIconModule,
+        MdButtonModule,
+        MdInputModule,
+        MdCardModule,
+        MdGridListModule,
+        MdListModule,
+        MdExpansionModule,
+        MdProgressSpinnerModule,
         AppRoutingModule,
     ],
     providers: [

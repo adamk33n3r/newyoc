@@ -16,6 +16,7 @@ export class Player {
     public facialHair: number = undefined;
     public questLog: any[];
     public items: any[];
+    [key: string]: any;
 }
 
 export interface IFarm {

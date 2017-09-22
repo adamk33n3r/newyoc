@@ -8,6 +8,9 @@ import config from 'src/config';
 class TeamSpeakController {
     @GET('/')
     public index(req: Request, res: Response) {
+        if (!config.teamspeak.username || !config.teamspeak.password) {
+            return res.status(500).send('No username or password');
+        }
         const ts = this.initTeamSpeak(res);
         ts.login(config.teamspeak.username, config.teamspeak.password)
         .then(() => {
@@ -30,7 +33,6 @@ class TeamSpeakController {
             });
         })
         .catch((error) => {
-            console.error(error);
             res.status(500).send(error);
         });
     }

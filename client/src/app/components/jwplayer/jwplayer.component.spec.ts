@@ -3,21 +3,21 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { DebugElement } from '@angular/core';
 
-import { JwplayerComponent } from './jwplayer.component';
+import { JWPlayerComponent } from './jwplayer.component';
 
-describe('JwplayerComponent', () => {
-  let component: JwplayerComponent;
-  let fixture: ComponentFixture<JwplayerComponent>;
+describe('JWPlayerComponent', () => {
+  let component: JWPlayerComponent;
+  let fixture: ComponentFixture<JWPlayerComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ JwplayerComponent ]
+      declarations: [ JWPlayerComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(JwplayerComponent);
+    fixture = TestBed.createComponent(JWPlayerComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

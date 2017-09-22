@@ -27,7 +27,7 @@ export class TeamSpeak {
         });
     }
 
-    public getClients(): ReturnPromise {
+    public getClients(): Promise<any[]> {
         return this.client.send('clientdblist', {}, [])
             .then(this.handleResponse)
             .then(this.stripQueryClients);

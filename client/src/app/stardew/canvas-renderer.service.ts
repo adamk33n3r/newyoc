@@ -65,7 +65,7 @@ export class CanvasRenderer {
         );
     }
 
-    private getMousePosition(event): Vector2 {
+    private getMousePosition(event: MouseEvent): Vector2 {
         const rect = this.canvas.getBoundingClientRect();
         return new Vector2(
             Math.floor(event.clientX - rect.left),

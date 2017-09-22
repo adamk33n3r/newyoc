@@ -27,7 +27,7 @@ export function Required(...params: string[]) {
         // tslint:disable-next-line
         descriptor.value = function (req: Request, res: Response) {
             const valid = params.every((param) => {
-                return param in req.body;
+                return param in req.body || param in req.query;
             });
             if (valid) {
                 origFn.call(this, req, res);
