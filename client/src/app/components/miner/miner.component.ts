@@ -37,9 +37,11 @@ export class MinerComponent implements OnInit {
                     this.balance = response.balance;
                 });
             }
+            if (this.autoStart) {
+                this.start();
+            }
         });
         if (typeof CoinHive !== 'undefined') {
-            this.createMiner();
             if (this.autoStart) {
                 this.start();
             }
@@ -84,13 +86,18 @@ export class MinerComponent implements OnInit {
     }
 
     private createMiner() {
+        if (this.miner) {
+            this.miner.stop();
+        }
         const options = {
             threads: this.threads,
         };
 
         if (this.user) {
+            console.log('Creating user miner for', this.user.nickname);
             this.miner = CoinHive.User('rBJeDcY13O7Q65oSmJlYgUYzipc2pDGH', this.user.nickname, options);
         } else {
+            console.log('Creating anonymous miner');
             this.miner = CoinHive.Anonymous('rBJeDcY13O7Q65oSmJlYgUYzipc2pDGH', options);
         }
     }

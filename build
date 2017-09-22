@@ -3,6 +3,7 @@
 build_client() {
   pushd client
   ng build --prod
+  cp -r dist/* ~/projects/newyoc-dist/client/src/
   popd
 }
 
@@ -15,5 +16,5 @@ build_server() {
   popd
 }
 
-# build_client
+build_client
 build_server
