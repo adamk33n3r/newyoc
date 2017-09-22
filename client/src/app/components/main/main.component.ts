@@ -7,6 +7,8 @@ import { MdSnackBar } from '@angular/material';
     styleUrls: [ './main.component.sass' ],
 })
 export class MainComponent {
+    public email: string;
+
     public images = [
         {
             src: 'yoc-profile.png',

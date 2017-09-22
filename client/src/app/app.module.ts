@@ -51,7 +51,6 @@ import { Socket } from './services/socket.service';
         AppRoutingModule,
     ],
     providers: [
-        { provide: 'Window', useValue: window },
         AuthHttp,
         Auth,
         Socket,

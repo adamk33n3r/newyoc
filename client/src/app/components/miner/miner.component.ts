@@ -25,7 +25,7 @@ export class MinerComponent implements OnInit {
         hashesPerSecond?: number;
     } = {};
 
-    private miner: any;
+    public miner: any;
 
     constructor(private auth: Auth, private http: HttpClient) {
         this.auth.userInfo.subscribe((user) => {

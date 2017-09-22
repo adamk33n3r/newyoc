@@ -7,6 +7,7 @@ import { CheckToken, Required } from 'src/decorators/util';
 import { TeamSpeak } from 'src/services/teamspeak';
 import { Slack } from 'src/services/slack';
 import config from 'src/config';
+console.log(config);
 
 @Controller('/miner')
 class MinerController {

@@ -1,0 +1,16 @@
+{
+  "compilerOptions": {
+    "baseUrl": "./",
+    "declaration": false,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "outDir": "./dist",
+    "target": "es6",
+    "noImplicitAny": true,
+    "typeRoots": [
+      "./node_modules/@types"
+    ]
+  }
+}

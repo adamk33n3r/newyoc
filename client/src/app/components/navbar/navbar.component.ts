@@ -16,7 +16,7 @@ interface INavRoute {
     encapsulation: ViewEncapsulation.None,
 })
 export class AppNavbarComponent {
-    private routes: INavRoute[] = [
+    public routes: INavRoute[] = [
         {
             name: 'TeamSpeak',
             path: '/teamspeak',
@@ -33,7 +33,7 @@ export class AppNavbarComponent {
             icon: 'nature',
         },
     ];
-    private afterRoutes: INavRoute[] = [
+    public afterRoutes: INavRoute[] = [
         {
             name: 'Settings',
             path: '/settings',

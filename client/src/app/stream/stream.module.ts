@@ -3,7 +3,6 @@ import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { MaterialModule } from '@angular/material';
 
-import { WindowProvider } from '../window.provider';
 import { JWPlayerComponent } from '../components/jwplayer/jwplayer.component';
 
 import { StreamRoutingModule } from './stream-routing.module';
@@ -19,9 +18,6 @@ import { StreamComponent } from './stream.component';
   declarations: [
     StreamComponent,
     JWPlayerComponent,
-  ],
-  providers: [
-    { provide: Window, useValue: window },
   ],
 })
 export class StreamModule { }

@@ -24,10 +24,10 @@ import { ObjectModalComponent } from './stardew.tile-edit.modal.component';
     styleUrls: ['./stardew.component.sass'],
 })
 export class StardewComponent implements OnInit {
+    public fileParsed = false;
     private fileName: string;
     private player: Player;
     private farm: IFarm;
-    private fileParsed = false;
     private doc: Document;
 
     @ViewChild('baseCanvas')

@@ -8,10 +8,13 @@ build_client() {
 
 build_server() {
   pushd server
-  tsc
+  tsc -p tsconfig-prod.json
+  cp -r dist/* ~/projects/newyoc-dist/server/
+  cp src/config/default.json ~/projects/newyoc-dist/server/server/src/config/
+  cp package.json yarn.lock ~/projects/newyoc-dist/server/server/
   popd
   restart yoc
 }
 
-build_client
+# build_client
 build_server

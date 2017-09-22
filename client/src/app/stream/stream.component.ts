@@ -1,7 +1,5 @@
 import { Component, OnInit, Inject, ViewChild, ElementRef } from '@angular/core';
 
-import { WindowProvider } from '../window.provider';
-
 import { Socket, ChatMessage } from '../services/socket.service';
 import { Auth } from '../services/auth.service';
 
@@ -22,6 +20,7 @@ export class StreamComponent implements OnInit {
     public viewerCount = 0;
     public text: string;
     public currentPlaylist: string;
+    public settings = jwplayerSettings;
 
     // TODO: make a localstorage service (or look for one online?)
     public get messages(): ChatMessage[] {
@@ -36,19 +35,16 @@ export class StreamComponent implements OnInit {
 
     private intervalID = 0;
     private unreadMessages = 0;
-    private settings = jwplayerSettings;
     private user: string;
 
     private hiddenAttr: string;
     private visChangeEvent: string;
-    private title = this.window.document.title;
+    private title = window.document.title;
 
     @ViewChild('iframe')
     private iframe: ElementRef;
 
     constructor(
-        @Inject(Window)
-        private window: Window,
         private socket: Socket,
         private auth: Auth,
     ) {}
@@ -70,22 +66,22 @@ export class StreamComponent implements OnInit {
 
         // Figure out which variable and event to use
         // for knowing if the user is tabbed in or not
-        if (this.window.document.hidden !== undefined) {
+        if (window.document.hidden !== undefined) {
             this.hiddenAttr = 'hidden';
             this.visChangeEvent = 'visibilitychange';
-        } else if ((<any>this.window.document).msHidden !== undefined) {
+        } else if ((<any>window.document).msHidden !== undefined) {
             this.hiddenAttr = 'msHidden';
             this.visChangeEvent = 'msvisibilitychange';
-        } else if ((<any>this.window.document).webkitHidden !== undefined) {
+        } else if ((<any>window.document).webkitHidden !== undefined) {
             this.hiddenAttr = 'webkitHidden';
             this.visChangeEvent = 'webkitvisibilitychange';
         }
 
         // Clear unread messages and remove from title if tab is switched to
-        this.window.document.addEventListener(this.visChangeEvent, () => {
+        window.document.addEventListener(this.visChangeEvent, () => {
             if (!this.isTabbedAway()) {
                 this.unreadMessages = 0;
-                this.window.clearInterval(this.intervalID);
+                window.clearInterval(this.intervalID);
                 this.intervalID = 0;
                 this.updateTitle();
             }
@@ -130,13 +126,13 @@ export class StreamComponent implements OnInit {
 
                 let first = true;
                 if (this.intervalID !== 0) {
-                    this.window.clearInterval(this.intervalID);
+                    window.clearInterval(this.intervalID);
                 }
-                this.intervalID = this.window.setInterval(() => {
+                this.intervalID = window.setInterval(() => {
                     if (first) {
                         this.updateTitle();
                     } else {
-                        this.window.document.title = `${message.user} sent a message!`;
+                        window.document.title = `${message.user} sent a message!`;
                     }
                     first = !first;
                 }, 1000);
@@ -149,9 +145,9 @@ export class StreamComponent implements OnInit {
                 });
                 notification.onclick = (event: Event) => {
                     notification.close();
-                    this.window.focus();
+                    window.focus();
                 };
-                this.window.setTimeout(notification.close.bind(notification), 3000);
+                window.setTimeout(notification.close.bind(notification), 3000);
             }
         });
     }
@@ -184,15 +180,15 @@ export class StreamComponent implements OnInit {
      * If the tab is hidden
      */
     private isTabbedAway(): boolean {
-        return (<any>this.window.document)[this.hiddenAttr];
+        return (<any>window.document)[this.hiddenAttr];
     }
 
     private updateTitle() {
         // If there are unread messages, show them in the title. Else reset it
         if (this.unreadMessages > 0) {
-            this.window.document.title = `(${this.unreadMessages}) ${this.title}`;
+            window.document.title = `(${this.unreadMessages}) ${this.title}`;
         } else {
-            this.window.document.title = this.title;
+            window.document.title = this.title;
         }
     }
 
