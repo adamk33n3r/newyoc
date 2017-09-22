@@ -13,6 +13,7 @@ import { AppComponent } from './app.component';
 import { MainComponent } from './components/main/main.component';
 import { AppNavbarComponent } from './components/navbar/navbar.component';
 import { AppContent } from './components/content.component';
+import { MinerComponent } from './components/miner/miner.component';
 
 import { Auth } from './services/auth.service';
 import { Socket } from './services/socket.service';
@@ -23,6 +24,7 @@ import { Socket } from './services/socket.service';
         AppNavbarComponent,
         AppContent,
         MainComponent,
+        MinerComponent,
     ],
     imports: [
         BrowserModule,

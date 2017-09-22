@@ -44,6 +44,8 @@ export class Socket {
                 if (!foundStream) {
                     this.socket.emit('stream:viewerCount', 0);
                 }
+            })
+            .catch((e) => {
             });
         }, 10000);
     }

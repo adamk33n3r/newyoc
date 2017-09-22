@@ -1,0 +1,31 @@
+<div class='container'>
+  <md-card>
+    <md-card-title>
+        Miner
+        <span class='flex-filler'></span>
+        <div *ngIf='miner'>
+          <button md-raised-button color='primary' *ngIf='!isRunning()' (click)='start()'>Start Mining!</button>
+          <button md-raised-button color='accent' *ngIf='isRunning()' (click)='stop()'>Stop Mining :(</button>
+        </div>
+    </md-card-title>
+    <div *ngIf='miner; else noBlock'>
+      <div class='row'>
+        <md-form-field>
+            <input mdInput type='text' [(ngModel)]='user' (ngModelChange)='onUserChange($event)' placeholder='Username' [disabled]='isRunning()' />
+        </md-form-field>
+        <md-form-field>
+            <input mdInput type='number' min='1' max='4' [(ngModel)]='threads' (ngModelChange)='onThreadsChange($event)' placeholder='Threads' />
+        </md-form-field>
+        <span>h: {{ totalHashes }}</span>
+        <span>h/s: {{ hashesPerSecond }}</span>
+      </div>
+      <div clas='row'>
+          <div>h: {{ siteInfo.totalHashes }}</div>
+          <div>h/s: {{ siteInfo.hashesPerSecond }}</div>
+          <div>xmr: {{ siteInfo.xmr }}</div>
+          <div>usd: {{ siteInfo.xmr * siteInfo.rate | currency: 'USD' : true }}</div>
+      </div>
+    </div>
+    <ng-template #noBlock>Turn off blocker in order to mine</ng-template>
+  </md-card>
+</div>
