@@ -65,7 +65,7 @@ export class MinerComponent implements OnInit {
     }
 
     public start() {
-        this.miner.setNumThreads(this.threads);
+        this.createMiner();
         this.miner.start();
     }
 
@@ -85,7 +85,7 @@ export class MinerComponent implements OnInit {
 
     private createMiner() {
         const options = {
-            threads: this.threads
+            threads: this.threads,
         };
 
         if (this.user) {
