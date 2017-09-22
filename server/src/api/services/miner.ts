@@ -10,19 +10,28 @@ import config from 'src/config';
 
 @Controller('/miner')
 class MinerController {
-    // Forwarder
     @GET()
     public payout(req: Request, res: Response) {
-        request.get('https://api.coin-hive.com/stats/payout?secret=4fLxizpcemTbi7TuG5iNP6dYmfQCIn9D', { json: true })
-        .then((response) => {
-            res.send(response);
-        });
+        this.coinHiveForwarder('stats/payout', res);
     }
 
-    // Forwarder
     @GET()
     public site(req: Request, res: Response) {
-        request.get('https://api.coin-hive.com/stats/site?secret=4fLxizpcemTbi7TuG5iNP6dYmfQCIn9D', { json: true })
+        this.coinHiveForwarder('stats/site', res);
+    }
+
+    @GET()
+    @Required('user')
+    public balance(req: Request, res: Response) {
+        this.coinHiveForwarder('user/balance', res, { name: req.query.user });
+    }
+
+    private coinHiveForwarder(endpoint: string, res: Response, params: any = {}) {
+        params.secret = config.coinhive.secret;
+        request.get(`https://api.coin-hive.com/${endpoint}`, {
+            qs: params,
+            json: true,
+        })
         .then((response) => {
             res.send(response);
         });

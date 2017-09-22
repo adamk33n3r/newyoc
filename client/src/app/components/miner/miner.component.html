@@ -1,31 +1,56 @@
 <div class='container'>
   <md-card>
     <md-card-title>
-        Miner
-        <span class='flex-filler'></span>
-        <div *ngIf='miner'>
-          <button md-raised-button color='primary' *ngIf='!isRunning()' (click)='start()'>Start Mining!</button>
-          <button md-raised-button color='accent' *ngIf='isRunning()' (click)='stop()'>Stop Mining :(</button>
-        </div>
+      Miner
+      <span class='flex-filler'></span>
+      <div *ngIf='miner && user'>
+        <button md-raised-button color='primary' *ngIf='!isRunning()' (click)='start()'>Start Mining!</button>
+        <button md-raised-button color='accent' *ngIf='isRunning()' (click)='stop()'>Stop Mining :(</button>
+      </div>
     </md-card-title>
-    <div *ngIf='miner; else noBlock'>
-      <div class='row'>
+    <md-card-content>
+      <div *ngIf='miner && user; else noBlock'>
         <md-form-field>
-            <input mdInput type='text' [(ngModel)]='user' (ngModelChange)='onUserChange($event)' placeholder='Username' [disabled]='isRunning()' />
+          <input mdInput type='text' [ngModel]='user.nickname' placeholder='Username' disabled='disabled' />
         </md-form-field>
         <md-form-field>
-            <input mdInput type='number' min='1' max='4' [(ngModel)]='threads' (ngModelChange)='onThreadsChange($event)' placeholder='Threads' />
+          <input mdInput type='number' min='1' max='4' [(ngModel)]='threads' (ngModelChange)='onThreadsChange($event)' placeholder='Threads'
+          />
         </md-form-field>
         <span>h: {{ totalHashes }}</span>
         <span>h/s: {{ hashesPerSecond }}</span>
+        <div *ngIf='balance && siteInfo.totalHashes; else loading'>
+          <md-card>
+            <md-card-title>User Stats</md-card-title>
+            <md-card-content>
+              YOCoin: {{ balance | number: '1.2-2' }}
+            </md-card-content>
+          </md-card>
+          <md-expansion-panel>
+            <md-expansion-panel-header>
+              <md-panel-title>
+                Site Stats
+              </md-panel-title>
+              <md-panel-description>
+                Total Hashes: {{ siteInfo.totalHashes }} | Hashes per Second: {{ siteInfo.hashesPerSecond }}
+              </md-panel-description>
+            </md-expansion-panel-header>
+            <md-list>
+              <md-list-item>hashes: {{ siteInfo.totalHashes }}</md-list-item>
+              <md-list-item>hashes/s: {{ siteInfo.hashesPerSecond }}</md-list-item>
+              <md-list-item>XMR: {{ siteInfo.xmr }}</md-list-item>
+              <md-list-item>USD: {{ siteInfo.xmr * siteInfo.rate | currency: 'USD' : true }}</md-list-item>
+            </md-list>
+          </md-expansion-panel>
+        </div>
       </div>
-      <div clas='row'>
-          <div>h: {{ siteInfo.totalHashes }}</div>
-          <div>h/s: {{ siteInfo.hashesPerSecond }}</div>
-          <div>xmr: {{ siteInfo.xmr }}</div>
-          <div>usd: {{ siteInfo.xmr * siteInfo.rate | currency: 'USD' : true }}</div>
-      </div>
-    </div>
-    <ng-template #noBlock>Turn off blocker in order to mine</ng-template>
+      <ng-template #loading>
+        <md-progress-spinner class='centered' mode='indeterminate'></md-progress-spinner>
+      </ng-template>
+      <ng-template #noBlock>
+        <div *ngIf='user'>Turn off blocker in order to mine</div>
+        <div *ngIf='!user'>Login in order to mine</div>
+      </ng-template>
+    </md-card-content>
   </md-card>
 </div>

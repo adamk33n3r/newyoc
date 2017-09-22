@@ -5,7 +5,16 @@ import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { MdIconModule, MdButtonModule, MdInputModule, MdCardModule } from '@angular/material';
+import {
+    MdIconModule,
+    MdButtonModule,
+    MdInputModule,
+    MdCardModule,
+    MdGridListModule,
+    MdListModule,
+    MdExpansionModule,
+    MdProgressSpinnerModule,
+} from '@angular/material';
 import { AuthHttp } from 'angular2-jwt';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -35,6 +44,10 @@ import { Socket } from './services/socket.service';
         MdButtonModule,
         MdInputModule,
         MdCardModule,
+        MdGridListModule,
+        MdListModule,
+        MdExpansionModule,
+        MdProgressSpinnerModule,
         AppRoutingModule,
     ],
     providers: [

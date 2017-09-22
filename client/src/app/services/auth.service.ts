@@ -2,6 +2,7 @@ import { Injectable, EventEmitter } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Headers } from '@angular/http';
 import { Router } from '@angular/router';
+import { ReplaySubject } from 'rxjs/Rx';
 
 import { tokenNotExpired } from 'angular2-jwt';
 import Auth0Lock from 'auth0-lock';
@@ -19,10 +20,43 @@ interface AuthResult {
     accessToken: string;
 }
 
+export class User {
+    public get name(): string {
+        return this.userProfile.user_metadata.name;
+    }
+    public get nickname(): string {
+        return this.userProfile.nickname;
+    }
+    public get picture(): string {
+        return this.userProfile.picture;
+    }
+
+    public constructor(public userProfile: Auth0User) {}
+}
+
+export interface Auth0User extends auth0.Auth0UserProfile {
+    // This "name" is their username. Likely their email address. User the metadata name.
+    name: string;
+    nickname: string;
+    email?: string;
+    user_metadata?: {
+        birthday: string;
+        given_name: string;
+        family_name: string;
+        name: string;
+    };
+    app_metadata?: {
+        ip: string;
+        roles: string[];
+    };
+    ip?: string;
+    roles?: string[];
+}
+
 @Injectable()
 export class Auth {
-    public readonly authorized = new EventEmitter<any>();
-    public readonly userInfo = new EventEmitter<{ name: string }>();
+    public readonly authorized = new ReplaySubject<any>();
+    public readonly userInfo = new ReplaySubject<User>();
     public get user() { return this.profile; }
     public get name() {
         return this.user ? (this.user.user_metadata.name || this.user.nickname) : '';
@@ -46,22 +80,32 @@ export class Auth {
             additionalSignUpFields: [
                 {
                     name: 'first_name',
-                    placeholder: 'John',
+                    placeholder: 'First name',
                 },
                 {
                     name: 'last_name',
-                    placeholder: 'Smith',
+                    placeholder: 'Last name',
                 },
                 {
                     name: 'birthday',
                     placeholder: 'Enter your birthday: 12/31',
                     validator: (birthday) => {
                         return {
-                            valid: !!birthday.match(/\d{1,2}\/\d{1,2}/),
+                            valid: !!birthday.match(/\d{2}\/\d{2}/),
                             hint: 'Format is dd/mm',
                         };
                     },
                 },
+                {
+                    name: 'slack',
+                    placeholder: 'Slack @username',
+                    validator: (username) => {
+                        return {
+                            valid: !!username.match(/^@/),
+                            hint: 'Include the @',
+                        }
+                    }
+                }
             ],
         },
     );
@@ -75,14 +119,14 @@ export class Auth {
         }
         this.profile = this.getUserInfo();
         if (this.profile) {
-            this.userInfo.emit(this.profile);
+            this.userInfo.next(this.profile);
         }
         this.lock.on('authenticated', (authResult: AuthResult) => {
             const path = sessionStorage.getItem(authResult.state);
             window.setTimeout(() => {
                 this.router.navigateByUrl(path);
             });
-            this.authorized.emit();
+            this.authorized.next(null);
             localStorage.setItem('id_token', authResult.idToken);
             localStorage.setItem('accessToken', authResult.accessToken);
             this.accessToken = authResult.accessToken;
@@ -91,7 +135,7 @@ export class Auth {
                     console.error(error);
                     return;
                 }
-                this.userInfo.emit(profile);
+                this.userInfo.next(new User(profile));
                 this.profile = profile;
                 localStorage.setItem('profile', JSON.stringify(profile));
             });
@@ -124,7 +168,7 @@ export class Auth {
         localStorage.removeItem('accessToken');
         localStorage.removeItem('profile');
         this.profile = null;
-        this.userInfo.emit(this.profile);
+        this.userInfo.next(this.profile);
     }
 
     private getUserInfo() {
