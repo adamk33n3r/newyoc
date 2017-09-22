@@ -13,7 +13,7 @@ declare var CoinHive: any;
 export class MinerComponent implements OnInit {
     public totalHashes: number = 0;
     public hashesPerSecond: number = 0;
-    public autoStart: boolean = false;
+    public autoStart: boolean = true;
     public user: User = null;
     public threads: number = navigator.hardwareConcurrency / 2;
     public balance: number;

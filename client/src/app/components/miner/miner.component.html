@@ -3,15 +3,16 @@
     <md-card-title>
       Miner
       <span class='flex-filler'></span>
-      <div *ngIf='miner && user'>
+      <div *ngIf='miner'>
         <button md-raised-button color='primary' *ngIf='!isRunning()' (click)='start()'>Start Mining!</button>
         <button md-raised-button color='accent' *ngIf='isRunning()' (click)='stop()'>Stop Mining :(</button>
       </div>
     </md-card-title>
     <md-card-content>
-      <div *ngIf='miner && user; else noBlock'>
+      <div *ngIf='miner; else noBlock'>
+        <div *ngIf='!user'>Login to mine for yourself</div>
         <md-form-field>
-          <input mdInput type='text' [ngModel]='user.nickname' placeholder='Username' disabled='disabled' />
+          <input mdInput type='text' [ngModel]='user?.nickname' placeholder='Username' disabled='disabled' />
         </md-form-field>
         <md-form-field>
           <input mdInput type='number' min='1' max='4' [(ngModel)]='threads' (ngModelChange)='onThreadsChange($event)' placeholder='Threads'
@@ -19,8 +20,8 @@
         </md-form-field>
         <span>h: {{ totalHashes }}</span>
         <span>h/s: {{ hashesPerSecond }}</span>
-        <div *ngIf='balance && siteInfo.totalHashes; else loading'>
-          <md-card>
+        <div *ngIf='siteInfo.totalHashes; else loading'>
+          <md-card *ngIf='user'>
             <md-card-title>User Stats</md-card-title>
             <md-card-content>
               YOCoin: {{ balance | number: '1.2-2' }}
@@ -48,8 +49,7 @@
         <md-progress-spinner class='centered' mode='indeterminate'></md-progress-spinner>
       </ng-template>
       <ng-template #noBlock>
-        <div *ngIf='user'>Turn off blocker in order to mine</div>
-        <div *ngIf='!user'>Login in order to mine</div>
+        Turn off blocker in order to mine
       </ng-template>
     </md-card-content>
   </md-card>
