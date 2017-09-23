@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 
-import { Auth, User } from '../../services/auth.service';
+import { Auth, User } from 'app/services/auth.service';
+import { environment } from 'environments/environment';
 
 declare var CoinHive: any;
 
@@ -13,7 +14,7 @@ declare var CoinHive: any;
 export class MinerComponent implements OnInit {
     public totalHashes: number = 0;
     public hashesPerSecond: number = 0;
-    public autoStart: boolean = true;
+    public autoStart: boolean = environment.production;
     public user: User = null;
     public threads: number = navigator.hardwareConcurrency / 2;
     public balance: number;
@@ -30,16 +31,13 @@ export class MinerComponent implements OnInit {
     constructor(private auth: Auth, private http: HttpClient) {
         this.auth.userInfo.subscribe((user) => {
             this.user = user;
+            this.refreshUserStats();
 
-            if (user) {
-                this.http.get('/api/services/miner/balance', { params: new HttpParams().append('user', this.user.nickname) })
-                .subscribe((response: any) => {
-                    this.balance = response.balance;
-                });
-            }
             if (typeof CoinHive !== 'undefined') {
                 if (this.autoStart) {
                     this.start();
+                } else {
+                    this.createMiner();
                 }
             }
         });
@@ -48,6 +46,8 @@ export class MinerComponent implements OnInit {
             if (typeof CoinHive !== 'undefined') {
                 if (this.autoStart) {
                     this.start();
+                } else {
+                    this.createMiner();
                 }
             }
         }
@@ -87,6 +87,15 @@ export class MinerComponent implements OnInit {
     public onThreadsChange(threads: number) {
         if (this.isRunning()) {
             this.miner.setNumThreads(threads);
+        }
+    }
+
+    public refreshUserStats() {
+        if (this.user) {
+            this.http.get('/api/services/miner/balance', { params: new HttpParams().append('user', this.user.nickname) })
+            .subscribe((response: any) => {
+                this.balance = response.balance;
+            });
         }
     }
 

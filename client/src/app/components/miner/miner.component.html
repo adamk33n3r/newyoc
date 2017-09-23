@@ -22,7 +22,11 @@
         <span>h/s: {{ hashesPerSecond }}</span>
         <div *ngIf='siteInfo.totalHashes; else loading'>
           <md-card *ngIf='user'>
-            <md-card-title>User Stats</md-card-title>
+            <md-card-title>
+              User Stats
+              <span class='flex-filler'></span>
+              <button md-raised-button color='accent' (click)='refreshUserStats()'>Refresh <md-icon>refresh</md-icon></button>
+            </md-card-title>
             <md-card-content>
               YOCoin: {{ balance | number: '1.2-2' }}
             </md-card-content>
