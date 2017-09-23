@@ -34,16 +34,21 @@ export class MinerComponent implements OnInit {
             if (user) {
                 this.http.get('/api/services/miner/balance', { params: new HttpParams().append('user', this.user.nickname) })
                 .subscribe((response: any) => {
-                    this.balance = response.balance;
+                    this.balance = response.balance / 100;
                 });
             }
-            if (this.autoStart) {
-                this.start();
+            if (typeof CoinHive !== 'undefined') {
+                if (this.autoStart) {
+                    this.start();
+                }
             }
         });
-        if (typeof CoinHive !== 'undefined') {
-            if (this.autoStart) {
-                this.start();
+
+        if (!this.auth.isAuthenticated()) {
+            if (typeof CoinHive !== 'undefined') {
+                if (this.autoStart) {
+                    this.start();
+                }
             }
         }
     }
