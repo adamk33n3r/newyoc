@@ -34,7 +34,7 @@ export class MinerComponent implements OnInit {
             if (user) {
                 this.http.get('/api/services/miner/balance', { params: new HttpParams().append('user', this.user.nickname) })
                 .subscribe((response: any) => {
-                    this.balance = response.balance / 100;
+                    this.balance = response.balance;
                 });
             }
             if (typeof CoinHive !== 'undefined') {
