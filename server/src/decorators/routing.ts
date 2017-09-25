@@ -31,7 +31,6 @@ export function Router(info: RouterDecorator) {
         Reflect.defineMetadata('$router.path', info.path, target.prototype);
         // Create router
         const expressRouter = ExpressRouter();
-        debug('erouter', expressRouter);
 
         // Attach controllers to router
         if (info.controllers) {
@@ -43,7 +42,7 @@ export function Router(info: RouterDecorator) {
                 debug(path);
                 for (const routeInfo of routes) {
                     const controllerMethod = controller[routeInfo.propertyKey];
-                    debug(`router at ${path} is calling .${routeInfo.method}('${routeInfo.path}', ${controllerMethod.name})`);
+                    debug(`controller router at ${path} is calling .${routeInfo.method}('${routeInfo.path}', ${controllerMethod.name})`);
                     (<any> controllerRouter)[routeInfo.method](routeInfo.path, controllerMethod.bind(controller));
                 }
                 debug(`router at ${info.path} is calling .use('${path}', controllerRouter)`);

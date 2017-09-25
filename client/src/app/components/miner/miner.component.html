@@ -4,8 +4,8 @@
       Miner
       <span class='flex-filler'></span>
       <div *ngIf='miner'>
-        <button md-raised-button color='primary' *ngIf='!isRunning()' (click)='start()'>Start Mining!</button>
-        <button md-raised-button color='accent' *ngIf='isRunning()' (click)='stop()'>Stop Mining :(</button>
+        <button md-raised-button color='primary' *ngIf='!isRunning()' (click)='start()'>Start Mining! :D</button>
+        <button md-raised-button color='accent' *ngIf='isRunning()' (click)='stop()'>Stop Mining... :(</button>
       </div>
     </md-card-title>
     <md-card-content>
@@ -20,7 +20,7 @@
         </md-form-field>
         <span>h: {{ totalHashes }}</span>
         <span>h/s: {{ hashesPerSecond }}</span>
-        <div *ngIf='siteInfo.totalHashes; else loading'>
+        <div *ngIf='siteInfo.totalHashes && topUsers; else loading'>
           <md-card *ngIf='user'>
             <md-card-title>
               User Stats
@@ -34,14 +34,27 @@
           <md-expansion-panel>
             <md-expansion-panel-header>
               <md-panel-title>
-                Site Stats
+                Top Miners
               </md-panel-title>
               <md-panel-description>
-                Total Hashes: {{ siteInfo.totalHashes }} | Hashes per Second: {{ siteInfo.hashesPerSecond }}
+                #1: {{ topUsers[0].name }} | {{ topUsers[0].total | number }} | {{ (topUsers[0].total / siteInfo.totalHashes) * 100 | number: '1.2-2' }}%
               </md-panel-description>
             </md-expansion-panel-header>
             <md-list>
-              <md-list-item>hashes: {{ siteInfo.totalHashes }}</md-list-item>
+              <md-list-item *ngFor='let user of topUsers; index as idx'>#{{ idx + 1}}: {{ user.name }} | {{ user.total | number }} | {{ (user.total / siteInfo.totalHashes) * 100 | number: '1.2-2' }}%</md-list-item>
+            </md-list>
+          </md-expansion-panel>
+          <md-expansion-panel>
+            <md-expansion-panel-header>
+              <md-panel-title>
+                Site Stats
+              </md-panel-title>
+              <md-panel-description>
+                Total Hashes: {{ siteInfo.totalHashes | number }} | Hashes per Second: {{ siteInfo.hashesPerSecond }}
+              </md-panel-description>
+            </md-expansion-panel-header>
+            <md-list>
+              <md-list-item>hashes: {{ siteInfo.totalHashes | number }}</md-list-item>
               <md-list-item>hashes/s: {{ siteInfo.hashesPerSecond }}</md-list-item>
               <md-list-item>XMR: {{ siteInfo.xmr }}</md-list-item>
               <md-list-item>USD: {{ siteInfo.xmr * siteInfo.rate | currency: 'USD' : true }}</md-list-item>

@@ -25,8 +25,14 @@ class MinerController {
     public balance(req: Request, res: Response) {
         this.coinHiveForwarder('user/balance', res, { name: req.query.user }, (response) => {
             response.balance = response.balance / 100;
+            response.total = response.total / 100;
             return response;
         });
+    }
+
+    @GET()
+    public top(req: Request, res: Response) {
+        this.coinHiveForwarder('user/top', res);
     }
 
     private coinHiveForwarder(endpoint: string, res: Response, params: any = {}, then: (response: any) => any = response => response) {

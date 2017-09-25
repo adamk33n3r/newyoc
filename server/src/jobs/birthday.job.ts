@@ -1,13 +1,16 @@
 import * as request from 'request-promise-native';
+
+import debug from 'src/logger';
+
 import { Slack } from '../services/slack';
 import config from '../config';
 const ManagementClient = require('auth0').ManagementClient;
 
 export = (scheduler: any) => {
     const slack = new Slack();
-    console.log('scheduling birthday job');
+    debug('scheduling birthday job');
     scheduler.scheduleJob('0 0 9 * * *', () => {
-        console.log('birthday job running...');
+        debug('birthday job running...');
         if (!(config.auth0 && config.auth0.client_id && config.auth0.client_secret)) {
             console.error('no auth0 config can\'t send birthday messages');
             return;

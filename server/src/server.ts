@@ -8,6 +8,8 @@ import * as methodOverride from 'method-override';
 import * as mongoose from 'mongoose';
 import 'reflect-metadata';
 
+const Table = require('cli-table');
+
 import { Socket } from './services/socket';
 import { Jobs } from './jobs';
 
@@ -57,7 +59,9 @@ export class Server {
      * @method config
      */
     public config(socket: SocketIO.Server) {
-        new Socket(socket);
+        if (socket) {
+            new Socket(socket);
+        }
 
         // Add static paths
         this.app.use(express.static('./src/public'));
@@ -100,7 +104,16 @@ export class Server {
         this.routes();
 
         // Jobs
-        Jobs.init();
+        if (socket) {
+            Jobs.init();
+        }
+    }
+
+    public printRoutes() {
+        const stack = this.app._router.stack as any[];
+        const table = new Table({ head: ['VERB', 'PATH', 'METHOD']});
+        this.getRoutesFromStack(stack, table);
+        console.log(table.toString());
     }
 
     /**
@@ -116,9 +129,29 @@ export class Server {
         this.app.use(routePath, router);
         const pathToClient = path.join(__dirname, '../../../client/src');
         this.app.use(express.static(pathToClient));
-        this.app.get('*', (req, res) => {
+        // tslint:disable-next-line
+        this.app.get('*', function catchAll(req, res) {
             res.sendFile(path.join(pathToClient, 'index.html'));
         });
     }
 
+    private getRoutesFromStack(stack: any[], table: any, path: string = '') {
+        for (const layer of stack) {
+            if (layer.name === 'router') {
+                // console.log(layer, layer.regexp, layer.handle.stack);q
+                // console.log(layer.)
+                let routerPath = (layer.regexp as RegExp).toString();
+                routerPath = routerPath
+                    .replace('/^', '')
+                    .replace('\\/?(?=\\/|$)/i', '')
+                    .replace('\\/', '/');
+                this.getRoutesFromStack(layer.handle.stack, table, path + routerPath);
+            } else if (layer.route) {
+                const methodName = layer.route.stack[0].handle.name.replace('bound ', '');
+                const httpMethod = (layer.route.stack[0].method as string).toUpperCase();
+                const fullPath = path + layer.route.path;
+                table.push([httpMethod, fullPath, methodName]);
+            }
+        }
+    }
 }

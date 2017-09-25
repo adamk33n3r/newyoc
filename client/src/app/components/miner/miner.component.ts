@@ -18,6 +18,7 @@ export class MinerComponent implements OnInit {
     public user: User = null;
     public threads: number = navigator.hardwareConcurrency / 2;
     public balance: number;
+    public topUsers: any[];
 
     public siteInfo: {
         xmr?: number;
@@ -54,16 +55,21 @@ export class MinerComponent implements OnInit {
     }
 
     public ngOnInit() {
-        this.http.get('/api/services/miner/payout')
+        this.http.get('/api/miner/payout')
         .subscribe((data: any) => {
             this.siteInfo.rate = data.xmrToUsd;
         });
-        this.http.get('/api/services/miner/site')
+        this.http.get('/api/miner/site')
         .subscribe((data: any) => {
             this.siteInfo.xmr = data.xmrPaid + data.xmrPending;
             this.siteInfo.hashesPerSecond = data.hashesPerSecond;
             this.siteInfo.totalHashes = data.hashesTotal;
         });
+        this.http.get('/api/miner/top')
+        .subscribe((data: any) => {
+            this.topUsers = data.users;
+        });
+
         setInterval(() => {
             if (!this.miner) { return; }
             this.totalHashes = this.miner.getTotalHashes(true);
@@ -92,7 +98,7 @@ export class MinerComponent implements OnInit {
 
     public refreshUserStats() {
         if (this.user) {
-            this.http.get('/api/services/miner/balance', { params: new HttpParams().append('user', this.user.nickname) })
+            this.http.get('/api/miner/balance', { params: new HttpParams().append('user', this.user.nickname) })
             .subscribe((response: any) => {
                 this.balance = response.balance;
             });
