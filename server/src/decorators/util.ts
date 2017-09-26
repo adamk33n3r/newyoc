@@ -1,5 +1,12 @@
 import { Request, Response } from 'express';
 
+function renameFunction(fn: Function, newName: string, args: any = {}) {
+    const renamedFunction = fn.toString().replace(/function \w+/, 'function ' + newName);
+    const argNames = Object.keys(args);
+    const argVals = argNames.map(argName => args[argName]);
+    return new Function(...argNames, 'return ' + renamedFunction)(...argVals);
+}
+
 /**
  * Checks the request body for token. Responds with 404 if not equal
  */
@@ -18,8 +25,7 @@ export function CheckToken(token: string) {
         };
 
         // Rename function to original
-        const renamedFunction = descriptor.value.toString().replace('function checkToken', 'function ' + origFn.name);
-        descriptor.value = new Function('origFn', 'token', 'return ' + renamedFunction)(origFn, token);
+        descriptor.value = renameFunction(descriptor.value, origFn.name, { origFn, token });
     };
 }
 
@@ -41,7 +47,6 @@ export function Required(...params: string[]) {
         };
 
         // Rename function to original
-        const renamedFunction = descriptor.value.toString().replace('function required', 'function ' + origFn.name);
-        descriptor.value = new Function('origFn', 'params', 'return ' + renamedFunction)(origFn, params);
+        descriptor.value = renameFunction(descriptor.value, origFn.name, { origFn, params });
     };
 }
