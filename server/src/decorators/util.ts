@@ -19,7 +19,7 @@ export function CheckToken(token: string) {
 
         // Rename function to original
         const renamedFunction = descriptor.value.toString().replace('function checkToken', 'function ' + origFn.name);
-        descriptor.value = new Function('return ' + renamedFunction)();
+        descriptor.value = new Function('origFn', 'token', 'return ' + renamedFunction)(origFn, token);
     };
 }
 
@@ -42,6 +42,6 @@ export function Required(...params: string[]) {
 
         // Rename function to original
         const renamedFunction = descriptor.value.toString().replace('function required', 'function ' + origFn.name);
-        descriptor.value = new Function('return ' + renamedFunction)();
+        descriptor.value = new Function('origFn', 'params', 'return ' + renamedFunction)(origFn, params);
     };
 }
