@@ -3,5 +3,6 @@
         "url": "localhost",
         "username": "serveradmin"
     },
-    "coinhive": {}
+    "coinhive": {},
+    "birthdayChannel": "#tcpi"
 }
