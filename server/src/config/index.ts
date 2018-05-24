@@ -15,6 +15,7 @@ const config: {
     auth0: {
         client_id: string;
         client_secret: string;
-    }
+    },
+    birthdayChannel: string;
 } = require('configamajig')('./src/config');
 export default config;
