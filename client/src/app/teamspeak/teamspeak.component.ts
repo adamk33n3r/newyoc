@@ -22,7 +22,9 @@ export class TeamSpeakComponent implements OnInit {
         this.http.get('/api/services/teamspeak')
         .subscribe((response: any) => {
             const data = response.data;
-            this.channels = this.buildData([], data.channels, data.online);
+            this.channels = this.buildData([], data.channels.filter((channel) => {
+                return channel.channel_name[0] !== '[' && channel.channel_name !== 'ADMINS ONLY' && channel.channel_name !== 'ME ONLY';
+            }), data.online);
         });
     }
 
