@@ -1,8 +1,7 @@
 before_script:
   - apt-get update -qq
   - apt-get install -y -qq nodejs
-  - apt-get install -y -qq npm
-  - npm update npm -g
+  - curl https://npmjs.org/install.sh | sh
   - npm cache clean
   - npm install -g @angular/cli
 
