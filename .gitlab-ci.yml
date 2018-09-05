@@ -1,0 +1,16 @@
+before_script:
+  - apt-get update -qq
+  - apt-get install -y -qq nodejs
+  - apt-get install -y -qq npm
+  - npm update npm -g
+  - npm cache clean
+  - npm install -g @angular/cli
+
+build:
+  when: manual
+  script:
+    - cd client
+    - ng build --prod
+  artifacts:
+    paths:
+      dist/
