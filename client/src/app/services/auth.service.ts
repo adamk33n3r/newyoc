@@ -4,7 +4,7 @@ import { Headers } from '@angular/http';
 import { Router } from '@angular/router';
 import { ReplaySubject } from 'rxjs/Rx';
 
-import { JwtHelperService } from '@auth0/angular-jwt';
+//import { JwtHelperService } from '@auth0/angular-jwt';
 import Auth0Lock from 'auth0-lock';
 
 declare module '@angular/core' {
@@ -66,7 +66,7 @@ export class Auth {
     private profile: any;
     private accessToken: string;
 
-    constructor(private http: HttpClient, private router: Router, private jwtHelper: JwtHelperService) {
+  constructor(private http: HttpClient, private router: Router/*, private jwtHelper: JwtHelperService*/) {
         return;
         this.lock = new Auth0Lock(
             'KrdM9NH9w7S47zY0Fxygg5h8ij1JzeK7',
@@ -162,7 +162,8 @@ export class Auth {
     }
 
     public isAuthenticated() {
-        return !this.jwtHelper.isTokenExpired();
+        return false;
+        //return !this.jwtHelper.isTokenExpired();
     }
 
     public logout() {
