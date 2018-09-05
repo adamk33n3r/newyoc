@@ -4,10 +4,10 @@ before_script:
   - npm install -g @angular/cli
 
 build:
-  when: manual
   script:
     - cd client
+    - npm install
     - ng build --prod
   artifacts:
     paths:
-      - dist/
+      - client/dist/
