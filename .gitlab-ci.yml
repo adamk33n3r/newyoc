@@ -13,4 +13,4 @@ build:
     - ng build --prod
   artifacts:
     paths:
-      dist/
+      - dist/
