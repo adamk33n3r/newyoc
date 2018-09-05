@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { MaterialModule } from '@angular/material';
 
 import { MainComponent } from './components/main/main.component';
 
@@ -38,7 +37,6 @@ const routes: Routes = [
 @NgModule({
     imports: [
         RouterModule.forRoot(routes),
-        MaterialModule,
     ],
     exports: [ RouterModule ],
     providers: [],

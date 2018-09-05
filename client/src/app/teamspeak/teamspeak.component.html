@@ -1,28 +1,28 @@
-<md-card>
-    <md-card-title>
+<mat-card>
+    <mat-card-title>
         TeamSpeak
         <span class='flex-filler'></span>
-        <button md-raised-button color='accent' (click)='refresh()'>
-            Refresh <md-icon>refresh</md-icon>
+        <button mat-raised-button color='accent' (click)='refresh()'>
+            Refresh <mat-icon>refresh</mat-icon>
         </button>
-    </md-card-title>
-</md-card>
-<md-card *ngFor='let channel of channels'>
-    <md-card-title>
+    </mat-card-title>
+</mat-card>
+<mat-card *ngFor='let channel of channels'>
+    <mat-card-title>
         <span>{{ channel.channel_name }}</span>
         <span></span>
-        <a md-raised-button color='accent' [href]='getURI(channel.cid)'>Connect</a>
-    </md-card-title>
-    <md-card-content>
-        <md-list>
-            <md-list-item *ngFor='let client of channel.clients'>
-                <md-icon md-list-avatar [color]='client.away ? "warn" : "primary"'>person</md-icon>
-                <h4 md-line>{{ client.name }}</h4>
-                <p md-line>{{ client.nickname }}&nbsp;</p>
-            </md-list-item>
-            <md-list-item *ngIf='channel.clients.length === 0'>
+        <a mat-raised-button color='accent' [href]='getURI(channel.cid)'>Connect</a>
+    </mat-card-title>
+    <mat-card-content>
+        <mat-list>
+            <mat-list-item *ngFor='let client of channel.clients'>
+                <mat-icon mat-list-avatar [color]='client.away ? "warn" : "primary"'>person</mat-icon>
+                <h4 mat-line>{{ client.name }}</h4>
+                <p mat-line>{{ client.nickname }}&nbsp;</p>
+            </mat-list-item>
+            <mat-list-item *ngIf='channel.clients.length === 0'>
                 No clients connected
-            </md-list-item>
-        </md-list>
-    </md-card-content>
-</md-card>
+            </mat-list-item>
+        </mat-list>
+    </mat-card-content>
+</mat-card>

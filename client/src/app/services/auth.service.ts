@@ -4,7 +4,7 @@ import { Headers } from '@angular/http';
 import { Router } from '@angular/router';
 import { ReplaySubject } from 'rxjs/Rx';
 
-import { tokenNotExpired } from 'angular2-jwt';
+import { JwtHelperService } from '@auth0/angular-jwt';
 import Auth0Lock from 'auth0-lock';
 
 declare module '@angular/core' {
@@ -62,58 +62,60 @@ export class Auth {
         return this.user ? (this.user.user_metadata.name || this.user.nickname) : '';
     }
 
-    private lock = new Auth0Lock(
-        'KrdM9NH9w7S47zY0Fxygg5h8ij1JzeK7',
-        'adamk33n3r.auth0.com',
-        {
-            auth: {
-                redirectUrl: location.origin,
-                responseType: 'token',
-            },
-            theme: {
-                logo: '/assets/images/yoc.png',
-                primaryColor: '#ff5252',
-            },
-            languageDictionary: {
-                title: 'Ye Olde Chums',
-            },
-            additionalSignUpFields: [
-                {
-                    name: 'first_name',
-                    placeholder: 'First name',
-                },
-                {
-                    name: 'last_name',
-                    placeholder: 'Last name',
-                },
-                {
-                    name: 'birthday',
-                    placeholder: 'Enter your birthday: 12/31',
-                    validator: (birthday) => {
-                        return {
-                            valid: !!birthday.match(/\d{2}\/\d{2}/),
-                            hint: 'Format is dd/mm',
-                        };
-                    },
-                },
-                {
-                    name: 'slack',
-                    placeholder: 'Slack @username',
-                    validator: (username) => {
-                        return {
-                            valid: !!username.match(/^@/),
-                            hint: 'Include the @',
-                        }
-                    }
-                }
-            ],
-        },
-    );
-
+    private lock: any;
     private profile: any;
     private accessToken: string;
 
-    constructor(private http: HttpClient, private router: Router) {
+    constructor(private http: HttpClient, private router: Router, private jwtHelper: JwtHelperService) {
+        return;
+        this.lock = new Auth0Lock(
+            'KrdM9NH9w7S47zY0Fxygg5h8ij1JzeK7',
+            'adamk33n3r.auth0.com',
+            {
+                auth: {
+                    redirectUrl: location.origin,
+                    responseType: 'token',
+                },
+                theme: {
+                    logo: '/assets/images/yoc.png',
+                    primaryColor: '#ff5252',
+                },
+                languageDictionary: {
+                    title: 'Ye Olde Chums',
+                },
+                additionalSignUpFields: [
+                    {
+                        name: 'first_name',
+                        placeholder: 'First name',
+                    },
+                    {
+                        name: 'last_name',
+                        placeholder: 'Last name',
+                    },
+                    {
+                        name: 'birthday',
+                        placeholder: 'Enter your birthday: 12/31',
+                        validator: (birthday) => {
+                            return {
+                                valid: !!birthday.match(/\d{2}\/\d{2}/),
+                                hint: 'Format is dd/mm',
+                            };
+                        },
+                    },
+                    {
+                        name: 'slack',
+                        placeholder: 'Slack @username',
+                        validator: (username) => {
+                            return {
+                                valid: !!username.match(/^@/),
+                                hint: 'Include the @',
+                            }
+                        }
+                    }
+                ],
+            },
+        );
+
         if (!this.isAuthenticated()) {
             localStorage.removeItem('profile');
         }
@@ -130,7 +132,7 @@ export class Auth {
             localStorage.setItem('id_token', authResult.idToken);
             localStorage.setItem('accessToken', authResult.accessToken);
             this.accessToken = authResult.accessToken;
-            this.lock.getUserInfo(authResult.accessToken, (error, profile) => {
+            this.lock.getUserInfo(authResult.accessToken, (error: any, profile: any) => {
                 if (error) {
                     console.error(error);
                     return;
@@ -140,7 +142,7 @@ export class Auth {
                 localStorage.setItem('profile', JSON.stringify(profile));
             });
         });
-        this.lock.on('authorization_error', (error) => {
+        this.lock.on('authorization_error', (error: any) => {
             console.error(error);
         });
         this.accessToken = localStorage.getItem('accessToken');
@@ -160,7 +162,7 @@ export class Auth {
     }
 
     public isAuthenticated() {
-        return tokenNotExpired();
+        return !this.jwtHelper.isTokenExpired();
     }
 
     public logout() {

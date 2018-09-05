@@ -10,15 +10,19 @@ import {
 
 import { PlaylistItem } from './jwplayer.types';
 
-@Component({
-    selector: 'jwplayer',
-    template: `
+/*
         <iframe #iframe
             id='player-iframe'
             name='player-iframe'
             src='./stream.html'
             allowfullscreen="allowfullscreen"
         ></iframe>
+*/
+
+@Component({
+    selector: 'jwplayer',
+    template: `
+        <div #player id='player'></div>
     `,
     styles: [`
         iframe {
@@ -41,6 +45,8 @@ export class JWPlayerComponent implements AfterViewInit {
 
     @ViewChild('iframe')
     private iframe: ElementRef;
+    @ViewChild('player')
+    private playerEle: ElementRef;
 
     private player: JWPlayer;
     public get Player(): JWPlayer {
@@ -50,6 +56,50 @@ export class JWPlayerComponent implements AfterViewInit {
     constructor(private elementRef: ElementRef) {}
 
     public ngAfterViewInit() {
+        this.setupInternal();
+
+        //this.setupIFrame();
+    }
+
+    private setupInternal() {
+
+        function resize() {
+            //iframe.width = `${this.elementRef.nativeElement.clientWidth}px`;
+            //iframe.height = `${this.playerEle.nativeElement.scrollHeight}px`;
+        }
+
+        // Setup jwplayer
+        const player = (window as any).jwplayer(this.playerEle.nativeElement).setup(this.settings);
+
+        // Resize frame when player is ready
+        player.onReady(() => {
+            resize();
+        });
+
+        // Resize frame when parent window is resized
+        window.addEventListener('resize', () => {
+            resize();
+        });
+
+        // Call init function to initialize player once key has been added
+        this.player = player;
+
+        // Setup events
+        this.player.onReady(() => {
+            this.ready.emit();
+        });
+        this.player.onPlaylistItem((thing) => {
+            this.playlistItem.emit(thing);
+        });
+        this.player.onError((e: Error) => {
+            this.error.emit(e);
+        });
+        this.player.onSetupError((e: any) => {
+            this.error.emit(e);
+        });
+    }
+
+    private setupIFrame() {
         const iframe = this.iframe.nativeElement as HTMLIFrameElement;
         iframe.onload = () => {
             // Get window of iframe

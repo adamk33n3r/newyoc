@@ -31,7 +31,7 @@ export class XMLParser {
     }
 
     public getAttribute(attribute: string, node: Node) {
-        return node.attributes.getNamedItem(attribute).value;
+        return (node as any).attributes.getNamedItem(attribute).value;
     }
 
     protected evaluate(xPath: string, base: Node = this.xml, resultType = XPathResult.ANY_TYPE): XPathResult {

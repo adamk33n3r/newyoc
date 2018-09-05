@@ -6,16 +6,17 @@ import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {
-    MdIconModule,
-    MdButtonModule,
-    MdInputModule,
-    MdCardModule,
-    MdGridListModule,
-    MdListModule,
-    MdExpansionModule,
-    MdProgressSpinnerModule,
+    MatIconModule,
+    MatButtonModule,
+    MatInputModule,
+    MatCardModule,
+    MatGridListModule,
+    MatListModule,
+    MatExpansionModule,
+    MatProgressSpinnerModule,
+    MatSnackBarModule,
 } from '@angular/material';
-import { AuthHttp } from 'angular2-jwt';
+import { JwtModule } from '@auth0/angular-jwt';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -40,18 +41,18 @@ import { Socket } from './services/socket.service';
         BrowserAnimationsModule,
         FormsModule,
         HttpClientModule,
-        MdIconModule,
-        MdButtonModule,
-        MdInputModule,
-        MdCardModule,
-        MdGridListModule,
-        MdListModule,
-        MdExpansionModule,
-        MdProgressSpinnerModule,
+        MatIconModule,
+        MatButtonModule,
+        MatInputModule,
+        MatCardModule,
+        MatGridListModule,
+        MatListModule,
+        MatExpansionModule,
+        MatProgressSpinnerModule,
+        MatSnackBarModule,
         AppRoutingModule,
     ],
     providers: [
-        AuthHttp,
         Auth,
         Socket,
     ],

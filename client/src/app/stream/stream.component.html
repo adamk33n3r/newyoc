@@ -1,32 +1,37 @@
 <div class='stream'>
-    <div class='player'>
-        <jwplayer [settings]='settings' (ready)='onPlayerReady()' (playlistItem)='onPlaylistItem($event)'></jwplayer>
+    <div class='player' [hidden]='flashNotAllowed'>
+        <jwplayer [settings]='settings' (ready)='onPlayerReady()' (error)='onError($event)' (playlistItem)='onPlaylistItem($event)'></jwplayer>
         <div class='status'>
-            <md-icon>person</md-icon>
+            <mat-icon>person</mat-icon>
             <span>{{ viewerCount }}</span>
         </div>
     </div>
-    <div class='chat'>
-        <md-input-container class='w100p'>
-            <textarea mdInput
+
+    <object *ngIf='flashNotAllowed'>
+      <embed src='/assets/jwplayer/jwplayer.flash.swf' />
+    </object>
+
+    <div class='chat' *ngIf='false'>
+        <mat-input-container class='w100p'>
+            <textarea matInput
                 placeholder='Send a message'
                 [(ngModel)]='text'
                 (keypress)='sendChat($event)'
                 [disabled]='!currentPlaylist'
             ></textarea>
-        </md-input-container>
-        <md-list dense>
+        </mat-input-container>
+        <mat-list dense>
             <div class='message' *ngFor='let message of messages'>
-                <md-list-item>
+                <mat-list-item>
                     <!-- To make the small text line up -->
                     <div>
                         <small>{{ message.timestamp | date:"shortTime" }}</small>&nbsp;
                         <span>{{ message.user }}:&nbsp;</span>
                         <span>{{ message.text }}</span>
                     </div>
-                </md-list-item>
-                <md-divider></md-divider>
+                </mat-list-item>
+                <mat-divider></mat-divider>
             </div>
-        </md-list>
+        </mat-list>
     </div>
 </div>

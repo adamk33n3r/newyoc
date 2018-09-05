@@ -1,73 +1,73 @@
 <div class='container'>
-  <md-card>
-    <md-card-title>
+  <mat-card>
+    <mat-card-title>
       Miner
       <span class='flex-filler'></span>
       <div *ngIf='miner'>
-        <button md-raised-button color='primary' *ngIf='!isRunning()' (click)='start()'>Start Mining! :D</button>
-        <button md-raised-button color='accent' *ngIf='isRunning()' (click)='stop()'>Stop Mining... :(</button>
+        <button mat-raised-button color='primary' *ngIf='!isRunning()' (click)='start()'>Start Mining! :D</button>
+        <button mat-raised-button color='accent' *ngIf='isRunning()' (click)='stop()'>Stop Mining... :(</button>
       </div>
-    </md-card-title>
-    <md-card-content>
+    </mat-card-title>
+    <mat-card-content>
       <div *ngIf='miner; else noBlock'>
         <div *ngIf='!user'>Login to mine for yourself</div>
-        <md-form-field>
+        <mat-form-field>
           <input mdInput type='text' [ngModel]='user?.nickname' placeholder='Username' disabled='disabled' />
-        </md-form-field>
-        <md-form-field>
+        </mat-form-field>
+        <mat-form-field>
           <input mdInput type='number' min='1' max='4' [(ngModel)]='threads' (ngModelChange)='onThreadsChange($event)' placeholder='Threads'
           />
-        </md-form-field>
+        </mat-form-field>
         <span>h: {{ totalHashes }}</span>
         <span>h/s: {{ hashesPerSecond }}</span>
         <div *ngIf='siteInfo.totalHashes && topUsers; else loading'>
-          <md-card *ngIf='user'>
-            <md-card-title>
+          <mat-card *ngIf='user'>
+            <mat-card-title>
               User Stats
               <span class='flex-filler'></span>
-              <button md-raised-button color='accent' (click)='refreshUserStats()'>Refresh <md-icon>refresh</md-icon></button>
-            </md-card-title>
-            <md-card-content>
+              <button mat-raised-button color='accent' (click)='refreshUserStats()'>Refresh <mat-icon>refresh</mat-icon></button>
+            </mat-card-title>
+            <mat-card-content>
               YOCoin: {{ balance | number: '1.2-2' }}
-            </md-card-content>
-          </md-card>
-          <md-expansion-panel>
-            <md-expansion-panel-header>
-              <md-panel-title>
+            </mat-card-content>
+          </mat-card>
+          <mat-expansion-panel>
+            <mat-expansion-panel-header>
+              <mat-panel-title>
                 Top Miners
-              </md-panel-title>
-              <md-panel-description>
+              </mat-panel-title>
+              <mat-panel-description>
                 #1: {{ topUsers[0].name }} | {{ topUsers[0].total | number }} | {{ (topUsers[0].total / siteInfo.totalHashes) * 100 | number: '1.2-2' }}%
-              </md-panel-description>
-            </md-expansion-panel-header>
-            <md-list>
-              <md-list-item *ngFor='let user of topUsers; index as idx'>#{{ idx + 1}}: {{ user.name }} | {{ user.total | number }} | {{ (user.total / siteInfo.totalHashes) * 100 | number: '1.2-2' }}%</md-list-item>
-            </md-list>
-          </md-expansion-panel>
-          <md-expansion-panel>
-            <md-expansion-panel-header>
-              <md-panel-title>
+              </mat-panel-description>
+            </mat-expansion-panel-header>
+            <mat-list>
+              <mat-list-item *ngFor='let user of topUsers; index as idx'>#{{ idx + 1}}: {{ user.name }} | {{ user.total | number }} | {{ (user.total / siteInfo.totalHashes) * 100 | number: '1.2-2' }}%</mat-list-item>
+            </mat-list>
+          </mat-expansion-panel>
+          <mat-expansion-panel>
+            <mat-expansion-panel-header>
+              <mat-panel-title>
                 Site Stats
-              </md-panel-title>
-              <md-panel-description>
+              </mat-panel-title>
+              <mat-panel-description>
                 Total Hashes: {{ siteInfo.totalHashes | number }} | Hashes per Second: {{ siteInfo.hashesPerSecond }}
-              </md-panel-description>
-            </md-expansion-panel-header>
-            <md-list>
-              <md-list-item>hashes: {{ siteInfo.totalHashes | number }}</md-list-item>
-              <md-list-item>hashes/s: {{ siteInfo.hashesPerSecond }}</md-list-item>
-              <md-list-item>XMR: {{ siteInfo.xmr }}</md-list-item>
-              <md-list-item>USD: {{ siteInfo.xmr * siteInfo.rate | currency: 'USD' : true }}</md-list-item>
-            </md-list>
-          </md-expansion-panel>
+              </mat-panel-description>
+            </mat-expansion-panel-header>
+            <mat-list>
+              <mat-list-item>hashes: {{ siteInfo.totalHashes | number }}</mat-list-item>
+              <mat-list-item>hashes/s: {{ siteInfo.hashesPerSecond }}</mat-list-item>
+              <mat-list-item>XMR: {{ siteInfo.xmr }}</mat-list-item>
+              <mat-list-item>USD: {{ siteInfo.xmr * siteInfo.rate | currency: 'USD' : true }}</mat-list-item>
+            </mat-list>
+          </mat-expansion-panel>
         </div>
       </div>
       <ng-template #loading>
-        <md-progress-spinner class='centered' mode='indeterminate'></md-progress-spinner>
+        <mat-progress-spinner class='centered' mode='indeterminate'></mat-progress-spinner>
       </ng-template>
       <ng-template #noBlock>
         Turn off blocker in order to mine
       </ng-template>
-    </md-card-content>
-  </md-card>
+    </mat-card-content>
+  </mat-card>
 </div>

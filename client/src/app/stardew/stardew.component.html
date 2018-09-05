@@ -1,8 +1,8 @@
-<md-card>
-    <md-card-content>
+<mat-card>
+    <mat-card-content>
         <!--<input id='file' type='file' (change)='processFile($event.target.files[0])' />-->
-        <!--<label md-raised-button for='file'>Upload File</label>-->
-        <button md-raised-button class='w100p'>
+        <!--<label mat-raised-button for='file'>Upload File</label>-->
+        <button mat-raised-button class='w100p'>
             <span *ngIf='!fileParsed'>Select Save File</span>
             <span *ngIf='fileParsed'>{{ player.name }} - {{ player.farmName }} Farm</span>
             <input class='file-upload-button' type='file' (change)='processFile($event.target.files[0])' />
@@ -11,6 +11,6 @@
             <canvas #baseCanvas></canvas>
             <canvas #overlayCanvas></canvas>
         </div>
-        <button *ngIf='fileParsed' md-raised-button class='w100p' (click)='saveFile()'>Export Save</button>
-    </md-card-content>
-</md-card>
+        <button *ngIf='fileParsed' mat-raised-button class='w100p' (click)='saveFile()'>Export Save</button>
+    </mat-card-content>
+</mat-card>
