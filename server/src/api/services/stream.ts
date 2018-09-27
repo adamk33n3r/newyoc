@@ -13,6 +13,7 @@ class StreamController {
     @POST('/')
     public index(req: Request, res: Response) {
         if (req.body.name !== 'default') {
+            res.send();
             return;
         }
         switch (req.body.call) {
