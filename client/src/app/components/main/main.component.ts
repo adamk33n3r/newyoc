@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { MdSnackBar } from '@angular/material';
+import { MatSnackBar } from '@angular/material';
 
 @Component({
     templateUrl: './main.component.html',
@@ -24,7 +24,7 @@ export class MainComponent {
         },
     ];
 
-    constructor(private http: HttpClient, private snack: MdSnackBar) {}
+    constructor(private http: HttpClient, private snack: MatSnackBar) {}
 
     public sendInvite(email: string) {
         if (!email) {

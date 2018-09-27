@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { MdDialogRef } from '@angular/material';
+import { MatDialogRef } from '@angular/material';
 
 import { ITile } from './parser';
 import { Vector2 } from './vector2';
@@ -30,7 +30,7 @@ export class ObjectModalComponent {
 
     private _tile: ITile;
 
-    constructor(private dialogRef: MdDialogRef<ObjectModalComponent>) {}
+    constructor(private dialogRef: MatDialogRef<ObjectModalComponent>) {}
 
     public isVector(tileInfo: ITileInfo): boolean {
         return tileInfo.value.constructor === Vector2;

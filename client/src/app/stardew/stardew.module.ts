@@ -1,7 +1,15 @@
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { MaterialModule, MdDialog, MdDialogModule } from '@angular/material';
+import { MatDialogModule } from '@angular/material';
+
+import {
+    MatCardModule,
+    MatInputModule,
+    MatListModule,
+    MatButtonModule,
+    MatSlideToggleModule,
+} from '@angular/material';
 
 import { PipesModule } from '../pipes/pipes.module';
 
@@ -13,7 +21,12 @@ import { ObjectModalComponent } from './stardew.tile-edit.modal.component';
     imports: [
         FormsModule,
         CommonModule,
-        MaterialModule,
+        MatDialogModule,
+        MatButtonModule,
+        MatCardModule,
+        MatInputModule,
+        MatListModule,
+        MatSlideToggleModule,
         PipesModule,
         StardewRoutingModule,
     ],

@@ -1,7 +1,12 @@
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { MaterialModule } from '@angular/material';
+
+import {
+    MatIconModule,
+    MatListModule,
+    MatInputModule,
+} from '@angular/material';
 
 import { JWPlayerComponent } from '../components/jwplayer/jwplayer.component';
 
@@ -12,7 +17,9 @@ import { StreamComponent } from './stream.component';
   imports: [
     FormsModule,
     CommonModule,
-    MaterialModule,
+    MatIconModule,
+    MatListModule,
+    MatInputModule,
     StreamRoutingModule,
   ],
   declarations: [

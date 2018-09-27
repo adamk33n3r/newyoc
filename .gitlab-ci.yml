@@ -1,0 +1,13 @@
+image: node
+
+before_script:
+  - npm install -g @angular/cli
+
+build:
+  script:
+    - cd client
+    - npm install
+    - ng build --prod
+  artifacts:
+    paths:
+      - client/dist/

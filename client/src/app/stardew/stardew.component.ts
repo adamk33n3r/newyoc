@@ -4,7 +4,7 @@ import {
     ViewChild,
     ElementRef,
 } from '@angular/core';
-import { MdDialog } from '@angular/material';
+import { MatDialog } from '@angular/material';
 
 import {
     SVSaveParser,
@@ -37,7 +37,7 @@ export class StardewComponent implements OnInit {
 
     private renderer: StardewRenderer;
 
-    constructor(private modal: MdDialog) {
+    constructor(private modal: MatDialog) {
     }
 
     public ngOnInit() {

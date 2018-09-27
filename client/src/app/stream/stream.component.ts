@@ -17,6 +17,7 @@ declare var Notification: any;
     styleUrls: ['./stream.component.sass'],
 })
 export class StreamComponent implements OnInit {
+    public flashNotAllowed: boolean = false;
     public viewerCount = 0;
     public text: string;
     public currentPlaylist: string;
@@ -51,10 +52,10 @@ export class StreamComponent implements OnInit {
 
     public ngOnInit() {
         this.filterOutOldMessages();
-        this.setupUser();
-        this.auth.userInfo.subscribe((user) => {
-            this.setupUser();
-        });
+        //this.setupUser();
+        //this.auth.userInfo.subscribe((user) => {
+        //    this.setupUser();
+        //});
         this.socket.on(Stream.ViewerCount, (count) => {
             this.viewerCount = count;
         });
@@ -89,6 +90,7 @@ export class StreamComponent implements OnInit {
     }
 
     public onPlayerReady() {
+        return;
         console.log('onPlayerReady');
         this.socket.on(Chat.Connect, (user) => {
             console.log('chat connect', user);
@@ -158,6 +160,13 @@ export class StreamComponent implements OnInit {
             this.messages = [];
         } else {
             this.filterOutOldMessages();
+        }
+    }
+
+    public onError(err: any) {
+        if (err.message === 'Error loading player: No playable sources found') {
+            console.error(err);
+            this.flashNotAllowed = true;
         }
     }
 

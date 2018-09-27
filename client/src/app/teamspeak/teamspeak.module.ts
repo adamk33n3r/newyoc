@@ -1,6 +1,12 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { MaterialModule } from '@angular/material';
+
+import {
+    MatIconModule,
+    MatButtonModule,
+    MatCardModule,
+    MatListModule,
+} from '@angular/material';
 
 import { TeamSpeakRoutingModule } from './teamspeak-routing.module';
 import { TeamSpeakComponent } from './teamspeak.component';
@@ -8,7 +14,10 @@ import { TeamSpeakComponent } from './teamspeak.component';
 @NgModule({
   imports: [
     CommonModule,
-    MaterialModule,
+    MatIconModule,
+    MatCardModule,
+    MatListModule,
+    MatButtonModule,
     TeamSpeakRoutingModule,
   ],
   declarations: [
