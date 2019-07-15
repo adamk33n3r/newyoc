@@ -22,5 +22,15 @@ const config: {
         client_secret: string;
     };
     birthdayChannel: string;
+    firebase: {
+        projectId: string;
+        databaseURL: string;
+        storageBucket: string;
+        locationId: string;
+        apiKey: string;
+        authDomain: string;
+        messagingSenderId: string;
+        appId: string;
+    };
 } = require('configamajig')('./src/config');
 export default config;

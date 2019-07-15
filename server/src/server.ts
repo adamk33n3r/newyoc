@@ -12,6 +12,7 @@ const Table = require('cli-table');
 
 import { Socket } from './services/socket';
 import { Jobs } from './jobs';
+import config from './config';
 
 // routes
 import AppRouter from './api/router';
@@ -105,13 +106,14 @@ export class Server {
 
         // Firebase
         firebase.initializeApp({
-            "projectId": "slackquotes",
-            "databaseURL": "https://slackquotes.firebaseio.com",
-            "storageBucket": "slackquotes.appspot.com",
-            "locationId": "us-east1",
-            "apiKey": "AIzaSyCqJScpTauZfuH6McPWf8NaXh3femV8ZPE",
-            "authDomain": "slackquotes.firebaseapp.com",
-            "messagingSenderId": "945847236574"
+            projectId: config.firebase.projectId,
+            databaseURL: config.firebase.databaseURL,
+            storageBucket: config.firebase.storageBucket,
+            locationId: config.firebase.locationId,
+            apiKey: config.firebase.apiKey,
+            authDomain: config.firebase.authDomain,
+            messagingSenderId: config.firebase.messagingSenderId,
+            appId: config.firebase.appId,
         });
 
     }
