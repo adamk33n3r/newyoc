@@ -3,17 +3,17 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>yoc-server</title>
+	<title>Slack | yoc-server</title>
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<link rel="stylesheet" href="assets/css/main.css">
+	<link rel="stylesheet" href="../assets/css/main.css">
 </head>
 <body>
 <header>
 	<div class="tsd-page-toolbar">
 		<div class="container">
 			<div class="table-wrap">
-				<div class="table-cell" id="tsd-search" data-index="assets/js/search.js" data-base=".">
+				<div class="table-cell" id="tsd-search" data-index="../assets/js/search.js" data-base="..">
 					<div class="field">
 						<label for="tsd-search-field" class="tsd-widget search no-caption">Search</label>
 						<input id="tsd-search-field" type="text" />
@@ -22,7 +22,7 @@
 						<li class="state loading">Preparing search index...</li>
 						<li class="state failure">The search index is not available</li>
 					</ul>
-					<a href="index.html" class="title">yoc-server</a>
+					<a href="../index.html" class="title">yoc-server</a>
 				</div>
 				<div class="table-cell" id="tsd-widgets">
 					<div id="tsd-filter">
@@ -53,127 +53,128 @@
 		<div class="container">
 			<ul class="tsd-breadcrumb">
 				<li>
-					<a href="globals.html">Globals</a>
+					<a href="../globals.html">Globals</a>
+				</li>
+				<li>
+					<a href="../modules/_server_src_services_slack_.html">&quot;server/src/services/slack&quot;</a>
+				</li>
+				<li>
+					<a href="_server_src_services_slack_.slack.html">Slack</a>
 				</li>
 			</ul>
-			<h1> yoc-server</h1>
+			<h1>Class Slack</h1>
 		</div>
 	</div>
 </header>
 <div class="container container-main">
 	<div class="row">
 		<div class="col-8 col-content">
-			<div class="tsd-panel tsd-typography">
-				<h1 id="newyoc">Newyoc</h1>
-				<p>This project was generated with <a href="https://github.com/angular/angular-cli">angular-cli</a> version 1.0.0-beta.26.</p>
-				<h2 id="development-server">Development server</h2>
-				<p>Run <code>ng serve</code> for a dev server. Navigate to <code>http://localhost:4200/</code>. The app will automatically reload if you change any of the source files.</p>
-				<h2 id="code-scaffolding">Code scaffolding</h2>
-				<p>Run <code>ng generate component component-name</code> to generate a new component. You can also use <code>ng generate directive/pipe/service/class/module</code>.</p>
-				<h2 id="build">Build</h2>
-				<p>Run <code>ng build</code> to build the project. The build artifacts will be stored in the <code>dist/</code> directory. Use the <code>-prod</code> flag for a production build.</p>
-				<h2 id="running-unit-tests">Running unit tests</h2>
-				<p>Run <code>ng test</code> to execute the unit tests via <a href="https://karma-runner.github.io">Karma</a>.</p>
-				<h2 id="running-end-to-end-tests">Running end-to-end tests</h2>
-				<p>Run <code>ng e2e</code> to execute the end-to-end tests via <a href="http://www.protractortest.org/">Protractor</a>.
-				Before running the tests make sure you are serving the app via <code>ng serve</code>.</p>
-				<h2 id="deploying-to-github-pages">Deploying to GitHub Pages</h2>
-				<p>Run <code>ng github-pages:deploy</code> to deploy to GitHub Pages.</p>
-				<h2 id="further-help">Further help</h2>
-				<p>To get more help on the <code>angular-cli</code> use <code>ng help</code> or go check out the <a href="https://github.com/angular/angular-cli/blob/master/README.md">Angular-CLI README</a>.</p>
-			</div>
+			<section class="tsd-panel tsd-hierarchy">
+				<h3>Hierarchy</h3>
+				<ul class="tsd-hierarchy">
+					<li>
+						<span class="target">Slack</span>
+					</li>
+				</ul>
+			</section>
+			<section class="tsd-panel-group tsd-index-group">
+				<h2>Index</h2>
+				<section class="tsd-panel tsd-index-panel">
+					<div class="tsd-index-content">
+						<section class="tsd-index-section ">
+							<h3>Methods</h3>
+							<ul class="tsd-index-list">
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_server_src_services_slack_.slack.html#sendinvite" class="tsd-kind-icon">send<wbr>Invite</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_server_src_services_slack_.slack.html#sendmessage" class="tsd-kind-icon">send<wbr>Message</a></li>
+							</ul>
+						</section>
+					</div>
+				</section>
+			</section>
+			<section class="tsd-panel-group tsd-member-group ">
+				<h2>Methods</h2>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="sendinvite" class="tsd-anchor"></a>
+					<h3>send<wbr>Invite</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">send<wbr>Invite<span class="tsd-signature-symbol">(</span>token<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, email<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">request.RequestPromise</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/adamk33n3r/newyoc/blob/db837cc/server/src/services/slack.ts#L20">server/src/services/slack.ts:20</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>token: <span class="tsd-signature-type">string</span></h5>
+								</li>
+								<li>
+									<h5>email: <span class="tsd-signature-type">string</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">request.RequestPromise</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="sendmessage" class="tsd-anchor"></a>
+					<h3>send<wbr>Message</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">send<wbr>Message<span class="tsd-signature-symbol">(</span>url<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, payload<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">request.RequestPromise</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/adamk33n3r/newyoc/blob/db837cc/server/src/services/slack.ts#L4">server/src/services/slack.ts:4</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>url: <span class="tsd-signature-type">string</span></h5>
+								</li>
+								<li>
+									<h5>payload: <span class="tsd-signature-type">any</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">request.RequestPromise</span></h4>
+						</li>
+					</ul>
+				</section>
+			</section>
 		</div>
 		<div class="col-4 col-menu menu-sticky-wrap menu-highlight">
 			<nav class="tsd-navigation primary">
 				<ul>
 					<li class="globals  ">
-						<a href="globals.html"><em>Globals</em></a>
+						<a href="../globals.html"><em>Globals</em></a>
 					</li>
-					<li class="label tsd-is-external">
-						<span>Internals</span>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="modules/_server_index_.html">"server/index"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="modules/_server_listroutes_.html">"server/list<wbr>Routes"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="modules/_server_src_api_miner_.html">"server/src/api/miner"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="modules/_server_src_api_router_.html">"server/src/api/router"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="modules/_server_src_api_services_api_ai_.html">"server/src/api/services/api-<wbr>ai"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="modules/_server_src_api_services_index_.html">"server/src/api/services/index"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="modules/_server_src_api_services_slack_.html">"server/src/api/services/slack"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="modules/_server_src_api_services_stream_.html">"server/src/api/services/stream"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="modules/_server_src_api_services_teamspeak_.html">"server/src/api/services/teamspeak"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="modules/_server_src_config_index_.html">"server/src/config/index"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="modules/_server_src_decorators_routing_.html">"server/src/decorators/routing"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="modules/_server_src_decorators_util_.html">"server/src/decorators/util"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="modules/_server_src_interfaces_user_.html">"server/src/interfaces/user"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="modules/_server_src_jobs_index_.html">"server/src/jobs/index"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="modules/_server_src_logger_.html">"server/src/logger"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="modules/_server_src_models_model_.html">"server/src/models/model"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="modules/_server_src_models_user_.html">"server/src/models/user"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="modules/_server_src_schemas_user_.html">"server/src/schemas/user"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="modules/_server_src_server_.html">"server/src/server"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="modules/_server_src_services_slack_.html">"server/src/services/slack"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="modules/_server_src_services_socket_.html">"server/src/services/socket"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="modules/_server_src_services_teamspeak_.html">"server/src/services/teamspeak"</a>
-					</li>
-					<li class="label tsd-is-external">
-						<span>Externals</span>
-					</li>
-					<li class=" tsd-kind-external-module tsd-is-external">
-						<a href="modules/_shared_constants_sockets_chat_.html">"shared/constants/sockets/chat"</a>
-					</li>
-					<li class=" tsd-kind-external-module tsd-is-external">
-						<a href="modules/_shared_constants_sockets_index_.html">"shared/constants/sockets/index"</a>
-					</li>
-					<li class=" tsd-kind-external-module tsd-is-external">
-						<a href="modules/_shared_constants_sockets_stream_.html">"shared/constants/sockets/stream"</a>
+					<li class="current tsd-kind-external-module">
+						<a href="../modules/_server_src_services_slack_.html">"server/src/services/slack"</a>
 					</li>
 				</ul>
 			</nav>
 			<nav class="tsd-navigation secondary menu-sticky">
 				<ul class="before-current">
+				</ul>
+				<ul class="current">
+					<li class="current tsd-kind-class tsd-parent-kind-external-module">
+						<a href="_server_src_services_slack_.slack.html" class="tsd-kind-icon">Slack</a>
+						<ul>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="_server_src_services_slack_.slack.html#sendinvite" class="tsd-kind-icon">send<wbr>Invite</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="_server_src_services_slack_.slack.html#sendmessage" class="tsd-kind-icon">send<wbr>Message</a>
+							</li>
+						</ul>
+					</li>
+				</ul>
+				<ul class="after-current">
 				</ul>
 			</nav>
 		</div>
@@ -242,7 +243,7 @@
 	<p>Generated using <a href="http://typedoc.org/" target="_blank">TypeDoc</a></p>
 </div>
 <div class="overlay"></div>
-<script src="assets/js/main.js"></script>
-<script>if (location.protocol == 'file:') document.write('<script src="assets/js/search.js"><' + '/script>');</script>
+<script src="../assets/js/main.js"></script>
+<script>if (location.protocol == 'file:') document.write('<script src="../assets/js/search.js"><' + '/script>');</script>
 </body>
 </html>
