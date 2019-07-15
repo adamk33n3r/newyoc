@@ -9,7 +9,7 @@
     "moduleResolution": "node",
     "outDir": "./dist",
     "sourceMap": true,
-    "target": "es6",
+    "target": "es2017",
     "noImplicitAny": true,
     "typeRoots": [
       "./node_modules/@types"
