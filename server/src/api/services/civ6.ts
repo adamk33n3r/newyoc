@@ -15,7 +15,7 @@ class Civ6Controller {
         const playerName = req.body.value2;
         const turnNumber = req.body.value3;
 
-        this.slack.sendMessage(config.slack.webhook, {
+        this.slack.sendMessage(config.slack.clink.webhook, {
             channel: '#civ6turns',
             text: `It is now ${playerName}'s turn (${turnNumber}) in the game ${gameName}`,
         })
