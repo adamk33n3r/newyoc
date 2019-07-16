@@ -59,6 +59,7 @@ class SlackController {
                 res.json({ success: true, body: response.body });
             } else {
                 console.error(response);
+                res.status(500).send(response);
             }
         })
         .catch((err) => {
