@@ -6,4 +6,5 @@
 export const environment = {
     production: false,
     socketURI: 'localhost:3000',
+    slackTeamId: 'T0BGZQCER',
 };

@@ -29,6 +29,10 @@ const routes: Routes = [
         loadChildren: './stardew/stardew.module#StardewModule',
     },
     {
+        path: 'quotes',
+        loadChildren: './quotes/quotes.module#QuotesModule',
+    },
+    {
         path: '**',
         redirectTo: '/',
     },

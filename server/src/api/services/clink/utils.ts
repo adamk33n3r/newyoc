@@ -108,7 +108,7 @@ export function saveNewQuote(teamId: string, saidBy: string, quote: string, quot
     });
 }
 
-export function getQuotesBlocks(teamId: string, filteredUser?: string, page: number = 1) {
+export function getQuotesBlocks(teamId: string, shareChannel: string, filteredUser?: string, page: number = 1) {
     const countPerPage = 3;
     let query: firebase.firestore.Query = firebase.firestore().collection(`teams/${teamId}/quotes`)
         .orderBy('timestamp', 'desc')
@@ -138,7 +138,7 @@ export function getQuotesBlocks(teamId: string, filteredUser?: string, page: num
         const skip = (page - 1) * countPerPage;
 
         const mappedQuotes = quotes.slice(skip, skip + countPerPage).map((quote) => {
-            const quoteSection = buildQuoteSection(quote, true);
+            const quoteSection = buildQuoteSection(quote, shareChannel, true);
             quoteSection.push({ type: 'divider' });
             return quoteSection;
         });
@@ -228,7 +228,7 @@ export function getQuotesBlocks(teamId: string, filteredUser?: string, page: num
     });
 }
 
-export function buildQuoteSection(quote: IQuote, withAccessory: boolean = false): any[] {
+export function buildQuoteSection(quote: IQuote, channel: string, withAccessory: boolean = false): any[] {
     const ts = quote.timestamp.toDate();
     return [
         {
@@ -237,16 +237,16 @@ export function buildQuoteSection(quote: IQuote, withAccessory: boolean = false)
                 type: 'mrkdwn',
                 text: `*<@${quote.said_by}> said...*\n\n${quote.quote}`,
             },
-            accessory: {
+            accessory: withAccessory ? {
                 type: 'button',
                 text: {
                     type: 'plain_text',
-                    text: 'Share in Channel :outbox_tray:',
+                    text: `Share in #${channel} :outbox_tray:`,
                     emoji: true,
                 },
                 action_id: 'quotes:share',
                 value: quote.id,
-            },
+            } : undefined,
         },
         {
             type: 'context',

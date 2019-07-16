@@ -122,7 +122,7 @@ class SlackController {
     @POST()
     @VerifySlackSignature(config.slack.clink.secret)
     public quotes(req: Request, res: Response) {
-        getQuotesBlocks(req.body.team_id).then((blocks) => {
+        getQuotesBlocks(req.body.team_id, req.body.channel_name).then((blocks) => {
             res.send({
                 response_type: 'ephemeral',
                 blocks,

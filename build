@@ -14,6 +14,7 @@ build_server() {
   rm -r ~/projects/newyoc-dist/server/*
   cp -r dist/* ~/projects/newyoc-dist/server/
   cp src/config/default.json ~/projects/newyoc-dist/server/server/src/config/
+  cp ~/projects/local.json ~/projects/newyoc-dist/server/server/src/config/
   cp package.json yarn.lock ~/projects/newyoc-dist/server/server/
   popd
 }

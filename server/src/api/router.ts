@@ -1,8 +1,10 @@
 // Routes
-import services from './services';
-import miner from './miner';
-
 import { Router } from 'src/decorators/routing';
+import services from './services';
+
+import miner from './miner';
+import quotes from './quotes';
+
 @Router({
     path: '/api',
     routers: [
@@ -10,6 +12,7 @@ import { Router } from 'src/decorators/routing';
     ],
     controllers: [
         miner,
+        quotes,
     ],
 })
 class AppRouter {}

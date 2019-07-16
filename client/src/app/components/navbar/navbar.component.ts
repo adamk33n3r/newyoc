@@ -28,6 +28,11 @@ export class AppNavbarComponent {
             icon: 'ondemand_video',
         },
         {
+            name: 'Quotes',
+            path: '/quotes',
+            icon: 'format_quote',
+        },
+        {
             name: 'Stardew',
             path: '/stardew',
             icon: 'nature',

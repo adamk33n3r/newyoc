@@ -2,12 +2,12 @@
 <mat-dialog-content>
     <mat-list>
         <mat-list-item *ngFor='let prop of tileInfo'>
-            <mat-input-container *ngIf='prop.value | typeof: "number"'>
+            <mat-form-field *ngIf='prop.value | typeof: "number"'>
                 <input mdInput type='number' step='1' [placeholder]='prop.key | titleize' [(ngModel)]='prop.value' />
-            </mat-input-container>
-            <mat-input-container *ngIf='prop.value | typeof: "string"'>
+            </mat-form-field>
+            <mat-form-field *ngIf='prop.value | typeof: "string"'>
                 <input mdInput type='text' [placeholder]='prop.key | titleize' [(ngModel)]='prop.value' />
-            </mat-input-container>
+            </mat-form-field>
             <mat-slide-toggle *ngIf='prop.value | typeof: "boolean"'
                 color='primary'
                 [(ngModel)]='prop.value'
@@ -16,12 +16,12 @@
             </mat-slide-toggle>
             <div *ngIf='isVector(prop)'>
                 <div>{{ prop.key | titleize }}</div>
-                <mat-input-container>
+                <mat-form-field>
                     <input mdInput type='number' step='1' placeholder='X' [(ngModel)]='prop.value.x' />
-                </mat-input-container>
-                <mat-input-container>
+                </mat-form-field>
+                <mat-form-field>
                     <input mdInput type='number' step='1' placeholder='Y' [(ngModel)]='prop.value.y' />
-                </mat-input-container>
+                </mat-form-field>
             </div>
         </mat-list-item>
     </mat-list>

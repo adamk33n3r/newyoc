@@ -12,14 +12,14 @@
     </object>
 
     <div class='chat' *ngIf='false'>
-        <mat-input-container class='w100p'>
+        <mat-form-field class='w100p'>
             <textarea matInput
                 placeholder='Send a message'
                 [(ngModel)]='text'
                 (keypress)='sendChat($event)'
                 [disabled]='!currentPlaylist'
             ></textarea>
-        </mat-input-container>
+        </mat-form-field>
         <mat-list dense>
             <div class='message' *ngFor='let message of messages'>
                 <mat-list-item>
