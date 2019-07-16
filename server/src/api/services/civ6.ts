@@ -9,6 +9,7 @@ class Civ6Controller {
     private slack = new Slack();
 
     @POST('/')
+    @GET('/')
     public index(req: Request, res: Response) {
         const gameName = req.body.value1;
         const playerName = req.body.value2;
@@ -16,7 +17,7 @@ class Civ6Controller {
 
         this.slack.sendMessage(config.slack.webhook, {
             channel: '#civ6turns',
-            text: `It is now ${playerName}'s turn (${turnNumber}) in ${gameName}`,
+            text: `It is now ${playerName}'s turn (${turnNumber}) in the game ${gameName}`,
         })
         .then((response) => {
             if (response.body === 'ok') {
