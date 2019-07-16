@@ -5,13 +5,14 @@ import * as logger from 'morgan';
 import * as path from 'path';
 import * as errorHandler from 'errorhandler';
 import * as methodOverride from 'method-override';
-import * as mongoose from 'mongoose';
+import * as firebase from 'firebase';
 import 'reflect-metadata';
 
 const Table = require('cli-table');
 
 import { Socket } from './services/socket';
 import { Jobs } from './jobs';
+import config from './config';
 
 // routes
 import AppRouter from './api/router';
@@ -70,10 +71,14 @@ export class Server {
         this.app.use(logger('dev'));
 
         // Mount json form parser
-        this.app.use(bodyParser.json());
+        // this.app.use(bodyParser.json());
+        this.app.use(bodyParser.json({
+            verify(req, res, buf) { (req as any).rawBody = buf.toString(); },
+        }));
 
         // Mount query string parser
         this.app.use(bodyParser.urlencoded({
+            verify(req, res, buf) { (req as any).rawBody = buf.toString(); },
             extended: true,
         }));
 
@@ -82,15 +87,6 @@ export class Server {
 
         // Mount override
         this.app.use(methodOverride());
-
-        // Use native promises
-        (<any> mongoose).Promise = Promise;
-
-        // Connect to mongoose
-        // const connection: mongoose.Connection = mongoose.createConnection(Server.MONGODB_CONNECTION);
-
-        // Create models
-        // this.model.user = connection.model<IUserModel>('User', userSchema);
 
         // Catch 404 and forward to error handler
         this.app.use((err: any, req: express.Request, res: express.Response, next: express.NextFunction) => {
@@ -107,6 +103,19 @@ export class Server {
         if (socket) {
             Jobs.init();
         }
+
+        // Firebase
+        firebase.initializeApp({
+            projectId: config.firebase.projectId,
+            databaseURL: config.firebase.databaseURL,
+            storageBucket: config.firebase.storageBucket,
+            locationId: config.firebase.locationId,
+            apiKey: config.firebase.apiKey,
+            authDomain: config.firebase.authDomain,
+            messagingSenderId: config.firebase.messagingSenderId,
+            appId: config.firebase.appId,
+        });
+
     }
 
     public printRoutes() {

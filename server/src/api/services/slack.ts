@@ -1,19 +1,28 @@
 import { Request, Response } from 'express';
+import * as firebase from 'firebase/app';
+import 'firebase/firestore';
 
-import { Controller, GET, POST } from 'src/decorators/routing';
-import { CheckToken, Required } from 'src/decorators/util';
+import { Controller, POST } from 'src/decorators/routing';
+import { Required, VerifySlackSignature } from 'src/decorators/util';
 
 import { TeamSpeak } from 'src/services/teamspeak';
 import { Slack } from 'src/services/slack';
 import config from 'src/config';
 
+import { ISlackInteraction, IQuote } from './clink/types';
+import { launchQuoteDialog, getQuotesBlocks } from './clink/utils';
+import { handleMessageAction } from './clink/interactive/message_action';
+import { handleDialogSubmission } from './clink/interactive/dialog_submission';
+import { handleBlockActions } from './clink/interactive/block_actions';
+
 @Controller('/slack')
 class SlackController {
     private slack = new Slack();
 
-    @GET()
+    @POST()
+    @VerifySlackSignature(config.slack.clink.secret)
     public status(req: Request, res: Response) {
-        const ts = this.initTeamSpeak();
+        const ts = new TeamSpeak(config.teamspeak.url);
         ts.login(config.teamspeak.username, config.teamspeak.password)
         .then(() => {
             ts.getOnlineClients()
@@ -41,7 +50,7 @@ class SlackController {
 
     @POST()
     public sendMessage(req: Request, res: Response) {
-        this.slack.sendMessage(config.slack.webhook, {
+        this.slack.sendMessage(config.slack.clink.webhook, {
             channel: req.body.channel || '#tcpi',
             text: req.body.text || 'No text provided',
         })
@@ -61,7 +70,7 @@ class SlackController {
 
     @POST()
     @Required('text')
-    @CheckToken('LwPEBbxlGiNTXzXG7Ag92Efo')
+    @VerifySlackSignature(config.slack.clink.secret)
     public roll(req: Request, res: Response) {
         const sides = req.body.text.split(' ')[0];
         if (sides) {
@@ -79,21 +88,8 @@ class SlackController {
     }
 
     @POST()
-    @CheckToken('HEiSGKnFX8aGHXezPxnER2Mg')
-    public lenny(req: Request, res: Response) {
-        res.send({
-            response_type: 'in_channel',
-            text: ' ',
-        });
-    }
-
-    @POST()
     @Required('email')
     public sendInvite(req: Request, res: Response) {
-        if (!this.slack) {
-            console.error(this.slack);
-            return res.send(500, 'uh');
-        }
         this.slack.sendInvite(config.slack.token, req.body.email)
         .then((response) => {
             const body = JSON.parse(response.body);
@@ -110,9 +106,69 @@ class SlackController {
         });
     }
 
-    private initTeamSpeak(): TeamSpeak {
-        return new TeamSpeak(config.teamspeak.url);
+    @POST()
+    @Required('text')
+    @VerifySlackSignature(config.slack.clink.secret)
+    public quote(req: Request, res: Response) {
+        const text: string = req.body.text;
+        const splits = text.split(' ');
+        const matches = splits[0].match(/^<@(\w+)(?:\|(.+?))?>/);
+        const saidBy = matches ? matches[1] : undefined;
+        const quote = splits.slice(1).join(' ');
+
+        launchQuoteDialog(req.body.trigger_id, new Date(), saidBy, quote);
+        res.send();
     }
+
+    @POST()
+    @VerifySlackSignature(config.slack.clink.secret)
+    public quotes(req: Request, res: Response) {
+        getQuotesBlocks(req.body.team_id).then((blocks) => {
+            res.send({
+                response_type: 'ephemeral',
+                blocks,
+            });
+        });
+    }
+
+    @POST()
+    @VerifySlackSignature(config.slack.clink.secret)
+    public randomQuote(req: Request, res: Response) {
+        const teamId = req.body.team_id;
+        firebase.firestore().collection(`teams/${teamId}/quotes`).get().then((query) => {
+            const randIdx = Math.floor(Math.random() * query.size);
+            const quote = query.docs[randIdx].data() as IQuote;
+
+            res.send({
+                response_type: 'in_channel',
+                text: `<@${quote.said_by}>: ${quote.quote}`,
+            });
+        });
+    }
+
+    @POST()
+    @Required('payload')
+    @VerifySlackSignature(config.slack.clink.secret)
+    public interactive(req: Request, res: Response) {
+        const payload = JSON.parse(req.body.payload) as ISlackInteraction;
+
+        switch (payload.type) {
+            case 'message_action':
+                handleMessageAction(payload);
+                break;
+            case 'dialog_submission':
+                handleDialogSubmission(payload);
+                break;
+            case 'block_actions':
+                handleBlockActions(payload);
+                break;
+            default:
+                break;
+        }
+
+        res.send();
+    }
+
 }
 
 export default new SlackController();
