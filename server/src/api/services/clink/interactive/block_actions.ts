@@ -28,7 +28,8 @@ export function handleBlockActions(payload: ISlackInteractionBlockActions) {
                     const [id, pageNumber, selectedUser] = action.value.split(',');
                     firebase.firestore().collection(`teams/${payload.team.id}/quotes`).doc(id).delete()
                     .then(() => {
-                        getQuotesBlocks(payload.team.id, payload.channel.name, selectedUser, +pageNumber).then((blocks) => {
+                        getQuotesBlocks(payload.team.id, payload.channel.name, payload.user.id, selectedUser, +pageNumber)
+                        .then((blocks) => {
                             request.post(payload.response_url, {
                                 json: {
                                     replace_original: true,
@@ -41,7 +42,8 @@ export function handleBlockActions(payload: ISlackInteractionBlockActions) {
                 }
                 case 'quotes:next': {
                     const [pageNumber, selectedUser] = action.value.split(',');
-                    getQuotesBlocks(payload.team.id, payload.channel.name, selectedUser, +pageNumber + 1).then((blocks) => {
+                    getQuotesBlocks(payload.team.id, payload.channel.name, payload.user.id, selectedUser, +pageNumber + 1)
+                    .then((blocks) => {
                         request.post(payload.response_url, {
                             json: {
                                 replace_original: true,
@@ -53,7 +55,8 @@ export function handleBlockActions(payload: ISlackInteractionBlockActions) {
                 }
                 case 'quotes:prev': {
                     const [pageNumber, selectedUser] = action.value.split(',');
-                    getQuotesBlocks(payload.team.id, payload.channel.name, selectedUser, +pageNumber - 1).then((blocks) => {
+                    getQuotesBlocks(payload.team.id, payload.channel.name, payload.user.id, selectedUser, +pageNumber - 1)
+                    .then((blocks) => {
                         request.post(payload.response_url, {
                             json: {
                                 replace_original: true,
@@ -71,7 +74,7 @@ export function handleBlockActions(payload: ISlackInteractionBlockActions) {
                     });
                     break;
                 case 'quotes:filter:said_by:clear':
-                    getQuotesBlocks(payload.team.id, payload.channel.name).then((blocks) => {
+                    getQuotesBlocks(payload.team.id, payload.channel.name, payload.user.id).then((blocks) => {
                         request.post(payload.response_url, {
                             json: {
                                 replace_original: true,
