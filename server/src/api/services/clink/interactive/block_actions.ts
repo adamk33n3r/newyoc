@@ -4,6 +4,7 @@ import 'firebase/firestore';
 
 import { ISlackInteractionBlockActions, IQuote } from '../types';
 import { getQuotesBlocks, buildQuoteSection } from '../utils';
+import config from 'src/config';
 
 export function handleBlockActions(payload: ISlackInteractionBlockActions) {
     const action = payload.actions[0];
@@ -93,8 +94,49 @@ export function handleBlockActions(payload: ISlackInteractionBlockActions) {
                     const [subAction, id] = action.selected_option.value.split(',');
                     switch (subAction) {
                         case 'share':
+                            firebase.firestore().collection(`teams/${payload.team.id}/quotes`).doc(action.value).get()
+                            .then((quoteSnap) => {
+                                const quote = quoteSnap.data() as IQuote;
+                                request.post(payload.response_url, {
+                                    json: {
+                                        delete_original: true,
+                                        response_type: 'in_channel',
+                                        text: quote,
+                                        blocks: buildQuoteSection(quote, payload.channel.name),
+                                    },
+                                });
+                            });
                             break;
                         case 'delete':
+                            const dialogObj = {
+                                trigger_id: payload.trigger_id,
+                                dialog: {
+                                    callback_id: 'quote:delete',
+                                    title: 'Delete Confirmation',
+                                    submit_label: 'Confirm',
+                                    // notify_on_cancel: true,
+                                    state: action.selected_option.value.replace('delete,', ''),
+                                    elements: [
+                                        {
+                                            type: 'text',
+                                            label: 'Verify',
+                                            name: 'verify',
+                                            value: '',
+                                            placeholder: 'Type in RHUBARB',
+                                        },
+                                    ] as any[],
+                                },
+                            };
+                            request.post('https://slack.com/api/dialog.open', {
+                                headers: {
+                                    'Authorization': 'Bearer ' + config.slack.clink.token,
+                                },
+                                json: dialogObj,
+                            }).then((res) => {
+                                console.log(res);
+                            }).catch((err) => {
+                                console.error(err);
+                            });
                             break;
                         default:
                             break;

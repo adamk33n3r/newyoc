@@ -63,10 +63,9 @@ export function launchQuoteDialog(triggerId: string, timestamp: Date, saidBy?: s
     const dialogObj = {
         trigger_id: triggerId,
         dialog: {
-            callback_id: 'quote',
+            callback_id: 'quote:create',
             title: randomArrayElement(titles),
             submit_label: 'Confirm',
-            // notify_on_cancel: true,
             state: timestamp.getTime(),
             elements: [
                 {
@@ -114,7 +113,7 @@ export function getQuotesBlocks(
     callingUser: string,
     filteredUser?: string,
     page: number = 1,
-    countPerPage: number = 2,
+    countPerPage: number = 3,
 ) {
     let query: firebase.firestore.Query = firebase.firestore().collection(`teams/${teamId}/quotes`)
         .orderBy('timestamp', 'desc')
@@ -247,94 +246,38 @@ export function buildQuoteSection(quote: IQuote, channel: string, withOptions: b
                 type: 'mrkdwn',
                 text: `*<@${quote.said_by}> said...*\n\n${quote.quote}`,
             },
-            // accessory: withOptions ? {
-            //     type: 'overflow',
-            //     action_id: 'quotes:overflow',
-            //     confirm: {
-            //         title: {
-            //             type: 'plain_text',
-            //             text: 'Confirmation',
-            //             emoji: true,
-            //         },
-            //         text: {
-            //             type: 'plain_text',
-            //             text: 'Are you sure?',
-            //             emoji: true,
-            //         },
-            //         confirm: {
-            //             type: 'plain_text',
-            //             text: 'Yes',
-            //             emoji: true,
-            //         },
-            //         deny: {
-            //             type: 'plain_text',
-            //             text: 'Cancel',
-            //             emoji: true,
-            //         },
-            //     },
-            //     options: [
-            //         {
-            //             text: {
-            //                 type: 'plain_text',
-            //                 text: `:outbox_tray: Share in #${channel}`,
-            //                 emoji: true,
-            //             },
-            //             value: `share,${quote.id}`,
-            //         },
-            //         {
-            //             text: {
-            //                 type: 'plain_text',
-            //                 text: `:wastebasket: Delete`,
-            //                 emoji: true,
-            //             },
-            //             value: `delete,${quote.id}`,
-            //         },
-            //     ],
-            // } : undefined,
-        },
-        (withOptions ? {
-            type: 'actions',
-            elements: [
-                {
-                    type: 'button',
-                    text: {
-                        type: 'plain_text',
-                        text: `:outbox_tray: Share in #${channel}`,
-                        emoji: true,
-                    },
-                    action_id: 'quotes:share',
-                    value: quote.id,
-                },
-                (quote.quoted_by === callingUser ? {
-                    type: 'button',
-                    text: {
-                        type: 'plain_text',
-                        text: ':wastebasket: Delete',
-                        emoji: true,
-                    },
-                    style: 'danger',
-                    action_id: 'quotes:delete',
-                    value: [quote.id, page, filteredUser].join(','),
-                    confirm: {
-                        title: {
-                            type: 'plain_text',
-                            text: 'Delete Confirmation',
-                            emoji: true,
-                        },
+            accessory: withOptions ? (quote.quoted_by === callingUser ? {
+                type: 'overflow',
+                action_id: 'quotes:overflow',
+                options: [
+                    {
                         text: {
                             type: 'plain_text',
-                            text: 'Are you sure you want to delete this quote?',
+                            text: `:outbox_tray: Share in #${channel}`,
                             emoji: true,
                         },
-                        confirm: {
-                            type: 'plain_text',
-                            text: 'DELETE',
-                            emoji: true,
-                        }
+                        value: `share,${quote.id}`,
                     },
-                } : undefined),
-            ].filter((obj) => obj),
-        } : undefined),
+                    {
+                        text: {
+                            type: 'plain_text',
+                            text: `:wastebasket: Delete`,
+                            emoji: true,
+                        },
+                        value: ['delete', quote.id, page, filteredUser].join(','),
+                    },
+                ],
+            } : {
+                type: 'button',
+                text: {
+                    type: 'plain_text',
+                    text: `:outbox_tray: Share in #${channel}`,
+                    emoji: true,
+                },
+                action_id: 'quotes:share',
+                value: quote.id,
+            }) : undefined,
+        },
         {
             type: 'context',
             elements: [
@@ -348,5 +291,5 @@ export function buildQuoteSection(quote: IQuote, channel: string, withOptions: b
                 },
             ],
         },
-    ].filter((obj) => obj);
+    ];
 }

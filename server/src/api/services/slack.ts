@@ -153,18 +153,19 @@ class SlackController {
         switch (payload.type) {
             case 'message_action':
                 handleMessageAction(payload);
+                res.send();
                 break;
             case 'dialog_submission':
-                handleDialogSubmission(payload);
+                handleDialogSubmission(payload, res);
                 break;
             case 'block_actions':
                 handleBlockActions(payload);
+                res.send();
                 break;
             default:
+                res.send();
                 break;
         }
-
-        res.send();
     }
 
 }
