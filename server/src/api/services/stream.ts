@@ -3,12 +3,12 @@ import { Request, Response } from 'express';
 import { Controller, POST } from 'src/decorators/routing';
 import { CheckToken, Required } from 'src/decorators/util';
 
-import { Slack } from 'src/services/slack';
+import { Clink } from 'src/services/clink';
 import config from 'src/config';
 
 @Controller('/stream')
 class StreamController {
-    private slack = new Slack();
+    private clink = new Clink();
 
     @POST('/')
     public index(req: Request, res: Response) {
@@ -23,10 +23,10 @@ class StreamController {
                 if (typeof silent === 'undefined' || silent === null) {
                     const who = req.body.who || 'Someone';
                     const title = req.body.title || 'something';
-                    this.slack.sendMessage(config.slack.webhook, {
-                        channel: channel || '#random',
-                        text: `${who} started streaming *${title}*!\nCome join the party: https://yoc.gg/stream\nChat in #stream`,
-                    });
+                    this.clink.sendMessage(
+                        channel || '#random',
+                        `${who} started streaming *${title}*!\nCome join the party: https://yoc.gg/stream\nChat in #stream`,
+                    );
                 }
                 break;
             default: break;

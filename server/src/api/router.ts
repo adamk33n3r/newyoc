@@ -2,7 +2,6 @@
 import { Router } from 'src/decorators/routing';
 import services from './services';
 
-import miner from './miner';
 import quotes from './quotes';
 
 @Router({
@@ -11,7 +10,6 @@ import quotes from './quotes';
         services,
     ],
     controllers: [
-        miner,
         quotes,
     ],
 })

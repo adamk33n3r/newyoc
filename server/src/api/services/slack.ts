@@ -6,7 +6,7 @@ import { Controller, POST } from 'src/decorators/routing';
 import { Required, VerifySlackSignature } from 'src/decorators/util';
 
 import { TeamSpeak } from 'src/services/teamspeak';
-import { Slack } from 'src/services/slack';
+import { Clink } from 'src/services/clink';
 import config from 'src/config';
 
 import { ISlackInteraction, IQuote } from './clink/types';
@@ -17,7 +17,7 @@ import { handleBlockActions } from './clink/interactive/block_actions';
 
 @Controller('/slack')
 class SlackController {
-    private slack = new Slack();
+    private clink = new Clink();
 
     @POST()
     @VerifySlackSignature(config.slack.clink.secret)
@@ -50,12 +50,10 @@ class SlackController {
 
     @POST()
     public sendMessage(req: Request, res: Response) {
-        this.slack.sendMessage(config.slack.clink.webhook, {
-            channel: req.body.channel || '#tcpi',
-            text: req.body.text || 'No text provided',
-        })
+        this.clink.sendMessage(req.body.channel || '#tcpi', req.body.text || 'No text provided')
         .then((response) => {
-            if (response.body === 'ok') {
+            console.log(response);
+            if (response.ok) {
                 res.json({ success: true, body: response.body });
             } else {
                 console.error(response);
@@ -90,7 +88,7 @@ class SlackController {
     @POST()
     @Required('email')
     public sendInvite(req: Request, res: Response) {
-        this.slack.sendInvite(config.slack.token, req.body.email)
+        this.clink.sendInvite(config.slack.token, req.body.email)
         .then((response) => {
             const body = JSON.parse(response.body);
             if (body.ok) {

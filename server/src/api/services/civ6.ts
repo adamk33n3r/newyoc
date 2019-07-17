@@ -1,12 +1,12 @@
 import { Request, Response } from 'express';
 
 import { Controller, GET, POST } from 'src/decorators/routing';
-import { Slack } from 'src/services/slack';
+import { Clink } from 'src/services/clink';
 import config from 'src/config';
 
 @Controller('/civ6')
 class Civ6Controller {
-    private slack = new Slack();
+    private slack = new Clink();
 
     @POST('/')
     @GET('/')
@@ -15,12 +15,9 @@ class Civ6Controller {
         const playerName = req.body.value2;
         const turnNumber = req.body.value3;
 
-        this.slack.sendMessage(config.slack.clink.webhook, {
-            channel: '#civ6turns',
-            text: `It is now ${playerName}'s turn (${turnNumber}) in the game ${gameName}`,
-        })
+        this.slack.sendMessage('#civ6turns', `It is now ${playerName}'s turn (${turnNumber}) in the game ${gameName}`)
         .then((response) => {
-            if (response.body === 'ok') {
+            if (response.ok) {
                 res.json({ success: true, body: response.body});
             } else {
                 console.error(response);

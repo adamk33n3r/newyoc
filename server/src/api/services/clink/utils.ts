@@ -108,8 +108,7 @@ export function saveNewQuote(teamId: string, saidBy: string, quote: string, quot
     });
 }
 
-export function getQuotesBlocks(teamId: string, shareChannel: string, filteredUser?: string, page: number = 1) {
-    const countPerPage = 3;
+export function getQuotesBlocks(teamId: string, shareChannel: string, filteredUser?: string, page: number = 1, countPerPage: number = 2) {
     let query: firebase.firestore.Query = firebase.firestore().collection(`teams/${teamId}/quotes`)
         .orderBy('timestamp', 'desc')
     ;
@@ -138,7 +137,7 @@ export function getQuotesBlocks(teamId: string, shareChannel: string, filteredUs
         const skip = (page - 1) * countPerPage;
 
         const mappedQuotes = quotes.slice(skip, skip + countPerPage).map((quote) => {
-            const quoteSection = buildQuoteSection(quote, shareChannel, true);
+            const quoteSection = buildQuoteSection(quote, shareChannel, true, page, filteredUser);
             quoteSection.push({ type: 'divider' });
             return quoteSection;
         });
@@ -168,7 +167,7 @@ export function getQuotesBlocks(teamId: string, shareChannel: string, filteredUs
                         type: 'button',
                         text: {
                             type: 'plain_text',
-                            text: 'Clear :no_entry_sign:',
+                            text: ':no_entry_sign: Clear',
                             emoji: true,
                         },
                         action_id: 'quotes:filter:said_by:clear',
@@ -194,7 +193,7 @@ export function getQuotesBlocks(teamId: string, shareChannel: string, filteredUs
                         type: 'button',
                         text: {
                             type: 'plain_text',
-                            text: ':arrow_left: Prev',
+                            text: '<< Prev',
                             emoji: true,
                         },
                         action_id: 'quotes:prev',
@@ -204,7 +203,7 @@ export function getQuotesBlocks(teamId: string, shareChannel: string, filteredUs
                         type: 'button',
                         text: {
                             type: 'plain_text',
-                            text: 'Next :arrow_right:',
+                            text: 'Next >>',
                             emoji: true,
                         },
                         action_id: 'quotes:next',
@@ -228,7 +227,10 @@ export function getQuotesBlocks(teamId: string, shareChannel: string, filteredUs
     });
 }
 
-export function buildQuoteSection(quote: IQuote, channel: string, withAccessory: boolean = false): any[] {
+export function buildQuoteSection(quote: IQuote, channel: string, withOptions: true, page: number, filteredUser: string): any[];
+export function buildQuoteSection(quote: IQuote, channel: string, withOptions?: false): any[];
+// tslint:disable-next-line: max-line-length
+export function buildQuoteSection(quote: IQuote, channel: string, withOptions: boolean = false, page?: number, filteredUser?: string): any[] {
     const ts = quote.timestamp.toDate();
     return [
         {
@@ -237,17 +239,94 @@ export function buildQuoteSection(quote: IQuote, channel: string, withAccessory:
                 type: 'mrkdwn',
                 text: `*<@${quote.said_by}> said...*\n\n${quote.quote}`,
             },
-            accessory: withAccessory ? {
-                type: 'button',
-                text: {
-                    type: 'plain_text',
-                    text: `Share in #${channel} :outbox_tray:`,
-                    emoji: true,
-                },
-                action_id: 'quotes:share',
-                value: quote.id,
-            } : undefined,
+            // accessory: withOptions ? {
+            //     type: 'overflow',
+            //     action_id: 'quotes:overflow',
+            //     confirm: {
+            //         title: {
+            //             type: 'plain_text',
+            //             text: 'Confirmation',
+            //             emoji: true,
+            //         },
+            //         text: {
+            //             type: 'plain_text',
+            //             text: 'Are you sure?',
+            //             emoji: true,
+            //         },
+            //         confirm: {
+            //             type: 'plain_text',
+            //             text: 'Yes',
+            //             emoji: true,
+            //         },
+            //         deny: {
+            //             type: 'plain_text',
+            //             text: 'Cancel',
+            //             emoji: true,
+            //         },
+            //     },
+            //     options: [
+            //         {
+            //             text: {
+            //                 type: 'plain_text',
+            //                 text: `:outbox_tray: Share in #${channel}`,
+            //                 emoji: true,
+            //             },
+            //             value: `share,${quote.id}`,
+            //         },
+            //         {
+            //             text: {
+            //                 type: 'plain_text',
+            //                 text: `:wastebasket: Delete`,
+            //                 emoji: true,
+            //             },
+            //             value: `delete,${quote.id}`,
+            //         },
+            //     ],
+            // } : undefined,
         },
+        (withOptions ? {
+            type: 'actions',
+            elements: [
+                {
+                    type: 'button',
+                    text: {
+                        type: 'plain_text',
+                        text: `:outbox_tray: Share in #${channel}`,
+                        emoji: true,
+                    },
+                    action_id: 'quotes:share',
+                    value: quote.id,
+                },
+                {
+                    type: 'button',
+                    text: {
+                        type: 'plain_text',
+                        text: ':wastebasket: Delete',
+                        emoji: true,
+                    },
+                    style: 'danger',
+                    action_id: 'quotes:delete',
+                    value: [quote.id, page, filteredUser].join(','),
+                    confirm: {
+                        title: {
+                            type: 'plain_text',
+                            text: 'Delete Confirmation',
+                            emoji: true,
+                        },
+                        text: {
+                            type: 'plain_text',
+                            text: 'Are you sure you want to delete this quote?',
+                            emoji: true,
+                        },
+                        confirm: {
+                            type: 'plain_text',
+                            text: 'DELETE',
+                            emoji: true,
+                        }
+                    },
+                },
+            ],
+        } : undefined),
         {
             type: 'context',
             elements: [
@@ -261,5 +340,5 @@ export function buildQuoteSection(quote: IQuote, channel: string, withAccessory:
                 },
             ],
         },
-    ];
+    ].filter((obj) => obj);
 }

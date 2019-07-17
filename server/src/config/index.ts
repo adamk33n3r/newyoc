@@ -5,14 +5,9 @@ const config: {
         username: string;
         password: string;
     };
-    coinhive: {
-        secret: string;
-    };
     slack: {
         token: string;
-        webhook: string;
         clink: {
-            webhook: string;
             secret: string;
             token: string;
         };

@@ -5,7 +5,7 @@ import 'firebase/firestore';
 import { Controller, GET } from 'src/decorators/routing';
 import { Required } from 'src/decorators/util';
 import { IQuote } from './services/clink/types';
-import { Slack } from 'src/services/slack';
+import { Clink } from 'src/services/clink';
 
 @Controller('/quotes')
 class QuotesController {
@@ -20,10 +20,10 @@ class QuotesController {
             query = query.where('said_by', '==', req.query.user);
         }
 
-        const slack = new Slack();
+        const clink = new Clink();
 
         query.get().then((quotes) => {
-            slack.getAllUsers().then((users) => {
+            clink.getAllUsers().then((users) => {
                 if (users.ok) {
                     const members = users.members as any[];
                     res.json(quotes.docs.map((qSnap) => {

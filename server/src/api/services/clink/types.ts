@@ -1,3 +1,19 @@
+interface ITextBase {
+    type: string;
+    text: string;
+}
+interface ITextPlain extends ITextBase {
+    type: 'plain_text';
+    emoji: boolean;
+}
+interface ITextMarkdown extends ITextBase {
+    type: 'mrkdwn';
+}
+type IText = ITextPlain | ITextMarkdown;
+interface IOption {
+    text: IText;
+    value: string;
+}
 interface ISlackInteractionBase {
     token: string;
     callback_id: string;
@@ -46,6 +62,10 @@ interface ISlackInteractionBlockActionButton extends ISlackInteractionBlockActio
     type: 'button';
     value: string;
 }
+interface ISlackInteractionBlockActionOverflow extends ISlackInteractionBlockAction {
+    type: 'overflow';
+    selected_option: IOption;
+}
 interface ISlackInteractionBlockActionUserSelect extends ISlackInteractionBlockAction {
     type: 'users_select';
     selected_user: string;
@@ -53,7 +73,7 @@ interface ISlackInteractionBlockActionUserSelect extends ISlackInteractionBlockA
 export interface ISlackInteractionBlockActions extends ISlackInteractionBase {
     type: 'block_actions';
     container: { type: string };
-    actions: Array<ISlackInteractionBlockActionButton | ISlackInteractionBlockActionUserSelect>;
+    actions: Array<ISlackInteractionBlockActionButton | ISlackInteractionBlockActionOverflow | ISlackInteractionBlockActionUserSelect>;
 }
 
 export type ISlackInteraction = ISlackInteractionAction |
