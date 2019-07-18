@@ -22,7 +22,9 @@ build server:
   script:
     - cd server
     - npm install
-    - ./node_modules.bin/tsc -p tsconfig-prod.json
+    - ls node_modules
+    - ls node_modules/.bin
+    - ./node_modules/.bin/tsc -p tsconfig-prod.json
     - cp package.json dist/server/package.json
     - cp src/config/default.json dist/server/src/config/default.json
   artifacts:
