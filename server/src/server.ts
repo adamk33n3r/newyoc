@@ -136,7 +136,8 @@ export class Server {
         const router: express.Router = Reflect.getMetadata('$router.router', AppRouter);
         const routePath: string = Reflect.getMetadata('$router.path', AppRouter);
         this.app.use(routePath, router);
-        const pathToClient = path.join(__dirname, '../../../client/src');
+        // This static path is only used in production
+        const pathToClient = path.join(__dirname, '../../../../client/dist');
         this.app.use(express.static(pathToClient));
         // tslint:disable-next-line
         this.app.get('*', function catchAll(req, res) {
