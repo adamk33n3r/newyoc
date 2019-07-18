@@ -1,4 +1,4 @@
-image: node
+image: node:8.10.0
 
 before_script:
   - npm install -g @angular/cli
@@ -11,7 +11,7 @@ build client:
   stage: build
   script:
     - cd client
-    - npm install
+    - yarn install --frozen-lockfile
     - ng build --prod
   artifacts:
     paths:
@@ -21,9 +21,7 @@ build server:
   stage: build
   script:
     - cd server
-    - npm install
-    - ls node_modules
-    - ls node_modules/.bin
+    - yarn install --frozen-lockfile
     - ./node_modules/.bin/tsc -p tsconfig-prod.json
     - cp package.json dist/server/package.json
     - cp src/config/default.json dist/server/src/config/default.json
