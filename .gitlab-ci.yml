@@ -1,7 +1,6 @@
 image: node:8.10.0
 
 before_script:
-  - npm install -g @angular/cli
   - 'which ssh-agent || ( apt-get update -y && apt-get install openssh-client -y )'
   - mkdir -p ~/.ssh
   - eval $(ssh-agent -s)
@@ -17,7 +16,7 @@ build client:
   script:
     - cd client
     - yarn install --frozen-lockfile
-    - ng build --prod
+    - yarn ng build --prod
   artifacts:
     paths:
       - client/dist/
