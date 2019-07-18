@@ -2,8 +2,10 @@ image: node:8.10.0
 
 before_script:
   - 'which ssh-agent || ( apt-get update -y && apt-get install openssh-client -y )'
-  - mkdir -p ~/.ssh
   - eval $(ssh-agent -s)
+  - echo "$DEPLOY_PRIVATE_KEY" | tr -d '\r' | ssh-add - > /dev/null
+  - mkdir -p ~/.ssh
+  - chmod 700 ~/.ssh
   - '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
 
 
@@ -39,7 +41,6 @@ deploy:
     - master
   script:
     - ls
-    - ssh-add "$DEPLOY_PRIVATE_KEY"
     - ssh yoc@yoc.gg "curl -L --output client_artifacts.zip 'https://gitlab.com/adamk33n3r/newyoc/-/jobs/artifacts/$CI_COMMIT_REF_NAME/download?job=build%20client'"
     - ssh yoc@yoc.gg "curl -L --output server_artifacts.zip 'https://gitlab.com/adamk33n3r/newyoc/-/jobs/artifacts/$CI_COMMIT_REF_NAME/download?job=build%20server'"
     - ssh yoc@yoc.gg "mkdir _tmp"
