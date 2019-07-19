@@ -43,11 +43,11 @@ deploy:
     - ls
     - ssh yoc@yoc.gg "curl -L --output client_artifacts.zip 'https://gitlab.com/adamk33n3r/newyoc/-/jobs/artifacts/$CI_COMMIT_REF_NAME/download?job=build%20client'"
     - ssh yoc@yoc.gg "curl -L --output server_artifacts.zip 'https://gitlab.com/adamk33n3r/newyoc/-/jobs/artifacts/$CI_COMMIT_REF_NAME/download?job=build%20server'"
-    - ssh yoc@yoc.gg "mkdir _tmp"
+    - ssh yoc@yoc.gg "rm -rf _tmp && mkdir _tmp"
     - ssh yoc@yoc.gg "unzip -d _tmp client_artifacts.zip"
     - ssh yoc@yoc.gg "unzip -d _tmp server_artifacts.zip"
     - ssh yoc@yoc.gg "cp local.json _tmp/server/dist/server/src/config/local.json"
-    - ssh yoc@yoc.gg "cd _tmp/server/dist/server && npm install"
+    - ssh yoc@yoc.gg "cd _tmp/server/dist/server && yarn"
     - ssh yoc@yoc.gg "mv live _old && mv _tmp live"
     - ssh yoc@yoc.gg "sudo /bin/systemctl restart yoc"
     - ssh yoc@yoc.gg "rm -rf _tmp"
