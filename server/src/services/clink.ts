@@ -2,7 +2,7 @@ import * as request from 'request-promise-native';
 import config from 'src/config';
 
 export class Clink {
-    public sendMessage(channel: string, text: string): request.RequestPromise {
+    public sendMessage(channel: string, text: string, blocks?: any[]): request.RequestPromise {
         return request.post('https://slack.com/api/chat.postMessage', {
             headers: {
                 'Authorization': 'Bearer ' + config.slack.clink.token,
@@ -10,6 +10,7 @@ export class Clink {
             json: {
                 channel,
                 text,
+                blocks,
             },
         });
     }

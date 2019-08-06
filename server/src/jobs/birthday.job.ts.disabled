@@ -3,12 +3,12 @@ import * as moment from 'moment';
 
 import debug from 'src/logger';
 
-import { Slack } from '../services/slack';
+import { Clink } from '../services/clink';
 import config from '../config';
 const ManagementClient = require('auth0').ManagementClient;
 
 export = (scheduler: any) => {
-    const slack = new Slack();
+    const slack = new Clink();
     debug('scheduling birthday job');
     scheduler.scheduleJob('0 0 9 * * *', () => {
         debug('birthday job running...');
@@ -52,12 +52,12 @@ export = (scheduler: any) => {
                         const meta = user.user_metadata;
                         const name = meta.slack || meta.name || `${meta.given_name} ${meta.family_name}` || user.name;
                         console.log('BIRTHDAYS: Birthday boy:', name, meta.birthday);
-                        slack.sendMessage(config.slack.webhook, {
-                            channel: config.birthdayChannel,
-                            text: `:tada::confetti_ball::birthday: Happy Birthday to ${name}!!! :birthday::confetti_ball::tada:`,
-                        });
+                        slack.sendMessage(
+                            config.birthdayChannel,
+                            `:tada::confetti_ball::birthday: Happy Birthday to ${name}!!! :birthday::confetti_ball::tada:`,
+                        );
                     }
                 }).catch((err: any) => console.error(err));
         });
     });
-}
+};

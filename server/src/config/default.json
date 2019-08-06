@@ -3,5 +3,11 @@
         "url": "localhost",
         "username": "serveradmin"
     },
+    "slack": {
+        "clink": {
+            "teamId": "T0BGZQCER",
+            "qotdChannel": "#tcpi"
+        }
+    },
     "birthdayChannel": "#tcpi"
 }

@@ -11,7 +11,8 @@ export class Jobs {
             const fileName = path.basename(file);
             debug('file:', file);
             debug('JOB:', fileName);
-            require(file)(schedule);
+            const job = require(file) as Function;
+            job(schedule);
         }
     }
 }

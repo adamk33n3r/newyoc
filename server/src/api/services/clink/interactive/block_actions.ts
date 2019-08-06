@@ -20,7 +20,7 @@ export function handleBlockActions(payload: ISlackInteractionBlockActions) {
                                 delete_original: true,
                                 response_type: 'in_channel',
                                 text: quote,
-                                blocks: buildQuoteSection(quote, payload.channel.name),
+                                blocks: buildQuoteSection(quote),
                             },
                         });
                     });
@@ -102,7 +102,7 @@ export function handleBlockActions(payload: ISlackInteractionBlockActions) {
                                         delete_original: true,
                                         response_type: 'in_channel',
                                         text: quote,
-                                        blocks: buildQuoteSection(quote, payload.channel.name),
+                                        blocks: buildQuoteSection(quote),
                                     },
                                 });
                             });

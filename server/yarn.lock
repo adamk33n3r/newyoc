@@ -366,9 +366,10 @@
   version "7.0.4"
   resolved "https://registry.yarnpkg.com/@types/node/-/node-7.0.4.tgz#9aabc135979ded383325749f508894c662948c8b"
 
-"@types/node-schedule@^0.0.36":
-  version "0.0.36"
-  resolved "https://registry.yarnpkg.com/@types/node-schedule/-/node-schedule-0.0.36.tgz#b6daa1c8a4b635a225097ccb3806336f68c937df"
+"@types/node-schedule@^1.2.3":
+  version "1.2.3"
+  resolved "https://registry.yarnpkg.com/@types/node-schedule/-/node-schedule-1.2.3.tgz#614ba775c4c9b200e5f939a4eeef6727eb0ed6b7"
+  integrity sha512-pmuGe7xlx4hnUnOeGk2G46xxGKesF8reddLPiQu0tEIOQePMjDezjaOXFLfRPFBDWm03Aj8FoqPTuFxQt9LDaw==
   dependencies:
     "@types/node" "*"
 

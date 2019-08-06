@@ -10,6 +10,8 @@ const config: {
         clink: {
             secret: string;
             token: string;
+            teamId: string;
+            qotdChannel: string;
         };
     };
     auth0: {

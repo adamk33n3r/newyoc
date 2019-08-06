@@ -99,11 +99,6 @@ export class Server {
 
         this.routes();
 
-        // Jobs
-        if (socket) {
-            Jobs.init();
-        }
-
         // Firebase
         firebase.initializeApp({
             projectId: config.firebase.projectId,
@@ -115,6 +110,11 @@ export class Server {
             messagingSenderId: config.firebase.messagingSenderId,
             appId: config.firebase.appId,
         });
+
+        // Jobs
+        if (socket) {
+            Jobs.init();
+        }
 
     }
 

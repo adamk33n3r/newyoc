@@ -143,7 +143,7 @@ export function getQuotesBlocks(
         const skip = (page - 1) * countPerPage;
 
         const mappedQuotes = quotes.slice(skip, skip + countPerPage).map((quote) => {
-            const quoteSection = buildQuoteSection(quote, shareChannel, true, page, filteredUser, callingUser);
+            const quoteSection = buildQuoteSection(quote, true, shareChannel, page, filteredUser, callingUser);
             quoteSection.push({ type: 'divider' });
             return quoteSection;
         });
@@ -234,10 +234,10 @@ export function getQuotesBlocks(
 }
 
 // tslint:disable-next-line: max-line-length
-export function buildQuoteSection(quote: IQuote, channel: string, withOptions: true, page: number, filteredUser: string, callingUser: string): any[];
-export function buildQuoteSection(quote: IQuote, channel: string, withOptions?: false): any[];
+export function buildQuoteSection(quote: IQuote, withOptions: true, channel: string, page: number, filteredUser: string, callingUser: string): any[];
+export function buildQuoteSection(quote: IQuote, withOptions?: false): any[];
 // tslint:disable-next-line: max-line-length
-export function buildQuoteSection(quote: IQuote, channel: string, withOptions: boolean = false, page?: number, filteredUser?: string, callingUser?: string): any[] {
+export function buildQuoteSection(quote: IQuote, withOptions: boolean = false, channel?: string, page?: number, filteredUser?: string, callingUser?: string): any[] {
     const ts = quote.timestamp.toDate();
     return [
         {
