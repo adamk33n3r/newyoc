@@ -94,7 +94,7 @@ export function handleBlockActions(payload: ISlackInteractionBlockActions) {
                     const [subAction, id] = action.selected_option.value.split(',');
                     switch (subAction) {
                         case 'share':
-                            firebase.firestore().collection(`teams/${payload.team.id}/quotes`).doc(action.value).get()
+                            firebase.firestore().collection(`teams/${payload.team.id}/quotes`).doc(id).get()
                             .then((quoteSnap) => {
                                 const quote = quoteSnap.data() as IQuote;
                                 request.post(payload.response_url, {
@@ -149,7 +149,7 @@ export function handleBlockActions(payload: ISlackInteractionBlockActions) {
         case 'users_select':
             switch (action.action_id) {
                 case 'quotes:filter:said_by':
-                    getQuotesBlocks(payload.team.id, payload.channel.name, action.selected_user).then((blocks) => {
+                    getQuotesBlocks(payload.team.id, payload.channel.name, payload.user.id, action.selected_user).then((blocks) => {
                         request.post(payload.response_url, {
                             json: {
                                 replace_original: true,
