@@ -9,6 +9,9 @@ import { IQuote } from 'src/api/services/clink/types';
 import { buildQuoteSection } from 'src/api/services/clink/utils';
 
 function sendQOTD() {
+    if (!config.slack.clink.qotd.enabled) {
+        return;
+    }
     debug('Starting QOTD job');
     const clink = new Clink();
     const teamId = config.slack.clink.teamId;
@@ -24,7 +27,7 @@ function sendQOTD() {
                 text: `*Good morning, everyone. Here's your Quote of the Day!*`,
             },
         });
-        clink.sendMessage(config.slack.clink.qotdChannel, '', block);
+        clink.sendMessage(config.slack.clink.qotd.channel, '', block);
     });
 }
 

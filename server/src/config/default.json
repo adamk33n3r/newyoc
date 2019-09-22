@@ -6,7 +6,10 @@
     "slack": {
         "clink": {
             "teamId": "T0BGZQCER",
-            "qotdChannel": "#tcpi"
+            "qotd": {
+                "channel": "#tcpi",
+                "enabled": false
+            }
         }
     },
     "birthdayChannel": "#tcpi"

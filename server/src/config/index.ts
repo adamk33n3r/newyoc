@@ -11,7 +11,10 @@ const config: {
             secret: string;
             token: string;
             teamId: string;
-            qotdChannel: string;
+            qotd: {
+                channel: string;
+                enabled: boolean;
+            };
         };
     };
     auth0: {
