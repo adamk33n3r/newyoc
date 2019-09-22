@@ -43,8 +43,13 @@ deploy:
     - ls
     - echo $CI_COMMIT_REF_NAME
     - echo "curl -L --output client_artifacts.zip 'https://gitlab.com/adamk33n3r/newyoc/-/jobs/artifacts/$CI_COMMIT_REF_NAME/download?job=build%20client'"
-    - ssh yoc@yoc.gg "curl -L --output client_artifacts.zip 'https://gitlab.com/adamk33n3r/newyoc/-/jobs/artifacts/$CI_COMMIT_REF_NAME/download?job=build%20client'"
-    - ssh yoc@yoc.gg "curl -L --output server_artifacts.zip 'https://gitlab.com/adamk33n3r/newyoc/-/jobs/artifacts/$CI_COMMIT_REF_NAME/download?job=build%20server'"
+    - ssh yoc@yoc.gg "./download_artifacts.sh $CI_COMMIT_REF_NAME"
+    - ssh yoc@yoc.gg "file --mime-type client_artifacts.zip | grep application/zip"
+    - ssh yoc@yoc.gg "file --mime-type server_artifacts.zip | grep application/zip"
+    - ssh yoc@yoc.gg "curl -L --output client_artifacts.zip 'https://gitlab.com/adamk33n3r/newyoc/-/jobs/artifacts/master/download?job=build%20client'"
+    - ssh yoc@yoc.gg "file --mime-type client_artifacts.zip | grep application/zip"
+    - ssh yoc@yoc.gg "curl -L --output server_artifacts.zip 'https://gitlab.com/adamk33n3r/newyoc/-/jobs/artifacts/master/download?job=build%20server'"
+    - ssh yoc@yoc.gg "file --mime-type server_artifacts.zip | grep application/zip"
     - ssh yoc@yoc.gg "rm -rf _tmp && mkdir _tmp"
     - ssh yoc@yoc.gg "unzip -d _tmp client_artifacts.zip"
     - ssh yoc@yoc.gg "unzip -d _tmp server_artifacts.zip"
