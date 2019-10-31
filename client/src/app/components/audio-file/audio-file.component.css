@@ -1,0 +1,26 @@
+.file-name {
+    width: 250px;
+    display: inline-block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    padding: 5px;
+    vertical-align: middle;
+    white-space: nowrap;
+}
+
+label {
+    position: relative;
+    overflow: hidden;
+}
+
+.example-ripple-container {
+    /** Necessary until: https://github.com/angular/material2/pull/11913*/
+    position: relative;
+  
+    cursor: pointer;
+    text-align: center;
+  
+    width: 300px;
+    height: 300px;
+    line-height: 300px;
+  }

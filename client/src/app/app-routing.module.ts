@@ -33,6 +33,10 @@ const routes: Routes = [
         loadChildren: './quotes/quotes.module#QuotesModule',
     },
     {
+        path: 'gifs',
+        loadChildren: './gifs/gifs.module#GifsModule',
+    },
+    {
         path: '**',
         redirectTo: '/',
     },

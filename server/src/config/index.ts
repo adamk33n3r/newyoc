@@ -1,3 +1,13 @@
+interface IFirebaseConfig {
+    projectId: string;
+    databaseURL: string;
+    storageBucket: string;
+    locationId: string;
+    apiKey: string;
+    authDomain: string;
+    messagingSenderId: string;
+    appId: string;
+}
 // dir relative to root
 const config: {
     teamspeak: {
@@ -8,6 +18,8 @@ const config: {
     slack: {
         token: string;
         clink: {
+            client_id: string;
+            client_secret: string;
             secret: string;
             token: string;
             teamId: string;
@@ -23,14 +35,8 @@ const config: {
     };
     birthdayChannel: string;
     firebase: {
-        projectId: string;
-        databaseURL: string;
-        storageBucket: string;
-        locationId: string;
-        apiKey: string;
-        authDomain: string;
-        messagingSenderId: string;
-        appId: string;
+        quotes: IFirebaseConfig;
+        gifs: IFirebaseConfig;
     };
 } = require('configamajig')('./src/config');
 export default config;

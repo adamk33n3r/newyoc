@@ -3,7 +3,7 @@
     <table mat-table [dataSource]='quotes | async' style='width: 100%'>
       <ng-container matColumnDef='saidBy'>
         <th mat-header-cell *matHeaderCellDef> Said By </th>
-        <td mat-cell *matCellDef='let quote'> {{ quote.said_by_name }} </td>
+        <td mat-cell *matCellDef='let quote'> <strong> {{ quote.said_by_name }} </strong> </td>
       </ng-container>
       <ng-container matColumnDef='quote'>
         <th mat-header-cell *matHeaderCellDef> Quote </th>
@@ -11,7 +11,7 @@
       </ng-container>
       <ng-container matColumnDef='quotedBy'>
         <th mat-header-cell *matHeaderCellDef> Quoted By </th>
-        <td mat-cell *matCellDef='let quote'> {{ quote.quoted_by_name }} </td>
+        <td mat-cell *matCellDef='let quote'> <strong> {{ quote.quoted_by_name }} </strong> </td>
       </ng-container>
       <tr mat-header-row *matHeaderRowDef='columnsToDisplay'></tr>
       <tr mat-row *matRowDef='let myRowData; columns: columnsToDisplay'></tr>

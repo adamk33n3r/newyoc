@@ -6,6 +6,8 @@ import * as path from 'path';
 import * as errorHandler from 'errorhandler';
 import * as methodOverride from 'method-override';
 import * as firebase from 'firebase';
+import * as fileUpload from 'express-fileupload';
+(global as any).XMLHttpRequest = require('xhr2');
 import 'reflect-metadata';
 
 const Table = require('cli-table');
@@ -97,19 +99,33 @@ export class Server {
         // Error handling
         this.app.use(errorHandler());
 
+        this.app.use(fileUpload({
+            limits: { fileSize: 50 * 1024 * 1024 },
+        }));
+
         this.routes();
 
         // Firebase
         firebase.initializeApp({
-            projectId: config.firebase.projectId,
-            databaseURL: config.firebase.databaseURL,
-            storageBucket: config.firebase.storageBucket,
-            locationId: config.firebase.locationId,
-            apiKey: config.firebase.apiKey,
-            authDomain: config.firebase.authDomain,
-            messagingSenderId: config.firebase.messagingSenderId,
-            appId: config.firebase.appId,
+            projectId: config.firebase.quotes.projectId,
+            databaseURL: config.firebase.quotes.databaseURL,
+            storageBucket: config.firebase.quotes.storageBucket,
+            locationId: config.firebase.quotes.locationId,
+            apiKey: config.firebase.quotes.apiKey,
+            authDomain: config.firebase.quotes.authDomain,
+            messagingSenderId: config.firebase.quotes.messagingSenderId,
+            appId: config.firebase.quotes.appId,
         });
+        firebase.initializeApp({
+            projectId: config.firebase.gifs.projectId,
+            databaseURL: config.firebase.gifs.databaseURL,
+            storageBucket: config.firebase.gifs.storageBucket,
+            locationId: config.firebase.gifs.locationId,
+            apiKey: config.firebase.gifs.apiKey,
+            authDomain: config.firebase.gifs.authDomain,
+            messagingSenderId: config.firebase.gifs.messagingSenderId,
+            appId: config.firebase.gifs.appId,
+        }, 'gifs');
 
         // Jobs
         if (socket) {

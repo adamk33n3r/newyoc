@@ -33,6 +33,11 @@ export class AppNavbarComponent {
             icon: 'format_quote',
         },
         {
+            name: 'GIFs',
+            path: '/gifs',
+            icon: 'image',
+        },
+        {
             name: 'Stardew',
             path: '/stardew',
             icon: 'nature',

@@ -5,7 +5,6 @@
   "author": "Adam Keenan",
   "license": "MIT",
   "dependencies": {
-    "@types/request-promise-native": "^1.0.16",
     "app-module-path": "^2.2.0",
     "auth0": "^2.6.0",
     "auth0-js": "^8.2.0",
@@ -15,6 +14,7 @@
     "cookie-parser": "^1.4.3",
     "errorhandler": "^1.5.0",
     "express": "^4.14.0",
+    "express-fileupload": "^1.1.6-alpha.6",
     "firebase": "^6.3.0",
     "glob": "^7.1.1",
     "method-override": "^2.3.7",
@@ -25,7 +25,8 @@
     "reflect-metadata": "^0.1.9",
     "request": "^2.79.0",
     "request-promise-native": "^1.0.3",
-    "socket.io": "^1.7.2"
+    "socket.io": "^1.7.2",
+    "xhr2": "^0.2.0"
   },
   "devDependencies": {
     "@types/auth0-js": "^8.1.0",
@@ -34,12 +35,14 @@
     "@types/cookie-parser": "^1.3.30",
     "@types/debug": "^0.0.29",
     "@types/errorhandler": "^0.0.30",
+    "@types/express-fileupload": "^1.1.0",
     "@types/glob": "^5.0.30",
     "@types/method-override": "^0.0.29",
     "@types/mocha": "^2.2.39",
     "@types/morgan": "^1.7.32",
     "@types/node": "^7.0.4",
     "@types/node-schedule": "^1.2.3",
+    "@types/request-promise-native": "^1.0.16",
     "@types/socket.io": "^1.4.27",
     "mocha-typescript": "^1.0.18",
     "nodemon": "^1.11.0",

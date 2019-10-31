@@ -1,0 +1,13 @@
+<!-- <button mat-raised-button>Upload /ɡɪf/</button> -->
+<div class='header'>
+  <av-file class='file' (file)='upload($event)'></av-file>
+  <div class='search'>
+    <mat-form-field>
+      <input matInput placeholder='Search...' [formControl]='searchCtrl'>
+    </mat-form-field>
+  </div>
+</div>
+
+<div class='gif-container'>
+  <app-gif class='gif' *ngFor='let gif of filteredGifs | async' [gif]='gif' [allTags]='allTags'></app-gif>
+</div>

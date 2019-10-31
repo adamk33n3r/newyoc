@@ -108,7 +108,7 @@ export function Route(method: string, path?: string): RouteFactory {
         }
         const routes: RouteInfo[] = Reflect.getMetadata('$router.routes', target);
         path = path || propertyKey === 'index' ? '/' : `/${camelToKebab(propertyKey)}`;
-        routes.push({ method, path , propertyKey });
+        routes.push({ method, path, propertyKey });
         Reflect.defineMetadata('$router.routes', routes, target);
     };
 }

@@ -1,15 +1,17 @@
 import { Request, Response } from 'express';
+import * as request from 'request-promise-native';
 import * as firebase from 'firebase/app';
 import 'firebase/firestore';
+import 'firebase/storage';
 
-import { Controller, POST } from 'src/decorators/routing';
+import { Controller, POST, GET } from 'src/decorators/routing';
 import { Required, VerifySlackSignature } from 'src/decorators/util';
 
 import { TeamSpeak } from 'src/services/teamspeak';
 import { Clink } from 'src/services/clink';
 import config from 'src/config';
 
-import { ISlackInteraction, IQuote } from './clink/types';
+import { ISlackInteraction, IQuote, IGif } from './clink/types';
 import { launchQuoteDialog, getQuotesBlocks } from './clink/utils';
 import { handleMessageAction } from './clink/interactive/message_action';
 import { handleDialogSubmission } from './clink/interactive/dialog_submission';
@@ -166,6 +168,113 @@ class SlackController {
                 res.send();
                 break;
         }
+    }
+
+    @GET()
+    public async auth(req: Request, res: Response) {
+        const code = req.query.code;
+        const id = config.slack.clink.client_id;
+        const secret = config.slack.clink.client_secret;
+        const redUri = req.protocol + '://' + req.get('host') + '/api/services/slack/auth';
+        const uri = `https://slack.com/api/oauth.access?client_id=${id}&client_secret=${secret}&code=${code}&redirect_uri=${redUri}`;
+        const result = await request.post(uri, { json: {} });
+
+        const token = result.access_token;
+        const userId = result.user_id;
+        const teamId = result.team_id;
+        await firebase.app('gifs').firestore().collection(`teams/${teamId}/auth`).doc(userId).set({
+            token,
+        });
+        res.redirect('/gifs');
+    }
+
+    @POST()
+    @Required('text')
+    @VerifySlackSignature(config.slack.clink.secret)
+    public async gif(req: Request, res: Response) {
+        const teamId = req.body.team_id;
+        const text: string = req.body.text.toLowerCase();
+        console.log(req.body, req.body.channel_id);
+
+        const auth = await firebase.app('gifs').firestore().collection(`teams/${teamId}/auth`).doc(req.body.user_id).get();
+        if (!auth.exists) {
+            const id = config.slack.clink.client_id;
+            const uri = req.protocol + '://' + req.get('host') + '/api/services/slack/auth';
+            const scope = 'chat:write:user';
+            const authUri = `https://slack.com/oauth/authorize?client_id=${id}&scope=${scope}&redirect_uri=${uri}&team=${teamId}`;
+            res.send({
+                response_type: 'ephemeral',
+                text: `You have not authorized yet. Please click <${authUri}|HERE> and follow instructions.`,
+            });
+            return;
+        }
+
+        const authToken = auth.data().token;
+
+        if (text === '') {
+            res.send({
+                response_type: 'ephemeral',
+                text: 'Oops! You didn\'t provide any text!',
+            });
+            return;
+        }
+
+        firebase.app('gifs').firestore().collection(`teams/${teamId}/gifs`)
+            .where('tags', 'array-contains', text)
+            .get().then((query) => {
+                if (query.size === 0) {
+                    res.send({
+                        response_type: 'ephemeral',
+                        text: 'Couldn\'t find a gif with the tag: ' + text,
+                    });
+                    return;
+                }
+                const randIdx = Math.floor(Math.random() * query.size);
+                const doc = query.docs[randIdx];
+
+                res.send();
+                firebase.app('gifs').storage().ref(doc.id).getDownloadURL()
+                .then((fileUrl) => {
+                    console.log(text, fileUrl, req.body.channel_id);
+
+                    request.post('https://slack.com/api/chat.postMessage?', {
+                        headers: {
+                            Authorization: `Bearer ${authToken}`,
+                        },
+                        json: {
+                            channel: req.body.channel_id,
+                            as_user: true,
+                            blocks: [
+                                {
+                                    type: 'section',
+                                    text: {
+                                        type: 'mrkdwn',
+                                        text: `<${fileUrl}|*${text}*>`,
+                                    },
+                                },
+                                {
+                                    type: 'image',
+                                    title: {
+                                        type: 'plain_text',
+                                        text: 'Posted using /gif | GIF by YOC',
+                                        emoji: false,
+                                    },
+                                    image_url: fileUrl,
+                                    alt_text: text,
+                                },
+                            ],
+                        },
+                    }).then((resp) => console.log(resp)).catch((err) => console.error(err));
+                })
+                .catch((err) => {
+                    console.error(err);
+                    res.status(500).send('Could not find gif');
+                });
+            }).catch((err) => {
+                console.error(err);
+                res.status(500).send('Could not find gif');
+            })
+        ;
     }
 
 }

@@ -3,6 +3,7 @@ import { Router } from 'src/decorators/routing';
 import services from './services';
 
 import quotes from './quotes';
+import gifs from './gifs';
 
 @Router({
     path: '/api',
@@ -11,6 +12,7 @@ import quotes from './quotes';
     ],
     controllers: [
         quotes,
+        gifs,
     ],
 })
 class AppRouter {}

@@ -91,3 +91,8 @@ export interface IQuote {
     said_by: string;
     timestamp: firebase.firestore.Timestamp;
 }
+
+export interface IGif {
+    file: string;
+    tags: string[];
+}
