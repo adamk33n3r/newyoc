@@ -1,8 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
 import { environment } from 'environments/environment';
 import { Observable } from 'rxjs';
+import { MatTableDataSource, MatSort } from '@angular/material';
 
 interface IQuote {
     id: string;
@@ -18,18 +19,23 @@ interface IQuote {
 })
 export class QuotesComponent implements OnInit {
 
-  public quotes: Observable<IQuote[]>;
+  public quotes: MatTableDataSource<IQuote> = new MatTableDataSource();
 
-  public columnsToDisplay = ['saidBy', 'quote', 'quotedBy'];
+  public columnsToDisplay = ['said_by_name', 'quote', 'quoted_by_name'];
+
+  @ViewChild(MatSort/*, {static: true}*/) sort: MatSort;
 
   constructor(private $http: HttpClient) { }
 
   public ngOnInit() {
-    this.quotes = this.$http.get<IQuote[]>('/api/quotes', {
+    this.$http.get<IQuote[]>('/api/quotes', {
       params: {
         teamId: environment.slackTeamId,
       },
+    }).subscribe((data) => {
+      this.quotes.data = data;
     });
+    this.quotes.sort = this.sort;
   }
 
 }

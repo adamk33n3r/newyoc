@@ -1,6 +1,10 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { MatCardModule, MatTableModule } from '@angular/material';
+import {
+  MatCardModule,
+  MatTableModule,
+  MatSortModule,
+} from '@angular/material';
 
 import { QuotesRoutingModule } from './quotes-routing.module';
 import { QuotesComponent } from './quotes.component';
@@ -11,6 +15,7 @@ import { QuotesComponent } from './quotes.component';
     QuotesRoutingModule,
     MatCardModule,
     MatTableModule,
+    MatSortModule,
   ],
   declarations: [QuotesComponent]
 })
