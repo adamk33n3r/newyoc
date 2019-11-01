@@ -3,21 +3,23 @@
     <mat-form-field>
       <input matInput (keyup)='applyFilter($event.target.value)' placeholder='Filter'>
     </mat-form-field>
-    <table mat-table [dataSource]='quotes' style='width: 100%' matSort>
-      <ng-container matColumnDef='said_by_name'>
-        <th mat-header-cell *matHeaderCellDef mat-sort-header> Said By </th>
-        <td mat-cell *matCellDef='let quote'> <strong> {{ quote.said_by_name }} </strong> </td>
-      </ng-container>
-      <ng-container matColumnDef='quote'>
-        <th mat-header-cell *matHeaderCellDef> Quote </th>
-        <td mat-cell *matCellDef='let quote'> {{ quote.quote }} </td>
-      </ng-container>
-      <ng-container matColumnDef='quoted_by_name'>
-        <th mat-header-cell *matHeaderCellDef mat-sort-header> Quoted By </th>
-        <td mat-cell *matCellDef='let quote'> <strong> {{ quote.quoted_by_name }} </strong> </td>
-      </ng-container>
-      <tr mat-header-row *matHeaderRowDef='columnsToDisplay'></tr>
-      <tr mat-row *matRowDef='let myRowData; columns: columnsToDisplay'></tr>
-    </table>
+    <div class='table-container'>
+      <table mat-table [dataSource]='quotes' style='width: 100%' matSort>
+        <ng-container matColumnDef='said_by_name'>
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Said By </th>
+          <td mat-cell *matCellDef='let quote'> <strong> {{ quote.said_by_name }} </strong> </td>
+        </ng-container>
+        <ng-container matColumnDef='quote'>
+          <th mat-header-cell *matHeaderCellDef> Quote </th>
+          <td mat-cell *matCellDef='let quote'> {{ quote.quote }} </td>
+        </ng-container>
+        <ng-container matColumnDef='quoted_by_name'>
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Quoted By </th>
+          <td mat-cell *matCellDef='let quote'> <strong> {{ quote.quoted_by_name }} </strong> </td>
+        </ng-container>
+        <tr mat-header-row *matHeaderRowDef='columnsToDisplay; sticky: true'></tr>
+        <tr mat-row *matRowDef='let myRowData; columns: columnsToDisplay'></tr>
+      </table>
+    </div>
   </mat-card-content>
 </mat-card>
