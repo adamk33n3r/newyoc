@@ -12,6 +12,7 @@ export interface IGif {
   id: string;
   file: string;
   tags: string[];
+  updated: string;
   url: string;
 }
 

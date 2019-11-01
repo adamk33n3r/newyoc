@@ -19,9 +19,15 @@ class GifsController {
         .then((gifs) => {
             return Promise.all(gifs.docs.map((doc) => {
                 const gif = doc.data() as IGif;
-                return firebase.app('gifs').storage().ref(doc.id).getDownloadURL()
-                .then((url) => {
+                return Promise.all([
+                    firebase.app('gifs').storage().ref(doc.id).getMetadata().then((metadata) => {
+                        return metadata.updated;
+                    }),
+                    firebase.app('gifs').storage().ref(doc.id).getDownloadURL(),
+                ])
+                .then(([updated, url]) => {
                     (gif as any).id = doc.id;
+                    (gif as any).updated = updated;
                     (gif as any).url = url;
                     return gif;
                 })

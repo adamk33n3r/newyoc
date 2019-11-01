@@ -1,8 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient, HttpRequest, HttpEventType, HttpResponse } from '@angular/common/http';
 
-import { environment } from 'environments/environment';
-import { IGif } from 'app/components/gif/gif.component';
 import { Subject, Observable } from 'rxjs';
 import { FormControl } from '@angular/forms';
 import { startWith, map } from 'rxjs/operators';
@@ -10,6 +8,9 @@ import { MatSnackBar } from '@angular/material';
 // import * as firebase from 'firebase/app';
 // import 'firebase/firestore';
 // import 'firebase/storage';
+
+import { environment } from 'environments/environment';
+import { IGif } from 'app/components/gif/gif.component';
 
 @Component({
   selector: 'app-gifs',
@@ -67,7 +68,13 @@ export class GifsComponent implements OnInit {
       params: {
         teamId: environment.slackTeamId,
       },
-    }).subscribe((gifs) => {
+    }).pipe(map((gifs) => {
+      return gifs.sort((a, b) => {
+        const aDate = new Date(a.updated);
+        const bDate = new Date(b.updated);
+        return bDate.valueOf() - aDate.valueOf();
+      });
+    })).subscribe((gifs) => {
       this.gifs = gifs;
       // To trigger filter
       this.searchCtrl.setValue(this.searchCtrl.value);
