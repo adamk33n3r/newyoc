@@ -1,5 +1,8 @@
 <mat-card>
   <mat-card-content>
+    <mat-form-field>
+      <input matInput (keyup)='applyFilter($event.target.value)' placeholder='Filter'>
+    </mat-form-field>
     <table mat-table [dataSource]='quotes' style='width: 100%' matSort>
       <ng-container matColumnDef='said_by_name'>
         <th mat-header-cell *matHeaderCellDef mat-sort-header> Said By </th>

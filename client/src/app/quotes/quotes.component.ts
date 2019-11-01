@@ -38,4 +38,8 @@ export class QuotesComponent implements OnInit {
     this.quotes.sort = this.sort;
   }
 
+  public applyFilter(filterValue: string) {
+    this.quotes.filter = filterValue.trim().toLowerCase();
+  }
+
 }

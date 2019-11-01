@@ -4,6 +4,8 @@ import {
   MatCardModule,
   MatTableModule,
   MatSortModule,
+  MatFormFieldModule,
+  MatInputModule,
 } from '@angular/material';
 
 import { QuotesRoutingModule } from './quotes-routing.module';
@@ -16,6 +18,8 @@ import { QuotesComponent } from './quotes.component';
     MatCardModule,
     MatTableModule,
     MatSortModule,
+    MatFormFieldModule,
+    MatInputModule,
   ],
   declarations: [QuotesComponent]
 })
