@@ -6,6 +6,7 @@ import { IGif } from 'app/components/gif/gif.component';
 import { Subject, Observable } from 'rxjs';
 import { FormControl } from '@angular/forms';
 import { startWith, map } from 'rxjs/operators';
+import { MatSnackBar } from '@angular/material';
 // import * as firebase from 'firebase/app';
 // import 'firebase/firestore';
 // import 'firebase/storage';
@@ -24,7 +25,7 @@ export class GifsComponent implements OnInit {
 
   public searchCtrl = new FormControl();
 
-  constructor(private $http: HttpClient) {}
+  constructor(private $http: HttpClient, private snackBar: MatSnackBar) {}
 
   public ngOnInit() {
     this.filteredGifs = this.searchCtrl.valueChanges.pipe(
@@ -51,8 +52,12 @@ export class GifsComponent implements OnInit {
       } else if (event instanceof HttpResponse) {
         progress.complete();
       }
+    }, (e) => {
+      this.snackBar.open('Failed to upload GIF :(', 'Dismiss');
+      console.error(e);
     });
     progress.subscribe(() => {}, () => {}, () => {
+      this.snackBar.open('GIF successfully uploaded!', 'Dismiss', { duration: 2000 });
       this.loadGifs();
     });
   }

@@ -18,7 +18,8 @@ export class AudioFileComponent implements OnInit {
   }
 
   public onFileChange(event: Event) {
-    this.selectedFile = (<HTMLInputElement>event.target).files[0];
+    this.selectedFile = (event.target as HTMLInputElement).files[0];
     this.file.emit(this.selectedFile);
+    (event.target as HTMLInputElement).value = null;
   }
 }

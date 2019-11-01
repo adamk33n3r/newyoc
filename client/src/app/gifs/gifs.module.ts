@@ -10,6 +10,7 @@ import {
   MatFormFieldModule,
   MatAutocompleteModule,
   MatInputModule,
+  MatSnackBarModule,
 } from '@angular/material';
 
 import { GifsRoutingModule } from './gifs-routing.module';
@@ -31,6 +32,7 @@ import { ComponentsModule } from 'app/components/components.module';
     MatAutocompleteModule,
     MatFormFieldModule,
     MatInputModule,
+    MatSnackBarModule,
   ],
   declarations: [GifsComponent, GifComponent]
 })
