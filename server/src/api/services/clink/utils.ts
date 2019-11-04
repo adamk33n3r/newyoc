@@ -293,3 +293,22 @@ export function buildQuoteSection(quote: IQuote, withOptions: boolean = false, c
         },
     ];
 }
+
+export function getGifAuth(teamId: string, userId: string) {
+    return firebase.app('gifs').firestore().collection(`teams/${teamId}/auth`).doc(userId).get();
+}
+
+export async function getGif(teamId: string, text: string) {
+    const query = await firebase.app('gifs').firestore().collection(`teams/${teamId}/gifs`)
+        .where('tags', 'array-contains', text)
+        .get();
+
+    if (query.size === 0) {
+        throw new Error('Couldn\'t find a gif with the tag: ' + text);
+    }
+
+    const randIdx = Math.floor(Math.random() * query.size);
+    const doc = query.docs[randIdx];
+
+    return firebase.app('gifs').storage().ref(doc.id).getDownloadURL() as Promise<string>;
+}
