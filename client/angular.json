@@ -41,7 +41,8 @@
               "src/ms-icon-70x70.png",
               "src/ms-icon-144x144.png",
               "src/ms-icon-150x150.png",
-              "src/ms-icon-310x310.png"
+              "src/ms-icon-310x310.png",
+              "src/manifest.json"
             ],
             "styles": [
               "src/styles.sass",

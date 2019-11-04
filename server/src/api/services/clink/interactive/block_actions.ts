@@ -3,10 +3,10 @@ import * as firebase from 'firebase/app';
 import 'firebase/firestore';
 
 import { ISlackInteractionBlockActions, IQuote } from '../types';
-import { getQuotesBlocks, buildQuoteSection } from '../utils';
+import { getQuotesBlocks, buildQuoteSection, getGif, getGifAuth } from '../utils';
 import config from 'src/config';
 
-export function handleBlockActions(payload: ISlackInteractionBlockActions) {
+export async function handleBlockActions(payload: ISlackInteractionBlockActions) {
     const action = payload.actions[0];
     switch (action.type) {
         case 'button':
@@ -82,6 +82,124 @@ export function handleBlockActions(payload: ISlackInteractionBlockActions) {
                                 blocks,
                             },
                         });
+                    });
+                    break;
+                case 'gifs:send': {
+                    const auth = await getGifAuth(payload.team.id, payload.user.id);
+                    const authToken = auth.data().token;
+                    const [text, fileUrl] = action.value.split('|');
+                    request.post(payload.response_url, {
+                        json: {
+                            delete_original: true,
+                            response_type: 'in_channel',
+                        },
+                    });
+                    request.post('https://slack.com/api/chat.postMessage?', {
+                        headers: {
+                            Authorization: `Bearer ${authToken}`,
+                        },
+                        json: {
+                            user: payload.user.id,
+                            channel: payload.channel.id,
+                            as_user: true,
+                            blocks: [
+                                {
+                                    type: 'section',
+                                    text: {
+                                        type: 'mrkdwn',
+                                        text: `<${fileUrl}|*${text}*>`,
+                                    },
+                                },
+                                {
+                                    type: 'image',
+                                    title: {
+                                        type: 'plain_text',
+                                        text: 'Posted using /gif | GIF by YOC',
+                                        emoji: false,
+                                    },
+                                    image_url: fileUrl,
+                                    alt_text: text,
+                                },
+                            ],
+                        },
+                    }).catch((err) => console.error(err));
+                    break;
+                }
+                case 'gifs:shuffle': {
+                    const fileUrl = await getGif(payload.team.id, action.value);
+                    request.post(payload.response_url, {
+                        json: {
+                            replace_original: true,
+                            response_type: 'ephemeral',
+                            attachments: [{
+                                blocks: [
+                                    {
+                                        type: 'section',
+                                        text: {
+                                            type: 'mrkdwn',
+                                            text: `<${fileUrl}|*${action.value}*>`,
+                                        },
+                                    },
+                                    {
+                                        type: 'image',
+                                        title: {
+                                            type: 'plain_text',
+                                            text: 'Posted using /gif | GIF by YOC',
+                                            emoji: false,
+                                        },
+                                        image_url: fileUrl,
+                                        alt_text: action.value,
+                                    },
+                                    {
+                                        type: 'divider',
+                                    },
+                                    {
+                                        type: 'actions',
+                                        elements: [
+                                            {
+                                                type: 'button',
+                                                style: 'primary',
+                                                text: {
+                                                    type: 'plain_text',
+                                                    text: 'Send',
+                                                    emoji: true,
+                                                },
+                                                value: `${action.value}|${fileUrl}`,
+                                                action_id: 'gifs:send',
+                                            },
+                                            {
+                                                type: 'button',
+                                                text: {
+                                                    type: 'plain_text',
+                                                    text: 'Shuffle',
+                                                    emoji: true,
+                                                },
+                                                value: action.value,
+                                                action_id: 'gifs:shuffle',
+                                            },
+                                            {
+                                                type: 'button',
+                                                text: {
+                                                    type: 'plain_text',
+                                                    text: 'Cancel',
+                                                    emoji: true,
+                                                },
+                                                value: 'cancel',
+                                                action_id: 'gifs:cancel',
+                                            },
+                                        ],
+                                    },
+                                ],
+                            }],
+                        },
+                    });
+                    break;
+                }
+                case 'gifs:cancel':
+                    request.post(payload.response_url, {
+                        json: {
+                            delete_original: true,
+                        },
                     });
                     break;
                 default:

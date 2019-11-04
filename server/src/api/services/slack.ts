@@ -12,7 +12,7 @@ import { Clink } from 'src/services/clink';
 import config from 'src/config';
 
 import { ISlackInteraction, IQuote, IGif } from './clink/types';
-import { launchQuoteDialog, getQuotesBlocks } from './clink/utils';
+import { launchQuoteDialog, getQuotesBlocks, getGifAuth, getGif } from './clink/utils';
 import { handleMessageAction } from './clink/interactive/message_action';
 import { handleDialogSubmission } from './clink/interactive/dialog_submission';
 import { handleBlockActions } from './clink/interactive/block_actions';
@@ -194,9 +194,8 @@ class SlackController {
     public async gif(req: Request, res: Response) {
         const teamId = req.body.team_id;
         const text: string = req.body.text.toLowerCase();
-        console.log(req.body, req.body.channel_id);
 
-        const auth = await firebase.app('gifs').firestore().collection(`teams/${teamId}/auth`).doc(req.body.user_id).get();
+        const auth = await getGifAuth(teamId, req.body.user_id);
         if (!auth.exists) {
             const id = config.slack.clink.client_id;
             const uri = req.protocol + '://' + req.get('host') + '/api/services/slack/auth';
@@ -209,8 +208,6 @@ class SlackController {
             return;
         }
 
-        const authToken = auth.data().token;
-
         if (text === '') {
             res.send({
                 response_type: 'ephemeral',
@@ -219,62 +216,94 @@ class SlackController {
             return;
         }
 
-        firebase.app('gifs').firestore().collection(`teams/${teamId}/gifs`)
-            .where('tags', 'array-contains', text)
-            .get().then((query) => {
-                if (query.size === 0) {
-                    res.send({
-                        response_type: 'ephemeral',
-                        text: 'Couldn\'t find a gif with the tag: ' + text,
-                    });
-                    return;
-                }
-                const randIdx = Math.floor(Math.random() * query.size);
-                const doc = query.docs[randIdx];
+        try {
+            const fileUrl = await getGif(teamId, text);
 
-                res.send();
-                firebase.app('gifs').storage().ref(doc.id).getDownloadURL()
-                .then((fileUrl) => {
-                    console.log(text, fileUrl, req.body.channel_id);
+            request.post('https://slack.com/api/chat.postEphemeral?', {
+                headers: {
+                    Authorization: `Bearer ${config.slack.clink.token}`,
+                },
+                json: {
+                    user: req.body.user_id,
+                    channel: req.body.channel_id,
+                    attachments: [{
+                        blocks: [
+                            {
+                                type: 'section',
+                                text: {
+                                    type: 'mrkdwn',
+                                    text: `<${fileUrl}|*${text}*>`,
+                                },
+                            },
+                            {
+                                type: 'image',
+                                title: {
+                                    type: 'plain_text',
+                                    text: 'Posted using /gif | GIF by YOC',
+                                    emoji: false,
+                                },
+                                image_url: fileUrl,
+                                alt_text: text,
+                            },
+                            {
+                                type: 'divider',
+                            },
+                            {
+                                type: 'actions',
+                                elements: [
+                                    {
+                                        type: 'button',
+                                        style: 'primary',
+                                        text: {
+                                            type: 'plain_text',
+                                            text: 'Send',
+                                            emoji: true,
+                                        },
+                                        value: `${text}|${fileUrl}`,
+                                        action_id: 'gifs:send',
+                                    },
+                                    {
+                                        type: 'button',
+                                        text: {
+                                            type: 'plain_text',
+                                            text: 'Shuffle',
+                                            emoji: true,
+                                        },
+                                        value: text,
+                                        action_id: 'gifs:shuffle',
+                                    },
+                                    {
+                                        type: 'button',
+                                        text: {
+                                            type: 'plain_text',
+                                            text: 'Cancel',
+                                            emoji: true,
+                                        },
+                                        value: 'cancel',
+                                        action_id: 'gifs:cancel',
+                                    },
+                                ],
+                            },
+                        ],
+                    }],
+                },
+            }).catch((err) => console.error(err));
 
-                    request.post('https://slack.com/api/chat.postMessage?', {
-                        headers: {
-                            Authorization: `Bearer ${authToken}`,
-                        },
-                        json: {
-                            channel: req.body.channel_id,
-                            as_user: true,
-                            blocks: [
-                                {
-                                    type: 'section',
-                                    text: {
-                                        type: 'mrkdwn',
-                                        text: `<${fileUrl}|*${text}*>`,
-                                    },
-                                },
-                                {
-                                    type: 'image',
-                                    title: {
-                                        type: 'plain_text',
-                                        text: 'Posted using /gif | GIF by YOC',
-                                        emoji: false,
-                                    },
-                                    image_url: fileUrl,
-                                    alt_text: text,
-                                },
-                            ],
-                        },
-                    }).then((resp) => console.log(resp)).catch((err) => console.error(err));
-                })
-                .catch((err) => {
-                    console.error(err);
-                    res.status(500).send('Could not find gif');
+            res.send();
+        } catch (e) {
+            if (e instanceof Error) {
+                res.send({
+                    response_type: 'ephemeral',
+                    text: e.message,
                 });
-            }).catch((err) => {
-                console.error(err);
-                res.status(500).send('Could not find gif');
-            })
-        ;
+            } else {
+                res.send({
+                    response_type: 'ephemeral',
+                    text: 'Unknown error ocurred.',
+                });
+            }
+            return;
+        }
     }
 
 }
