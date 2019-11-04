@@ -102,6 +102,7 @@ export async function handleBlockActions(payload: ISlackInteractionBlockActions)
                             user: payload.user.id,
                             channel: payload.channel.id,
                             as_user: true,
+                            text: `gif: ${text}`,
                             blocks: [
                                 {
                                     type: 'section',
