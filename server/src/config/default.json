@@ -3,6 +3,9 @@
         "url": "localhost",
         "username": "serveradmin"
     },
+    "civ6": {
+        "usernameMappings": {}
+    },
     "slack": {
         "clink": {
             "teamId": "T0BGZQCER",
