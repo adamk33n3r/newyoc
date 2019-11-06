@@ -4,9 +4,10 @@ import { Controller, GET, POST } from 'src/decorators/routing';
 import { Clink } from 'src/services/clink';
 import config from 'src/config';
 
+
 @Controller('/civ6')
 class Civ6Controller {
-    private slack = new Clink();
+    private clink = new Clink();
 
     @POST('/')
     @GET('/')
@@ -15,7 +16,11 @@ class Civ6Controller {
         const playerName = req.body.value2;
         const turnNumber = req.body.value3;
 
-        this.slack.sendMessage('#civ6turns', `It is now ${playerName}'s turn (${turnNumber}) in the game ${gameName}`)
+        const slackId = config.civ6.usernameMappings[playerName];
+
+        const name = slackId ? `<@${slackId}>` : playerName;
+
+        this.clink.sendMessage('#civ6turns', `It is now ${name}'s turn (${turnNumber}) in the game ${gameName}`)
         .then((response) => {
             if (response.ok) {
                 res.json({ success: true, body: response.body});

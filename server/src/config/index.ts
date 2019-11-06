@@ -15,6 +15,9 @@ const config: {
         username: string;
         password: string;
     };
+    civ6: {
+        usernameMappings: { [playerName: string]: string; };
+    };
     slack: {
         token: string;
         clink: {
