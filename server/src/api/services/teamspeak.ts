@@ -19,6 +19,12 @@ class TeamSpeakController {
                 ts.getChannels(),
             ]).then((results) => {
                 const [ online, channels ] = results;
+                res.set({
+                    'Page-Size': 20,
+                    'Access-Control-Expose-Headers': 'Page-Size',
+                    'Access-Control-Allow-Origin': '*',
+                    'Access-Control-Allow-Methods': 'OPTIONS, POST, GET',
+                })
                 res.json({
                     success: true,
                     data: {

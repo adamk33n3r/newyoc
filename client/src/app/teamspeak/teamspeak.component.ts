@@ -9,13 +9,12 @@ import { DomSanitizer } from '@angular/platform-browser';
 })
 export class TeamSpeakComponent implements OnInit {
     public channels: any[] = [];
-    private URI = 'ts3server://ts.adam-keenan.com';
+    private URI = 'ts3server://yoc.gg';
 
-    constructor(private sanitizer: DomSanitizer, private http: HttpClient) {
-        this.refresh();
-    }
+    constructor(private sanitizer: DomSanitizer, private http: HttpClient) { }
 
     public ngOnInit() {
+        this.refresh();
     }
 
     public refresh() {
@@ -43,6 +42,7 @@ export class TeamSpeakComponent implements OnInit {
                 name: client.client_nickname,
                 realname: client.client_nickname,
                 away: client.client_away,
+                away_message: client.client_away_message,
                 cid: client.cid,
             };
         });
