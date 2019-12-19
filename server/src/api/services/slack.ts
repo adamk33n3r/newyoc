@@ -35,7 +35,8 @@ class SlackController {
                         response_type: 'ephemeral',
                         text: connectURL + 'Online users: ' +
                             onlineClients.map((client) => {
-                                return client.client_nickname + (client.client_away_message ? ` [${client.client_away_message}]` : '');
+                                const awayMessage = client.client_away_message || 'Away';
+                                return client.client_nickname + (client.client_away ? ` [${awayMessage}]` : '');
                             }).join(', '),
                     });
                 } else {
