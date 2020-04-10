@@ -29,7 +29,7 @@ class SlackController {
         .then(() => {
             ts.getOnlineClients()
             .then((onlineClients: any[]) => {
-                const connectURL = 'TeamSpeak Server\n<ts3server://ts.adam-keenan.com|Click here to connect!>\n';
+                const connectURL = 'TeamSpeak Server\n<ts3server://yoc|Click here to connect!>\n';
                 if (onlineClients.length > 0) {
                     res.send({
                         response_type: 'ephemeral',
