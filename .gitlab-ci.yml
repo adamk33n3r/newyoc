@@ -34,6 +34,7 @@ build server:
     - yarn install --frozen-lockfile
     - ./node_modules/.bin/tsc -p tsconfig-prod.json
     - cp package.json dist/server/package.json
+    - cp yarn.lock dist/server/yarn.lock
     - cp src/config/default.json dist/server/src/config/default.json
   artifacts:
     paths:
