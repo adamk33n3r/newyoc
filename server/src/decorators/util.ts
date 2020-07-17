@@ -21,7 +21,7 @@ export function CheckToken(token: string) {
             if (req.headers['token'] !== token && req.body.token !== token) {
                 res.status(404).send();
             } else {
-                origFn.call(target, req, res);
+                origFn.call(this, req, res);
             }
         };
 
@@ -57,7 +57,7 @@ export function VerifySlackSignature(secret: string) {
                 return;
             }
 
-            origFn.call(target, req, res);
+            origFn.call(this, req, res);
         };
 
         // Rename function to original
@@ -76,7 +76,7 @@ export function Required(...params: string[]) {
                 return param in req.body || param in req.query;
             });
             if (valid) {
-                origFn.call(target, req, res);
+                origFn.call(this, req, res);
             } else {
                 res.status(400).send(`Required params: ${params.join(',')}`);
             }
