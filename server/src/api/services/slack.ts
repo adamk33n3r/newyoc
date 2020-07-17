@@ -51,6 +51,26 @@ class SlackController {
         .catch((err) => res.status(500).send(err));
     }
 
+    @POST('/ts-invite')
+    @VerifySlackSignature(config.slack.clink.secret)
+    public teamSpeakInvite(req: Request, res: Response) {
+        const message = `<@${req.body.user_id}> has invited you to join the YOC TeamSpeak server!\n<ts3server://yoc|Click here to join!>\n`;
+        this.clink.sendMessage(req.body.channel_id, message)
+            .then((response) => {
+                if (response.ok) {
+                    res.send();
+                } else {
+                    console.error(response);
+                    res.status(500).send(response);
+                }
+            })
+            .catch((err) => {
+                console.error(err);
+                res.status(500).send(err);
+            })
+        ;
+    }
+
     @POST()
     public sendMessage(req: Request, res: Response) {
         this.clink.sendMessage(req.body.channel || '#tcpi', req.body.text || 'No text provided')

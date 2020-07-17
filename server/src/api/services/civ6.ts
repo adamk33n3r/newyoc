@@ -12,15 +12,29 @@ class Civ6Controller {
     @POST('/')
     @GET('/')
     public index(req: Request, res: Response) {
-        const gameName = req.body.value1;
-        const playerName = req.body.value2;
-        const turnNumber = req.body.value3;
+        let gameName: string, playerName: string, turnNumber: string, message: string;
 
-        const slackId = config.civ6.usernameMappings[playerName];
+        if (req.body.content) { // Is PYDT
+            gameName = req.body.gameName;
+            playerName = req.body.userName;
+            turnNumber = req.body.round;
+            const civ = req.body.civName;
+            const leader = req.body.leaderName;
+            const slackId = config.civ6.usernameMappings[playerName];
+            const name = slackId ? `<@${slackId}>` : playerName;
+            message = `It is now ${name}'s turn (${civ}) in the game ${gameName} (${turnNumber})`;
+        } else if (req.body.value1) {// Is PBC
+            gameName = req.body.value1;
+            playerName = req.body.value2;
+            turnNumber = req.body.value3;
+            const slackId = config.civ6.usernameMappings[playerName];
+            message = `It is now ${name}'s turn in the game ${gameName} (${turnNumber})`;
+        } else {
+            res.status(404).send();
+            return;
+        }
 
-        const name = slackId ? `<@${slackId}>` : playerName;
-
-        this.clink.sendMessage('#civ6turns', `It is now ${name}'s turn (${turnNumber}) in the game ${gameName}`)
+        this.clink.sendMessage('#civ6turns', message)
         .then((response) => {
             if (response.ok) {
                 res.json({ success: true, body: response.body});
