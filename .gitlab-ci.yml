@@ -57,7 +57,7 @@ deploy:
     - ssh yoc@yoc.gg "unzip -d _tmp client_artifacts.zip"
     - ssh yoc@yoc.gg "unzip -d _tmp server_artifacts.zip"
     - ssh yoc@yoc.gg "cp local.json _tmp/server/dist/server/src/config/local.json"
-    - ssh yoc@yoc.gg "cd _tmp/server/dist/server && yarn"
+    - ssh yoc@yoc.gg "cd _tmp/server/dist/server && yarn --frozen-lockfile --network-timeout=300000"
     - ssh yoc@yoc.gg "mv live _old && mv _tmp live"
     - ssh yoc@yoc.gg "sudo /bin/systemctl restart yoc"
     - ssh yoc@yoc.gg "rm -rf _old"
