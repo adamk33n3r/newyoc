@@ -714,6 +714,7 @@ busboy@^0.3.1:
 byline@~4.2.1:
   version "4.2.2"
   resolved "https://registry.yarnpkg.com/byline/-/byline-4.2.2.tgz#c203a98a5b0290822a9386a78eda2cbd5bcdb32f"
+  integrity sha1-wgOpilsCkIIqk4anjtosvVvNsy8=
 
 bytebuffer@~5:
   version "5.0.1"
@@ -1424,6 +1425,11 @@ fstream@^1.0.0, fstream@^1.0.12, fstream@~1.0.10:
     inherits "~2.0.0"
     mkdirp ">=0.5 0"
     rimraf "2"
+
+fuzzysort@^1.1.4:
+  version "1.1.4"
+  resolved "https://registry.yarnpkg.com/fuzzysort/-/fuzzysort-1.1.4.tgz#a0510206ed44532cbb52cf797bf5a3cb12acd4ba"
+  integrity sha512-JzK/lHjVZ6joAg3OnCjylwYXYVjRiwTY6Yb25LvfpJHK8bjisfnZJ5bY8aVWwTwCXgxPNgLAtmHL+Hs5q1ddLQ==
 
 gauge@~2.7.1:
   version "2.7.3"
@@ -2320,6 +2326,7 @@ node-schedule@^1.2.1:
 node-ts@^2.1.2:
   version "2.1.2"
   resolved "https://registry.yarnpkg.com/node-ts/-/node-ts-2.1.2.tgz#7e7dbb226046b27da12ca96568d7810eb462aaf1"
+  integrity sha1-fn27ImBGsn2hLKllaNeBDrRiqvE=
   dependencies:
     byline "~4.2.1"
 

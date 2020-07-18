@@ -5,7 +5,6 @@ import {
 } from 'node-ts';
 
 type ErrorFunction = (error: any) => void;
-type ReturnPromise = Promise<CallbackData<GenericResponseData>>;
 export class TeamSpeak {
     protected client: TeamSpeakClient;
 
@@ -18,42 +17,35 @@ export class TeamSpeak {
         });
     }
 
-    public login(username: string, password: string): ReturnPromise {
-        return this.client.send('login', {
+    public async login(username: string, password: string) {
+        await this.client.send('use', { sid: 1 });
+        return await this.client.send('login', {
             client_login_name: username,
             client_login_password: password,
-        }).then(() => {
-            return this.client.send('use', { sid: 1 });
         });
     }
 
-    public getClients(): Promise<any[]> {
-        return this.client.send('clientdblist', {}, [])
-            .then(this.handleResponse)
-            .then(this.stripQueryClients);
+    public async getClients() {
+        return this.stripQueryClients(this.handleResponse(await this.client.send('clientdblist', {}, [])));
     }
 
-    public getOnlineClients(): Promise<any[]> {
-        return this.client.send('clientlist', {}, ['away'])
-            .then(this.handleResponse)
-            .then(this.stripQueryClients);
+    public async getOnlineClients() {
+        return this.stripQueryClients(this.handleResponse(await this.client.send('clientlist', {}, ['away'])));
     }
 
-    public getChannel(id: number): ReturnPromise {
-        return this.client.send('channelinfo', { cid: id })
-            .then(this.handleResponse);
+    public async getChannel(id: number) {
+        return this.handleResponse(await this.client.send('channelinfo', { cid: id }));
     }
 
-    public getChannels() {
-        return this.client.send('channellist', {}, [])
-            .then(this.handleResponse);
+    public async getChannels() {
+        return this.handleResponse(await this.client.send('channellist', {}, []));
     }
 
-    public close(): ReturnPromise {
-        return this.client.send('logout');
+    public async close() {
+        return this.handleResponse(await this.client.send('logout'));
     }
 
-    private handleResponse(response: any) {
+    private handleResponse<T>(response: CallbackData<T>) {
         return response.response;
     }
 

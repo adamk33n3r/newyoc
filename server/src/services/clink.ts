@@ -50,8 +50,12 @@ interface ISlackUserProfile {
     team: string;
 }
 
-interface ISlackUserResponse {
+interface ISlackResponse {
     ok: boolean;
+    body: string;
+}
+
+interface ISlackUserResponse extends ISlackResponse {
     members: ISlackUser[];
     cache_ts: number;
     response_metadata: {
@@ -59,8 +63,10 @@ interface ISlackUserResponse {
     };
 }
 
+type SlackRequestResponse = request.RequestPromise<ISlackResponse>;
+
 export class Clink {
-    public sendMessage(channel: string, text: string, blocks?: any[]): request.RequestPromise {
+    public sendMessage(channel: string, text: string, blocks?: any[]): SlackRequestResponse {
         return request.post('https://slack.com/api/chat.postMessage', {
             headers: {
                 'Authorization': 'Bearer ' + config.slack.clink.token,
@@ -73,7 +79,7 @@ export class Clink {
         });
     }
 
-    public sendInvite(token: string, email: string): request.RequestPromise {
+    public sendInvite(token: string, email: string): SlackRequestResponse {
         return request.post({
             url: 'https://ye-olde-chums.slack.com/api/users.admin.invite',
             resolveWithFullResponse: true,

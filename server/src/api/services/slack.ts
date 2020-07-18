@@ -3,6 +3,7 @@ import * as request from 'request-promise-native';
 import * as firebase from 'firebase/app';
 import 'firebase/firestore';
 import 'firebase/storage';
+import * as fuzzysort from 'fuzzysort';
 
 import { Controller, POST, GET } from 'src/decorators/routing';
 import { Required, VerifySlackSignature } from 'src/decorators/util';
@@ -16,6 +17,7 @@ import { launchQuoteDialog, getQuotesBlocks, getGifAuth, getGif } from './clink/
 import { handleMessageAction } from './clink/interactive/message_action';
 import { handleDialogSubmission } from './clink/interactive/dialog_submission';
 import { handleBlockActions } from './clink/interactive/block_actions';
+import { ChannelListResponseData } from 'node-ts';
 
 @Controller('/slack')
 class SlackController {
@@ -23,58 +25,74 @@ class SlackController {
 
     @POST()
     @VerifySlackSignature(config.slack.clink.secret)
-    public status(req: Request, res: Response) {
+    public async status(req: Request, res: Response) {
         const ts = new TeamSpeak(config.teamspeak.url);
-        ts.login(config.teamspeak.username, config.teamspeak.password)
-        .then(() => {
-            ts.getOnlineClients()
-            .then((onlineClients: any[]) => {
-                const connectURL = 'TeamSpeak Server\n<ts3server://yoc|Click here to connect!>\n';
-                if (onlineClients.length > 0) {
-                    res.send({
-                        response_type: 'ephemeral',
-                        text: connectURL + 'Online users: ' +
-                            onlineClients.map((client) => {
-                                const awayMessage = client.client_away_message || 'Away';
-                                return client.client_nickname + (client.client_away ? ` [${awayMessage}]` : '');
-                            }).join(', '),
-                    });
-                } else {
-                    res.send({
-                        response_type: 'ephemeral',
-                        text: connectURL + 'No one is online at the moment',
-                    });
-                }
-            })
-            .catch((err) => res.status(500).send(err));
-        })
-        .catch((err) => res.status(500).send(err));
+        try {
+            await ts.login(config.teamspeak.username, config.teamspeak.password);
+            const onlineClients = await ts.getOnlineClients();
+            const connectURL = 'TeamSpeak Server\n<ts3server://yoc|Click here to connect!>\n';
+            if (onlineClients.length > 0) {
+                res.send({
+                    response_type: 'ephemeral',
+                    text: connectURL + 'Online users: ' +
+                        onlineClients.map((client) => {
+                            const awayMessage = client.client_away_message || 'Away';
+                            return client.client_nickname + (client.client_away ? ` [${awayMessage}]` : '');
+                        }).join(', '),
+                });
+            } else {
+                res.send({
+                    response_type: 'ephemeral',
+                    text: connectURL + 'No one is online at the moment',
+                });
+            }
+        } catch (err) {
+            res.status(500).send(err);
+        }
     }
 
     @POST('/ts-invite')
     @VerifySlackSignature(config.slack.clink.secret)
-    public teamSpeakInvite(req: Request, res: Response) {
-        const message = `<@${req.body.user_id}> has invited you to join the YOC TeamSpeak server!\n<ts3server://yoc|Click here to join!>\n`;
-        this.clink.sendMessage(req.body.channel_id, message)
-            .then((response) => {
+    public async teamSpeakInvite(req: Request, res: Response) {
+        const sendMessage = async (link: string) => {
+            const message = `<@${req.body.user_id}> has invited you to join the YOC TeamSpeak server!\n<${link}|Click here to join!>\n`;
+            try {
+                const response = await this.clink.sendMessage(req.body.channel_id, message)
                 if (response.ok) {
                     res.send();
                 } else {
                     console.error(response);
                     res.status(500).send(response);
                 }
-            })
-            .catch((err) => {
+            } catch (err) {
                 console.error(err);
                 res.status(500).send(err);
-            })
-        ;
+            }
+        }
+        const channelName = req.body.text;
+        if (channelName) {
+            const ts = new TeamSpeak(config.teamspeak.url);
+            await ts.login(config.teamspeak.username, config.teamspeak.password);
+            const channels = await ts.getChannels();
+            const results = fuzzysort.go(channelName, channels, { key: 'channel_name', threshold: -1000 });
+            const foundChannel = results[0];
+            if (foundChannel) {
+                sendMessage(`ts3server://yoc?cid=${foundChannel.obj.cid}`);
+            } else {
+                res.send({
+                    response_type: 'ephemeral',
+                    text: `No channel found with name: ${channelName}`,
+                });
+            }
+        } else {
+            sendMessage('ts3server://yoc');
+        }
     }
 
     @POST()
-    public sendMessage(req: Request, res: Response) {
-        this.clink.sendMessage(req.body.channel || '#tcpi', req.body.text || 'No text provided')
-        .then((response) => {
+    public async sendMessage(req: Request, res: Response) {
+        try {
+            const response = await this.clink.sendMessage(req.body.channel || '#tcpi', req.body.text || 'No text provided')
             console.log(response);
             if (response.ok) {
                 res.json({ success: true, body: response.body });
@@ -82,11 +100,10 @@ class SlackController {
                 console.error(response);
                 res.status(500).send(response);
             }
-        })
-        .catch((err) => {
+        } catch (err) {
             console.error(err);
             res.status(500).send(err);
-        });
+        }
     }
 
     @POST()
@@ -110,9 +127,9 @@ class SlackController {
 
     @POST()
     @Required('email')
-    public sendInvite(req: Request, res: Response) {
-        this.clink.sendInvite(config.slack.token, req.body.email)
-        .then((response) => {
+    public async sendInvite(req: Request, res: Response) {
+        try {
+            const response = await this.clink.sendInvite(config.slack.token, req.body.email)
             const body = JSON.parse(response.body);
             if (body.ok) {
                 res.json({ success: true, body });
@@ -120,11 +137,10 @@ class SlackController {
                 console.error(body.error);
                 res.json({ success: false, body });
             }
-        })
-        .catch((err) => {
+        } catch (err) {
             console.error(err.statusCode);
             res.status(500).send();
-        });
+        }
     }
 
     @POST()
@@ -143,27 +159,25 @@ class SlackController {
 
     @POST()
     @VerifySlackSignature(config.slack.clink.secret)
-    public quotes(req: Request, res: Response) {
-        getQuotesBlocks(req.body.team_id, req.body.channel_name, req.body.user_id).then((blocks) => {
-            res.send({
-                response_type: 'ephemeral',
-                blocks,
-            });
+    public async quotes(req: Request, res: Response) {
+        const blocks = await getQuotesBlocks(req.body.team_id, req.body.channel_name, req.body.user_id);
+        res.send({
+            response_type: 'ephemeral',
+            blocks,
         });
     }
 
     @POST()
     @VerifySlackSignature(config.slack.clink.secret)
-    public randomQuote(req: Request, res: Response) {
+    public async randomQuote(req: Request, res: Response) {
         const teamId = req.body.team_id;
-        firebase.firestore().collection(`teams/${teamId}/quotes`).get().then((query) => {
-            const randIdx = Math.floor(Math.random() * query.size);
-            const quote = query.docs[randIdx].data() as IQuote;
+        const query = await firebase.firestore().collection(`teams/${teamId}/quotes`).get();
+        const randIdx = Math.floor(Math.random() * query.size);
+        const quote = query.docs[randIdx].data() as IQuote;
 
-            res.send({
-                response_type: 'in_channel',
-                text: `<@${quote.said_by}>: ${quote.quote}`,
-            });
+        res.send({
+            response_type: 'in_channel',
+            text: `<@${quote.said_by}>: ${quote.quote}`,
         });
     }
 
