@@ -11,7 +11,7 @@ class Civ6Controller {
 
     @POST('/')
     @GET('/')
-    public index(req: Request, res: Response) {
+    public async index(req: Request, res: Response) {
         let gameName: string, playerName: string, turnNumber: string, message: string;
 
         if (req.body.content) { // Is PYDT
@@ -28,25 +28,25 @@ class Civ6Controller {
             playerName = req.body.value2;
             turnNumber = req.body.value3;
             const slackId = config.civ6.usernameMappings[playerName];
+            const name = slackId ? `<@${slackId}>` : playerName;
             message = `It is now ${name}'s turn in the game ${gameName} (${turnNumber})`;
         } else {
             res.status(404).send();
             return;
         }
 
-        this.clink.sendMessage('#civ6turns', message)
-        .then((response) => {
+        try {
+            const response = await this.clink.sendMessage('#civ6turns', message)
             if (response.ok) {
                 res.json({ success: true, body: response.body});
             } else {
                 console.error(response);
                 res.status(500).send(response);
             }
-        })
-        .catch((err) => {
+        } catch (err) {
             console.error(err);
             res.status(500).send(err);
-        });
+        }
     }
 }
 
