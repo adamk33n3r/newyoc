@@ -72,17 +72,21 @@ class SlackController {
         const channelName = req.body.text;
         if (channelName) {
             const ts = new TeamSpeak(config.teamspeak.url);
-            await ts.login(config.teamspeak.username, config.teamspeak.password);
-            const channels = await ts.getChannels();
-            const results = fuzzysort.go(channelName, channels, { key: 'channel_name', threshold: -1000 });
-            const foundChannel = results[0];
-            if (foundChannel) {
-                sendMessage(`ts3server://yoc?cid=${foundChannel.obj.cid}`);
-            } else {
-                res.send({
-                    response_type: 'ephemeral',
-                    text: `No channel found with name: ${channelName}`,
-                });
+            try {
+                await ts.login(config.teamspeak.username, config.teamspeak.password);
+                const channels = await ts.getChannels();
+                const results = fuzzysort.go(channelName, channels, { key: 'channel_name', threshold: -1000 });
+                const foundChannel = results[0];
+                if (foundChannel) {
+                    sendMessage(`ts3server://yoc?cid=${foundChannel.obj.cid}`);
+                } else {
+                    res.send({
+                        response_type: 'ephemeral',
+                        text: `No channel found with name: ${channelName}`,
+                    });
+                }
+            } catch (err) {
+                res.status(500).send(err);
             }
         } else {
             sendMessage('ts3server://yoc');
