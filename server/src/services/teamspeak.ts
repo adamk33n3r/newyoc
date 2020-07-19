@@ -18,7 +18,7 @@ export class TeamSpeak {
     }
 
     public async login(username: string, password: string) {
-        await this.client.send('use', { sid: 1 });
+        // await this.client.send('use', { sid: 1 });
         return await this.client.send('login', {
             client_login_name: username,
             client_login_password: password,
