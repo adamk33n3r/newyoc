@@ -6,7 +6,7 @@
   "license": "MIT",
   "dependencies": {
     "app-module-path": "^2.2.0",
-    "auth0": "^2.6.0",
+    "auth0": "^2.27.1",
     "auth0-js": "^8.2.0",
     "body-parser": "^1.16.0",
     "cli-table": "^0.3.1",
