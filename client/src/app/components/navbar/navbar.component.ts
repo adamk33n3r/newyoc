@@ -7,6 +7,7 @@ interface INavRoute {
     path: string;
     icon: string;
     auth?: boolean;
+    isExternal?: boolean;
 }
 
 @Component({
@@ -18,15 +19,16 @@ interface INavRoute {
 export class AppNavbarComponent {
     public routes: INavRoute[] = [
         {
-            name: 'TeamSpeak',
-            path: '/teamspeak',
+            name: 'Discord',
+            path: 'https://discord.gg/mKVD9Wa',
             icon: 'keyboard_voice',
+            isExternal: true
         },
-        {
-            name: 'Stream',
-            path: '/stream',
-            icon: 'ondemand_video',
-        },
+        // {
+        //     name: 'Stream',
+        //     path: '/stream',
+        //     icon: 'ondemand_video',
+        // },
         {
             name: 'Quotes',
             path: '/quotes',
