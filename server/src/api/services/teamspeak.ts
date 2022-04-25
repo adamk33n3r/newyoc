@@ -7,40 +7,35 @@ import config from 'src/config';
 @Controller('/teamspeak')
 class TeamSpeakController {
     @GET('/')
-    public index(req: Request, res: Response) {
+    public async index(req: Request, res: Response) {
         if (!config.teamspeak.username || !config.teamspeak.password) {
             return res.status(500).send('No username or password');
         }
         const ts = this.initTeamSpeak(res);
-        ts.login(config.teamspeak.username, config.teamspeak.password)
-        .then(() => {
-            Promise.all([
+        try {
+            await ts.login(config.teamspeak.username, config.teamspeak.password);
+            const [ online, channels] = await Promise.all([
                 ts.getOnlineClients(),
                 ts.getChannels(),
-            ]).then((results) => {
-                const [ online, channels ] = results;
-                res.set({
-                    'Page-Size': 20,
-                    'Access-Control-Expose-Headers': 'Page-Size',
-                    'Access-Control-Allow-Origin': '*',
-                    'Access-Control-Allow-Methods': 'OPTIONS, POST, GET',
-                })
-                res.json({
-                    success: true,
-                    data: {
-                        online,
-                        channels,
-                    },
-                });
-                ts.close();
-            }).catch((error) => {
-                console.error(error);
-                res.status(500).send(error);
+            ]);
+            res.set({
+                'Page-Size': 20,
+                'Access-Control-Expose-Headers': 'Page-Size',
+                'Access-Control-Allow-Origin': '*',
+                'Access-Control-Allow-Methods': 'OPTIONS, POST, GET',
+            })
+            res.json({
+                success: true,
+                data: {
+                    online,
+                    channels,
+                },
             });
-        })
-        .catch((error) => {
+            ts.close();
+        } catch (error) {
+            console.error(error);
             res.status(500).send(error);
-        });
+        }
     }
 
     private initTeamSpeak(res: Response): TeamSpeak {

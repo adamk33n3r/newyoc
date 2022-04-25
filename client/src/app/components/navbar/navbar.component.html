@@ -6,7 +6,10 @@
     <div class='title'>YOC</div>
   </a>
   <div *ngFor='let route of routes'>
-    <a *ngIf='!route.auth || auth.isAuthenticated()' mat-button [routerLink]='route.path'>
+    <a *ngIf='route.isExternal' mat-button [href]='route.path' target='_blank'>
+        <mat-icon>{{ route.icon }}</mat-icon>&nbsp;{{ route.name }}
+    </a>
+    <a *ngIf='!route.isExternal && !route.auth || auth.isAuthenticated()' mat-button [routerLink]='route.path'>
         <mat-icon>{{ route.icon }}</mat-icon>&nbsp;{{ route.name }}
     </a>
   </div>
