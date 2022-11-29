@@ -19,7 +19,6 @@ export async function handleBlockActions(payload: ISlackInteractionBlockActions)
                             json: {
                                 delete_original: true,
                                 response_type: 'in_channel',
-                                text: quote,
                                 blocks: buildQuoteSection(quote),
                             },
                         });
@@ -220,7 +219,6 @@ export async function handleBlockActions(payload: ISlackInteractionBlockActions)
                                     json: {
                                         delete_original: true,
                                         response_type: 'in_channel',
-                                        text: quote,
                                         blocks: buildQuoteSection(quote),
                                     },
                                 });
