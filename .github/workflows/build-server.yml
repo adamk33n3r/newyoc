@@ -31,8 +31,13 @@ jobs:
           cache-dependency-path: server/yarn.lock
       - name: Install dependencies
         run: yarn install --frozen-lockfile
-      - name: Build Angular
-        run: yarn ng build --prod
+      - name: Compile typescript
+        run: ./node_modules/.bin/tsc -p tsconfig-prod.json
+      - name: Copy files into dist
+        run: |
+          cp package.json dist/server/package.json
+          cp yarn.lock dist/server/yarn.lock
+          cp src/config/default.json dist/server/src/config/default.json
       - name: Upload build artifact
         uses: actions/upload-artifact@v3
         with:
