@@ -59,7 +59,7 @@ jobs:
         env:
           SSH_PRIVATE_KEY: ${{ secrets.DEPLOY_PRIVATE_KEY }}
           ARGS: "-rzvc -i"
-          SOURCE: "client/"
+          SOURCE: "client"
           REMOTE_HOST: ${{ secrets.DEPLOY_HOST }}
           REMOTE_PORT: ${{ secrets.DEPLOY_PORT }}
           REMOTE_USER: ${{ secrets.DEPLOY_USERNAME }}
