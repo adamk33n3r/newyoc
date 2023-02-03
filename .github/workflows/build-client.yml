@@ -15,13 +15,12 @@ on:
       - "client/**"
   workflow_dispatch:
       
-defaults:
-  run:
-    working-directory: client
-
 jobs:
   build-client:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: client
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
@@ -50,14 +49,17 @@ jobs:
         uses: actions/download-artifact@v3
         with:
           name: client-build
+          path: client/dist
       - name: List files
-        run: ls -al
+        run: |
+          ls -al
+          ls -al client/dist
       - name: Deploy to server
         uses: easingthemes/ssh-deploy@main
         env:
           SSH_PRIVATE_KEY: ${{ secrets.DEPLOY_PRIVATE_KEY }}
           ARGS: "-rzvc -i"
-          SOURCE: "client/dist/"
+          SOURCE: "client/"
           REMOTE_HOST: ${{ secrets.DEPLOY_HOST }}
           REMOTE_PORT: ${{ secrets.DEPLOY_PORT }}
           REMOTE_USER: ${{ secrets.DEPLOY_USERNAME }}

@@ -14,14 +14,13 @@ on:
     paths:
       - "server/**"
   workflow_dispatch:
-      
-defaults:
-  run:
-    working-directory: server
 
 jobs:
   build-server:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: server
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
@@ -55,14 +54,17 @@ jobs:
         uses: actions/download-artifact@v3
         with:
           name: server-build
+          path: server/dist
       - name: List files
-        run: ls -al
+        run: |
+          ls -al
+          ls -al server/dist
       - name: Deploy to server
         uses: easingthemes/ssh-deploy@main
         env:
           SSH_PRIVATE_KEY: ${{ secrets.DEPLOY_PRIVATE_KEY }}
           ARGS: "-rzvc -i"
-          SOURCE: "server/dist/"
+          SOURCE: "server/"
           REMOTE_HOST: ${{ secrets.DEPLOY_HOST }}
           REMOTE_PORT: ${{ secrets.DEPLOY_PORT }}
           REMOTE_USER: ${{ secrets.DEPLOY_USERNAME }}
@@ -71,6 +73,7 @@ jobs:
             rm -rf _tmp_server
             mkdir _tmp_server
           SCRIPT_AFTER: |
+            ls -al _tmp_server
             cp local.json _tmp_server/server/dist/server/src/config/local.json
             cd _tmp_server/server/dist/server
             yarn --frozen-lockfile --network-timeout=300000
