@@ -63,11 +63,12 @@ jobs:
           REMOTE_HOST: ${{ secrets.DEPLOY_HOST }}
           REMOTE_PORT: ${{ secrets.DEPLOY_PORT }}
           REMOTE_USER: ${{ secrets.DEPLOY_USERNAME }}
-          TARGET: "_tmp_server"
+          TARGET: "_tmp_client"
           SCRIPT_BEFORE: |
             rm -rf _tmp_client
             mkdir _tmp_client
           SCRIPT_AFTER: |
+            ls -al _tmp_client
             rm -rf _old_client
             mv live/client _old_client
             mv _tmp_client/client live/client
