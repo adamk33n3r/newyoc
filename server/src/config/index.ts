@@ -19,7 +19,6 @@ const config: {
         usernameMappings: { [playerName: string]: string; };
     };
     slack: {
-        token: string;
         clink: {
             client_id: string;
             client_secret: string;

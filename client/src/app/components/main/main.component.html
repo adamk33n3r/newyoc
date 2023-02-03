@@ -5,12 +5,15 @@
         <span>The coolest group o' guys you can find!</span>
     </mat-card>
     <h2>Join Discord! (voice)</h2>
-    <a href='https://discord.gg/mKVD9Wa'>https://discord.gg/mKVD9Wa</a>
+    <a href='https://discord.gg/mKVD9Wa' target='_blank' mat-button color='primary'>
+        https://discord.gg/mKVD9Wa
+        <mat-icon>open_in_new</mat-icon>
+    </a>
     <h2>Join Slack! (text)</h2>
-    <mat-form-field class='slack-invite'>
-        <input matInput placeholder='Email' type='text' [(ngModel)]='email'/>
-        <button matSuffix mat-button color='primary' (click)='sendInvite(email); email = ""'>Send Invite</button>
-    </mat-form-field>
+    <a href='https://join.slack.com/t/ye-olde-chums/shared_invite/zt-1odnjgh0l-YahIHUl~OSCfxlP0cCa2Tg' target='_blank' mat-button color='primary'>
+        https://join.slack.com/t/ye-olde-chums/shared_invite/zt-1odnjgh0l-YahIHUl~OSCfxlP0cCa2Tg
+        <mat-icon>open_in_new</mat-icon>
+    </a>
     <p>Hey! Do you want to be <strong>cool</strong>?</p>
     <p>Here are pictures that you can use to brandish your affiliation on all of the online communities.</p>
     <div class='images'>

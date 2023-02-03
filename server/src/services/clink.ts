@@ -79,12 +79,12 @@ export class Clink {
         });
     }
 
-    public sendInvite(token: string, email: string): SlackRequestResponse {
+    public sendInvite(email: string): SlackRequestResponse {
         return request.post({
             url: 'https://ye-olde-chums.slack.com/api/users.admin.invite',
             resolveWithFullResponse: true,
             form: {
-                token,
+                token: config.slack.clink.token,
                 email,
                 resend: true,
             },

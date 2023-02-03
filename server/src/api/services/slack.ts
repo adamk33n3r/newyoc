@@ -133,7 +133,7 @@ class SlackController {
     @Required('email')
     public async sendInvite(req: Request, res: Response) {
         try {
-            const response = await this.clink.sendInvite(config.slack.token, req.body.email)
+            const response = await this.clink.sendInvite(req.body.email)
             const body = JSON.parse(response.body);
             if (body.ok) {
                 res.json({ success: true, body });

@@ -8,6 +8,7 @@ interface INavRoute {
     icon: string;
     auth?: boolean;
     isExternal?: boolean;
+    outlined?: boolean;
 }
 
 @Component({
@@ -19,10 +20,17 @@ interface INavRoute {
 export class AppNavbarComponent {
     public routes: INavRoute[] = [
         {
+            name: 'Slack',
+            path: 'https://join.slack.com/t/ye-olde-chums/shared_invite/zt-1odnjgh0l-YahIHUl~OSCfxlP0cCa2Tg',
+            icon: 'chat',
+            isExternal: true,
+            outlined: true,
+        },
+        {
             name: 'Discord',
             path: 'https://discord.gg/mKVD9Wa',
-            icon: 'keyboard_voice',
-            isExternal: true
+            icon: 'mic',
+            isExternal: true,
         },
         // {
         //     name: 'Stream',
