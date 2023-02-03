@@ -55,6 +55,8 @@ jobs:
         uses: actions/download-artifact@v3
         with:
           name: server-build
+      - name: List files
+        run: ls -al
       - name: Deploy to server
         uses: easingthemes/ssh-deploy@main
         env:
